@@ -26,5 +26,3 @@ try {
   console.error(fehler.message);
   process.exitCode = 1;
 }
-
-//mei commit von xxxxxx
