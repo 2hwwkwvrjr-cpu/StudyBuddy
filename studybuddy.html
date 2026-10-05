@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -10,7 +9,6 @@
     >
 
     <title>StudyBuddy</title>
-
 
     <style>
 
@@ -21,37 +19,37 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
-
         :root {
+            --mint: #94dfbd;
+            --mint-dark: #4f9c79;
+            --mint-light: #e4f8ee;
 
-            --mint: #91ddbc;
-            --mint-dark: #4f9d7a;
-            --mint-light: #e3f8ee;
-
-            --lila: #a995da;
+            --lila: #ad9ade;
             --lila-light: #eee9fb;
 
-            --gelb: #f4dc79;
+            --gelb: #f3dc7c;
             --gelb-light: #fff7d5;
 
-            --rosa: #efaaaa;
-            --rosa-light: #fff0f0;
+            --rosa: #efa4ad;
+            --rosa-light: #fff0f2;
 
-            --rot: #d95b5b;
+            --blau: #9bc9ea;
+            --blau-light: #e8f5ff;
 
-            --text: #30383b;
-            --grau: #707b76;
+            --orange: #f2b981;
+            --orange-light: #fff0df;
+
+            --text: #343b3d;
+            --grau: #747d78;
 
             --white: #ffffff;
         }
 
-
         body {
-
             background:
                 linear-gradient(
                     135deg,
-                    #f4fff8,
+                    #f3fff8,
                     #faf7ff,
                     #fffdf3
                 );
@@ -61,32 +59,21 @@
             min-height: 100vh;
         }
 
-
-        /* ==========================
-           APP
-        ========================== */
-
         .app {
-
             display: flex;
-
             min-height: 100vh;
         }
 
-
-        /* ==========================
-           SIDEBAR
-        ========================== */
+        /* SIDEBAR */
 
         .sidebar {
-
             width: 250px;
 
             background:
                 linear-gradient(
                     180deg,
-                    #87d7b0,
-                    #a5dfc2
+                    #8bd9b3,
+                    #b1e5ca
                 );
 
             padding: 30px 22px;
@@ -101,37 +88,25 @@
             flex-direction: column;
         }
 
-
         .logo {
-
             font-size: 30px;
-
             font-weight: 800;
-
             color: white;
-
-            margin-bottom: 6px;
         }
-
 
         .logo span {
-
-            color: #fff2a9;
+            color: #fff0a5;
         }
 
-
         .logo-text {
-
-            color: #effff7;
-
+            color: #f0fff7;
             font-size: 13px;
 
+            margin-top: 5px;
             margin-bottom: 40px;
         }
 
-
         .nav-button {
-
             width: 100%;
 
             padding: 14px;
@@ -148,42 +123,32 @@
 
             font-size: 15px;
 
-            font-weight: 600;
+            font-weight: bold;
 
             text-align: left;
 
             cursor: pointer;
         }
 
-
         .nav-button:hover,
         .nav-button.active {
-
             background:
                 rgba(
                     255,
                     255,
                     255,
-                    0.26
+                    0.28
                 );
         }
 
-
         .sidebar-bottom {
-
             margin-top: auto;
         }
 
-
         .reset-button {
-
             width: 100%;
 
             padding: 11px;
-
-            border: none;
-
-            border-radius: 12px;
 
             background:
                 rgba(
@@ -195,18 +160,16 @@
 
             color: white;
 
-            cursor: pointer;
+            border: none;
 
-            font-size: 12px;
+            border-radius: 12px;
+
+            cursor: pointer;
         }
 
-
-        /* ==========================
-           MAIN
-        ========================== */
+        /* MAIN */
 
         .main {
-
             margin-left: 250px;
 
             width:
@@ -217,45 +180,37 @@
             padding: 35px;
         }
 
-
         .seite {
-
             display: none;
         }
 
-
         .seite.active {
-
             display: block;
         }
 
-
-        /* ==========================
-           HERO
-        ========================== */
+        /* HERO */
 
         .hero {
-
-            padding: 34px;
+            padding: 35px;
 
             margin-bottom: 25px;
 
-            border-radius: 26px;
+            border-radius: 27px;
 
             background:
                 linear-gradient(
                     125deg,
-                    #b8efd4,
-                    #d9d0f7 65%,
-                    #f8e999
+                    #b9efd3,
+                    #d9d0f7 62%,
+                    #fae897
                 );
 
             box-shadow:
                 0 10px 30px
                 rgba(
+                    40,
+                    70,
                     50,
-                    80,
-                    60,
                     0.08
                 );
 
@@ -264,16 +219,13 @@
             overflow: hidden;
         }
 
-
         .hero::after {
-
             content: "";
 
             position: absolute;
 
-            width: 170px;
-
-            height: 170px;
+            width: 180px;
+            height: 180px;
 
             border-radius: 50%;
 
@@ -285,36 +237,24 @@
                     0.25
                 );
 
-            right: -45px;
-
-            top: -55px;
+            right: -50px;
+            top: -60px;
         }
 
-
         .hero h1 {
-
             font-size: 38px;
-
-            color: #34423b;
-
+            color: #36453d;
             margin-bottom: 8px;
         }
 
-
         .hero p {
-
-            color: #56635b;
-
+            color: #58655e;
             font-size: 16px;
         }
 
-
-        /* ==========================
-           STATS
-        ========================== */
+        /* STATS */
 
         .stats {
-
             display: grid;
 
             grid-template-columns:
@@ -328,9 +268,7 @@
             margin-bottom: 30px;
         }
 
-
         .stat {
-
             background: white;
 
             padding: 22px;
@@ -351,122 +289,113 @@
                 var(--mint);
         }
 
-
         .stat:nth-child(2) {
-
-            border-color:
-                var(--lila);
+            border-color: var(--lila);
         }
-
 
         .stat:nth-child(3) {
-
-            border-color:
-                var(--gelb);
+            border-color: var(--gelb);
         }
 
-
         .stat p {
-
             color: var(--grau);
-
             font-size: 14px;
         }
 
-
         .stat strong {
-
             display: block;
-
             margin-top: 8px;
-
             font-size: 32px;
-
-            color: #3e4b43;
+            color: #404c45;
         }
 
+        /* WOCHENSTATISTIK */
 
-        /* ==========================
-           ÜBERSCHRIFTEN
-        ========================== */
+        .wochenstatistik {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .wochen-box {
+            background: white;
+
+            padding: 24px;
+
+            border-radius: 21px;
+
+            box-shadow:
+                0 8px 22px rgba(0,0,0,0.05);
+        }
+
+        .wochen-box h3 {
+            font-size: 16px;
+            color: #59645d;
+            margin-bottom: 10px;
+        }
+
+        .wochen-zahl {
+            font-size: 32px;
+            font-weight: bold;
+            color: #4d5b52;
+        }
+
+        .wochen-sub {
+            color: var(--grau);
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+        /* HEADINGS */
 
         .section-heading {
-
             margin-bottom: 18px;
         }
 
-
         .section-heading h2 {
-
             font-size: 25px;
-
-            color: #39453d;
-
             margin-bottom: 5px;
         }
 
-
         .section-heading p {
-
             color: var(--grau);
-
             font-size: 14px;
         }
 
-
-        /* ==========================
-           BEREICH
-        ========================== */
+        /* BEREICH */
 
         .bereich {
-
             background: white;
 
-            border-radius: 22px;
-
             padding: 24px;
+
+            border-radius: 22px;
 
             margin-bottom: 25px;
 
             box-shadow:
-                0 8px 22px
-                rgba(
-                    0,
-                    0,
-                    0,
-                    0.05
-                );
+                0 8px 22px rgba(0,0,0,0.05);
         }
 
-
-        /* ==========================
-           FORMULAR
-        ========================== */
+        /* FORMULAR */
 
         .formular {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(
-                    2,
-                    1fr
-                );
+            grid-template-columns: repeat(2, 1fr);
 
             gap: 14px;
         }
 
-
         input,
         select,
         textarea {
-
             width: 100%;
 
             padding: 13px 14px;
 
-            border:
-                1px solid #d9e3dd;
+            border: 1px solid #d8e3dc;
 
             border-radius: 12px;
 
@@ -477,126 +406,80 @@
             outline: none;
         }
 
-
-        textarea {
-
-            resize: vertical;
-
-            min-height: 90px;
-        }
-
-
         input:focus,
         select:focus,
         textarea:focus {
-
-            border-color:
-                var(--mint);
+            border-color: var(--mint);
 
             box-shadow:
-                0 0 0 3px
-                rgba(
-                    145,
-                    221,
-                    188,
-                    0.18
-                );
+                0 0 0 3px rgba(148,223,189,0.18);
         }
 
+        textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
 
         .full-width {
-
-            grid-column:
-                1 / -1;
+            grid-column: 1 / -1;
         }
 
-
-        /* ==========================
-           BUTTONS
-        ========================== */
+        /* BUTTONS */
 
         button {
-
             border: none;
-
+            font-weight: bold;
             cursor: pointer;
-
-            font-weight: 600;
         }
 
-
         .btn-primary {
-
-            background:
-                var(--mint);
-
+            background: var(--mint);
             color: white;
 
-            padding:
-                12px 16px;
+            padding: 12px 16px;
 
             border-radius: 11px;
         }
 
-
-        .btn-primary:hover {
-
-            background:
-                #78cba6;
-        }
-
-
         .btn-lila {
+            background: var(--lila-light);
+            color: #705ba4;
 
-            background:
-                var(--lila-light);
-
-            color:
-                #705ba4;
-
-            padding:
-                9px 12px;
+            padding: 9px 12px;
 
             border-radius: 10px;
         }
-
 
         .btn-gelb {
+            background: var(--gelb-light);
+            color: #836d18;
 
-            background:
-                var(--gelb-light);
-
-            color:
-                #816c18;
-
-            padding:
-                9px 12px;
+            padding: 9px 12px;
 
             border-radius: 10px;
         }
-
 
         .btn-rot {
+            background: var(--rosa-light);
+            color: #b6444e;
 
-            background:
-                var(--rosa-light);
-
-            color:
-                #b54545;
-
-            padding:
-                9px 12px;
+            padding: 9px 12px;
 
             border-radius: 10px;
         }
 
+        .btn-erledigt {
+            background: var(--mint-light);
+            color: var(--mint-dark);
 
-        /* ==========================
-           FILTER
-        ========================== */
+            padding: 9px 12px;
+
+            border-radius: 10px;
+        }
+
+        /* FILTER */
 
         .filter {
-
             display: grid;
 
             grid-template-columns:
@@ -605,20 +488,16 @@
             gap: 12px;
         }
 
-
-        /* ==========================
-           AUFGABEN
-        ========================== */
+        /* AUFGABEN */
 
         .karten {
-
             display: grid;
 
             grid-template-columns:
                 repeat(
                     auto-fit,
                     minmax(
-                        290px,
+                        315px,
                         1fr
                     )
                 );
@@ -626,259 +505,210 @@
             gap: 18px;
         }
 
-
         .aufgaben-karte {
-
             background: white;
 
             padding: 21px;
 
-            border-radius: 20px;
+            border-radius: 21px;
 
             border:
-                1px solid #e9ece9;
+                1px solid #e7ebe8;
 
             box-shadow:
-                0 8px 20px
-                rgba(
-                    0,
-                    0,
-                    0,
-                    0.045
-                );
-
-            position: relative;
+                0 8px 21px rgba(0,0,0,0.045);
         }
 
-
-        .aufgaben-karte.hoch {
-
-            border-left:
-                6px solid #e26565;
-        }
-
-
-        .aufgaben-karte.mittel {
-
-            border-left:
-                6px solid var(--gelb);
-        }
-
-
-        .aufgaben-karte.niedrig {
-
-            border-left:
-                6px solid var(--mint);
-        }
-
-
-        .kartenkopf {
-
-            display: flex;
-
-            justify-content:
-                space-between;
-
-            align-items:
-                flex-start;
-
-            gap: 12px;
-
-            margin-bottom: 12px;
-        }
-
-
-        .kartenkopf h3 {
-
+        .aufgabe-titel {
             font-size: 19px;
-
-            line-height: 1.3;
-        }
-
-
-        .prio {
-
-            padding:
-                6px 10px;
-
-            border-radius: 999px;
-
-            font-size: 12px;
-
             font-weight: bold;
-
-            white-space: nowrap;
-        }
-
-
-        .prio-hoch {
-
-            background:
-                #ffe5e5;
-
-            color:
-                #bd4242;
-        }
-
-
-        .prio-mittel {
-
-            background:
-                var(--gelb-light);
-
-            color:
-                #826c17;
-        }
-
-
-        .prio-niedrig {
-
-            background:
-                var(--mint-light);
-
-            color:
-                var(--mint-dark);
-        }
-
-
-        .fach-badge {
-
-            display: inline-block;
-
-            padding:
-                6px 11px;
-
-            border-radius: 999px;
-
-            background:
-                var(--lila-light);
-
-            color:
-                #705da0;
-
-            font-size: 12px;
 
             margin-bottom: 13px;
+
+            border: none;
+
+            padding: 5px 0;
+
+            background: transparent;
         }
 
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
 
-        .typ-badge {
+            gap: 7px;
 
-            display: inline-block;
+            margin-bottom: 15px;
+        }
 
-            margin-left: 5px;
-
-            padding:
-                6px 11px;
+        .fach-badge {
+            padding: 6px 11px;
 
             border-radius: 999px;
 
-            background:
-                var(--gelb-light);
+            font-size: 12px;
 
-            color:
-                #806c1f;
+            font-weight: bold;
+        }
+
+        .typ-badge {
+            padding: 6px 11px;
+
+            background: var(--gelb-light);
+            color: #806d20;
+
+            border-radius: 999px;
 
             font-size: 12px;
         }
 
+        /* DIREKT BEARBEITBAR */
 
-        .karten-info {
+        .edit-row {
+            display: grid;
 
-            color: #67716a;
+            grid-template-columns: 145px 1fr;
 
-            font-size: 14px;
+            align-items: center;
 
-            margin-bottom: 7px;
+            gap: 9px;
 
-            line-height: 1.4;
+            margin-bottom: 9px;
+
+            font-size: 13px;
+
+            color: #667069;
         }
 
-
-        .deadline {
-
-            margin-top: 12px;
-
-            padding:
-                11px 12px;
-
-            border-radius: 11px;
-
-            background:
-                var(--mint-light);
-
-            color:
-                var(--mint-dark);
-
+        .edit-row label {
             font-weight: bold;
+        }
+
+        .inline-input,
+        .inline-select {
+            padding: 8px 10px;
+
+            border: 1px solid transparent;
+
+            border-radius: 9px;
+
+            background: #f8faf8;
+
+            cursor: pointer;
 
             font-size: 13px;
         }
 
+        .inline-input:hover,
+        .inline-select:hover {
+            background: #f1f7f3;
 
-        .deadline.dringend {
-
-            background:
-                var(--gelb-light);
-
-            color:
-                #826b17;
+            border-color: #d5e8dc;
         }
 
+        .notiz-inline {
+            width: 100%;
 
-        .deadline.ueberfaellig {
+            margin-top: 10px;
 
-            background:
-                #ffe3e3;
+            min-height: 60px;
 
-            color:
-                #b53f3f;
+            background: #fafafa;
+
+            font-size: 13px;
         }
 
+        /* DRINGLICHKEIT */
 
         .dringlichkeit {
+            margin-top: 15px;
 
-            margin-top: 12px;
+            padding: 12px 13px;
 
-            padding:
-                10px 12px;
-
-            border-radius: 11px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #eee8fb,
-                    #f8f3ff
-                );
-
-            color:
-                #6d579d;
-
-            font-size: 13px;
+            border-radius: 12px;
 
             font-weight: bold;
+
+            font-size: 14px;
         }
 
+        .sehr-dringend {
+            background: #ffe5e8;
+            color: #b93f4b;
+        }
+
+        .dringend {
+            background: #fff1d5;
+            color: #9a6921;
+        }
+
+        .bald {
+            background: #f6f0ff;
+            color: #7058a5;
+        }
+
+        .genug-zeit {
+            background: var(--mint-light);
+            color: var(--mint-dark);
+        }
+
+        .fertig {
+            background: #e3f7ea;
+            color: #40835f;
+        }
+
+        .restzeit {
+            margin-top: 10px;
+
+            color: #69736c;
+
+            font-size: 13px;
+        }
 
         .aktionen {
-
             display: flex;
 
-            flex-wrap: wrap;
-
             gap: 8px;
+
+            flex-wrap: wrap;
 
             margin-top: 15px;
         }
 
+        /* ERLEDIGT */
 
-        /* ==========================
-           FÄCHER
-        ========================== */
+        .erledigt-karte {
+            background:
+                linear-gradient(
+                    135deg,
+                    #fbfffc,
+                    #f4fbf6
+                );
+
+            opacity: 0.92;
+        }
+
+        .erledigt-banner {
+            display: inline-block;
+
+            margin-bottom: 12px;
+
+            padding: 7px 11px;
+
+            border-radius: 999px;
+
+            background: #e4f8eb;
+
+            color: #43815f;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        /* FÄCHER */
 
         .fach-grid {
-
             display: grid;
 
             grid-template-columns:
@@ -893,144 +723,67 @@
             gap: 18px;
         }
 
-
         .fach-card {
-
             background: white;
 
             padding: 22px;
 
             border-radius: 21px;
 
-            border:
-                1px solid #eceeec;
+            border: 1px solid #eceeec;
 
             box-shadow:
-                0 8px 22px
-                rgba(
-                    0,
-                    0,
-                    0,
-                    0.05
-                );
+                0 8px 22px rgba(0,0,0,0.05);
         }
-
-
-        .fach-card:nth-child(3n + 1) {
-
-            border-top:
-                5px solid
-                var(--mint);
-        }
-
-
-        .fach-card:nth-child(3n + 2) {
-
-            border-top:
-                5px solid
-                var(--lila);
-        }
-
-
-        .fach-card:nth-child(3n + 3) {
-
-            border-top:
-                5px solid
-                var(--gelb);
-        }
-
 
         .fach-card h3 {
-
             font-size: 18px;
-
             margin-bottom: 7px;
         }
 
-
         .lern-info {
-
             color: var(--grau);
-
             font-size: 14px;
-
             margin-bottom: 14px;
         }
 
-
-        /* ==========================
-           SLIDER
-        ========================== */
-
         .slider {
-
             width: 100%;
-
-            accent-color:
-                #83d3ab;
-
-            cursor: pointer;
+            accent-color: #83d2aa;
         }
-
 
         .progress-info {
-
             display: flex;
 
-            justify-content:
-                space-between;
+            justify-content: space-between;
 
-            margin-top: 6px;
+            margin-top: 7px;
+
+            color: var(--grau);
 
             font-size: 13px;
-
-            color:
-                var(--grau);
         }
 
-
-        /* ==========================
-           PROGRESS BAR
-        ========================== */
-
         .progress {
-
             height: 10px;
+
+            margin-top: 14px;
+
+            background: #edf2ed;
 
             border-radius: 999px;
 
-            background:
-                #edf2ed;
-
             overflow: hidden;
-
-            margin-top: 14px;
         }
 
-
         .progress-inner {
-
             height: 100%;
 
             border-radius: 999px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    var(--mint),
-                    var(--lila)
-                );
         }
 
-
-        /* ==========================
-           TIMER
-        ========================== */
-
         .zeit-buttons {
-
             display: flex;
-
             flex-wrap: wrap;
 
             gap: 7px;
@@ -1038,50 +791,38 @@
             margin-top: 14px;
         }
 
+        /* TIMER */
 
         .timer {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 10px;
 
             margin-top: 15px;
 
             padding: 12px;
 
-            border-radius: 12px;
-
             background:
                 linear-gradient(
                     135deg,
                     var(--lila-light),
-                    #f8f5ff
+                    #faf8ff
                 );
 
-            display: flex;
-
-            justify-content:
-                space-between;
-
-            align-items: center;
-
-            gap: 8px;
+            border-radius: 12px;
         }
-
 
         .timer-anzeige {
-
-            color:
-                #705ba4;
-
+            color: #705ba4;
             font-weight: bold;
-
-            font-size: 16px;
         }
 
-
-        /* ==========================
-           DASHBOARD ZIELE
-        ========================== */
+        /* DASHBOARD LERNZIELE */
 
         .dashboard-ziele {
-
             display: grid;
 
             grid-template-columns:
@@ -1098,42 +839,27 @@
             margin-bottom: 30px;
         }
 
-
         .mini-ziel {
-
             background: white;
-
-            border-radius: 18px;
 
             padding: 18px;
 
+            border-radius: 18px;
+
             box-shadow:
-                0 7px 18px
-                rgba(
-                    0,
-                    0,
-                    0,
-                    0.04
-                );
+                0 7px 18px rgba(0,0,0,0.04);
         }
 
-
         .mini-ziel h4 {
-
             margin-bottom: 8px;
         }
 
-
         .mini-ziel p {
-
             color: var(--grau);
-
             font-size: 13px;
         }
 
-
         .leer {
-
             background: white;
 
             padding: 30px;
@@ -1145,110 +871,111 @@
             text-align: center;
         }
 
+        /* HEUTE */
 
-        /* ==========================
-           RESPONSIVE
-        ========================== */
+        .heute-info {
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff3d9,
+                    #f5efff
+                );
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .heute-info strong {
+            font-size: 18px;
+        }
 
         @media(max-width: 900px) {
 
             .sidebar {
-
                 position: static;
-
                 width: 100%;
             }
 
-
             .app {
-
                 display: block;
             }
 
-
             .main {
-
                 margin-left: 0;
-
                 width: 100%;
-
                 padding: 20px;
             }
 
-
             .stats,
             .formular,
-            .filter {
-
-                grid-template-columns:
-                    1fr;
+            .filter,
+            .wochenstatistik {
+                grid-template-columns: 1fr;
             }
 
+            .edit-row {
+                grid-template-columns: 1fr;
+            }
         }
 
     </style>
-
 </head>
-
-
 
 <body>
 
-
 <div class="app">
-
-
-    <!-- ==========================
-         SIDEBAR
-    ========================== -->
 
     <aside class="sidebar">
 
-
         <div class="logo">
-
             Study<span>Buddy</span>
-
         </div>
-
 
         <div class="logo-text">
-
             Dein persönlicher Lernbegleiter
-
         </div>
-
 
 
         <button
             class="nav-button active"
             onclick="zeigeSeite('dashboard', this)"
         >
-
             🏠 Dashboard
-
         </button>
 
+
+        <button
+            class="nav-button"
+            onclick="zeigeSeite('heute', this)"
+        >
+            ☀️ Heute
+        </button>
 
 
         <button
             class="nav-button"
             onclick="zeigeSeite('aufgaben', this)"
         >
-
             ✓ Aufgaben
-
         </button>
 
+
+        <button
+            class="nav-button"
+            onclick="zeigeSeite('erledigt', this)"
+        >
+            ✅ Erledigt
+        </button>
 
 
         <button
             class="nav-button"
             onclick="zeigeSeite('faecher', this)"
         >
-
             📚 Fächer & Lernziele
-
         </button>
 
 
@@ -1258,34 +985,23 @@
                 class="reset-button"
                 onclick="demoDatenZuruecksetzen()"
             >
-
                 Beispieldaten zurücksetzen
-
             </button>
 
         </div>
 
-
     </aside>
 
-
-
-    <!-- ==========================
-         MAIN
-    ========================== -->
 
     <main class="main">
 
 
-        <!-- ======================
-             DASHBOARD
-        ====================== -->
+        <!-- DASHBOARD -->
 
         <section
             id="dashboard"
             class="seite active"
         >
-
 
             <div class="hero">
 
@@ -1294,60 +1010,92 @@
                 </h1>
 
                 <p>
-                    Deine wichtigsten Aufgaben und Lernziele
-                    auf einen Blick.
+                    StudyBuddy zeigt dir, was du als Nächstes angehen solltest.
                 </p>
 
             </div>
 
 
-
             <div class="stats">
 
-
                 <div class="stat">
-
-                    <p>
-                        Alle Aufgaben
-                    </p>
-
-                    <strong id="gesamt">
-                        0
-                    </strong>
-
+                    <p>Alle Aufgaben</p>
+                    <strong id="gesamt">0</strong>
                 </div>
 
-
-
                 <div class="stat">
-
-                    <p>
-                        Offene Aufgaben
-                    </p>
-
-                    <strong id="offen">
-                        0
-                    </strong>
-
+                    <p>Offene Aufgaben</p>
+                    <strong id="offen">0</strong>
                 </div>
 
-
-
                 <div class="stat">
-
-                    <p>
-                        Dringende Aufgaben
-                    </p>
-
-                    <strong id="dringend">
-                        0
-                    </strong>
-
+                    <p>Dringend</p>
+                    <strong id="dringend">0</strong>
                 </div>
-
 
             </div>
 
+
+            <div class="section-heading">
+
+                <h2>
+                    Deine Woche 📊
+                </h2>
+
+                <p>
+                    Dein gesamter Lernfortschritt dieser Woche.
+                </p>
+
+            </div>
+
+
+            <div class="wochenstatistik">
+
+                <div class="wochen-box">
+
+                    <h3>
+                        ⏱ Insgesamt gelernt
+                    </h3>
+
+                    <div
+                        id="wochenStunden"
+                        class="wochen-zahl"
+                    >
+                        0 h
+                    </div>
+
+                    <div class="wochen-sub">
+                        über alle Fächer
+                    </div>
+
+                </div>
+
+
+                <div class="wochen-box">
+
+                    <h3>
+                        🎯 Wochenziel erreicht
+                    </h3>
+
+                    <div
+                        id="wochenProzent"
+                        class="wochen-zahl"
+                    >
+                        0 %
+                    </div>
+
+                    <div class="progress">
+
+                        <div
+                            id="wochenProgress"
+                            class="progress-inner"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </div>
 
 
             <div class="section-heading">
@@ -1357,7 +1105,7 @@
                 </h2>
 
                 <p>
-                    Dein Lernfortschritt pro Fach.
+                    So weit bist du bei deinen einzelnen Fächern.
                 </p>
 
             </div>
@@ -1369,16 +1117,14 @@
             ></div>
 
 
-
             <div class="section-heading">
 
                 <h2>
-                    Deine wichtigsten Aufgaben 🔥
+                    Das solltest du als Nächstes machen
                 </h2>
 
                 <p>
-                    StudyBuddy berechnet automatisch,
-                    was gerade am dringendsten ist.
+                    Bereits erledigte Aufgaben werden hier nicht mehr angezeigt.
                 </p>
 
             </div>
@@ -1389,20 +1135,54 @@
                 class="karten"
             ></div>
 
+        </section>
+
+
+
+        <!-- HEUTE -->
+
+        <section
+            id="heute"
+            class="seite"
+        >
+
+            <div class="hero">
+
+                <h1>
+                    Deine nächsten To-dos ☀️
+                </h1>
+
+                <p>
+                    Alles, was heute oder in den nächsten zwei Tagen wichtig ist.
+                </p>
+
+            </div>
+
+
+            <div class="heute-info">
+
+                <strong id="heuteText">
+                    Deine nächsten Aufgaben werden geladen.
+                </strong>
+
+            </div>
+
+
+            <div
+                id="heuteAufgaben"
+                class="karten"
+            ></div>
 
         </section>
 
 
 
-        <!-- ======================
-             AUFGABEN
-        ====================== -->
+        <!-- AUFGABEN -->
 
         <section
             id="aufgaben"
             class="seite"
         >
-
 
             <div class="section-heading">
 
@@ -1411,16 +1191,13 @@
                 </h2>
 
                 <p>
-                    Prüfungen, Abgaben und Lernaufgaben
-                    verwalten.
+                    Hier siehst du nur offene und laufende Aufgaben.
                 </p>
 
             </div>
 
 
-
             <div class="bereich">
-
 
                 <div class="section-heading">
 
@@ -1431,16 +1208,13 @@
                 </div>
 
 
-
                 <div class="formular">
-
 
                     <input
                         id="aufgabeName"
                         type="text"
-                        placeholder="z. B. Mathematik Prüfung vorbereiten"
+                        placeholder="Name der Aufgabe"
                     >
-
 
 
                     <select id="aufgabeFach">
@@ -1450,7 +1224,6 @@
                         </option>
 
                     </select>
-
 
 
                     <select id="typ">
@@ -1482,12 +1255,10 @@
                     </select>
 
 
-
                     <input
                         id="deadline"
                         type="date"
                     >
-
 
 
                     <select id="prioritaet">
@@ -1507,7 +1278,6 @@
                     </select>
 
 
-
                     <select id="status">
 
                         <option value="offen">
@@ -1525,7 +1295,6 @@
                     </select>
 
 
-
                     <input
                         id="zeitaufwand"
                         type="number"
@@ -1533,7 +1302,6 @@
                         step="0.5"
                         placeholder="Geschätzter Aufwand in Stunden"
                     >
-
 
 
                     <input
@@ -1545,54 +1313,34 @@
                     >
 
 
-
                     <textarea
                         id="notiz"
                         class="full-width"
-                        placeholder="Notiz, z. B. Kapitel 1–5 lernen"
+                        placeholder="Notiz, z. B. Kapitel 1 bis 5"
                     ></textarea>
-
 
 
                     <button
                         class="btn-primary full-width"
                         onclick="aufgabeSpeichern()"
                     >
-
-                        Aufgabe speichern
-
+                        Aufgabe hinzufügen
                     </button>
 
-
                 </div>
-
 
             </div>
 
 
-
             <div class="bereich">
-
-
-                <div class="section-heading">
-
-                    <h2>
-                        Aufgaben suchen & filtern
-                    </h2>
-
-                </div>
-
 
                 <div class="filter">
 
-
                     <input
                         id="suche"
-                        type="text"
                         placeholder="🔎 Aufgabe suchen..."
                         oninput="zeigeAufgaben()"
                     >
-
 
 
                     <select
@@ -1605,7 +1353,6 @@
                         </option>
 
                     </select>
-
 
 
                     <select
@@ -1625,12 +1372,7 @@
                             In Bearbeitung
                         </option>
 
-                        <option value="erledigt">
-                            Erledigt
-                        </option>
-
                     </select>
-
 
 
                     <select
@@ -1664,12 +1406,9 @@
 
                     </select>
 
-
                 </div>
 
-
             </div>
-
 
 
             <div
@@ -1677,20 +1416,58 @@
                 class="karten"
             ></div>
 
+        </section>
+
+
+
+        <!-- ERLEDIGT -->
+
+        <section
+            id="erledigt"
+            class="seite"
+        >
+
+            <div class="hero">
+
+                <h1>
+                    Erledigt ✅
+                </h1>
+
+                <p>
+                    Hier findest du alle Aufgaben, die du bereits abgeschlossen hast.
+                </p>
+
+            </div>
+
+
+            <div class="section-heading">
+
+                <h2>
+                    Abgeschlossene Aufgaben
+                </h2>
+
+                <p>
+                    Du kannst Aufgaben jederzeit wieder öffnen.
+                </p>
+
+            </div>
+
+
+            <div
+                id="erledigteAufgaben"
+                class="karten"
+            ></div>
 
         </section>
 
 
 
-        <!-- ======================
-             FÄCHER
-        ====================== -->
+        <!-- FÄCHER -->
 
         <section
             id="faecher"
             class="seite"
         >
-
 
             <div class="section-heading">
 
@@ -1699,36 +1476,29 @@
                 </h2>
 
                 <p>
-                    Setze dir pro Fach ein Wochenziel
-                    und dokumentiere deine Lernzeit.
+                    Lege dein Wochenziel fest und dokumentiere deine Lernzeit.
                 </p>
 
             </div>
 
 
-
             <div class="bereich">
-
 
                 <div class="section-heading">
 
                     <h2>
-                        Neues Fach hinzufügen
+                        Neues Fach
                     </h2>
 
                 </div>
 
 
-
                 <div class="formular">
-
 
                     <input
                         id="neuesFach"
-                        type="text"
                         placeholder="Name des Faches"
                     >
-
 
 
                     <input
@@ -1740,22 +1510,16 @@
                     >
 
 
-
                     <button
                         class="btn-primary full-width"
                         onclick="fachHinzufuegen()"
                     >
-
                         + Fach hinzufügen
-
                     </button>
-
 
                 </div>
 
-
             </div>
-
 
 
             <div
@@ -1763,20 +1527,15 @@
                 class="fach-grid"
             ></div>
 
-
         </section>
 
 
     </main>
 
-
 </div>
-
 
 
 <script src="studybuddy.js"></script>
 
-
 </body>
-
 </html>
