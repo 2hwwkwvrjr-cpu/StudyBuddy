@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "aufgabe": "Mathematik lernen",
+    "fach": "Mathematik",
+    "deadline": "2026-10-07",
+    "prioritaet": "hoch",
+    "status": "offen"
+  },
+  {
+    "id": 2,
+    "aufgabe": "BWL Hausübung abgeben",
+    "fach": "BWL",
+    "deadline": "2026-10-06",
+    "prioritaet": "hoch",
+    "status": "offen"
+  },
+  {
+    "id": 3,
+    "aufgabe": "JavaScript Übungen machen",
+    "fach": "Wirtschaftsinformatik",
+    "deadline": "2026-10-12",
+    "prioritaet": "mittel",
+    "status": "in Bearbeitung"
+  },
+  {
+    "id": 4,
+    "aufgabe": "Englisch Vokabeln lernen",
+    "fach": "Englisch",
+    "deadline": "2026-10-20",
+    "prioritaet": "niedrig",
+    "status": "offen"
+  },
+  {
+    "id": 5,
+    "aufgabe": "Bilanz Aufgabe fertigstellen",
+    "fach": "Rechnungswesen",
+    "deadline": "2026-10-08",
+    "prioritaet": "mittel",
+    "status": "erledigt"
+  }
+]
