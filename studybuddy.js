@@ -1,230 +1,447 @@
-// ----------------------------------------------------
-// STARTDATEN / LOCAL STORAGE
-// ----------------------------------------------------
+// ======================================================
+// STUDYBUDDY
+// ======================================================
+
+
+
+// ======================================================
+// STANDARD-FÄCHER
+// ======================================================
 
 const standardFaecher = [
+
     {
-        name: "Wirtschaftsinformatik",
-        ziel: 6,
-        gelernt: 2.5
-    },
-    {
-        name: "Mathematik",
-        ziel: 5,
-        gelernt: 3
-    },
-    {
-        name: "BWL",
+        name: "Datenmanagement",
         ziel: 4,
-        gelernt: 1.5
+        gelernt: 0
     },
+
+    {
+        name: "Einführung in die Wirtschaftsinformatik",
+        ziel: 4,
+        gelernt: 0
+    },
+
+    {
+        name: "Kompetenz und Kooperation",
+        ziel: 2,
+        gelernt: 0
+    },
+
+    {
+        name: "Mathematik für Computer Science 1",
+        ziel: 6,
+        gelernt: 0
+    },
+
     {
         name: "Rechnungswesen",
         ziel: 5,
-        gelernt: 2
+        gelernt: 0
     },
+
     {
-        name: "Englisch",
+        name: "Strukturierte Programmierung",
+        ziel: 6,
+        gelernt: 0
+    },
+
+    {
+        name: "Technical English",
         ziel: 3,
-        gelernt: 1
+        gelernt: 0
+    },
+
+    {
+        name: "Unternehmensführung",
+        ziel: 3,
+        gelernt: 0
     }
+
 ];
 
+
+
+// ======================================================
+// STANDARD-AUFGABEN
+// ======================================================
 
 const standardAufgaben = [
+
     {
         id: 1,
-        aufgabe: "JavaScript Übung fertigstellen",
-        fach: "Wirtschaftsinformatik",
-        deadline: "2026-10-07",
-        prioritaet: "hoch",
-        status: "in Bearbeitung"
+
+        aufgabe:
+            "JavaScript Übung fertigstellen",
+
+        fach:
+            "Strukturierte Programmierung",
+
+        typ:
+            "Abgabe",
+
+        deadline:
+            "2026-10-08",
+
+        prioritaet:
+            "hoch",
+
+        status:
+            "in Bearbeitung",
+
+        zeitaufwand:
+            5,
+
+        investierteZeit:
+            2,
+
+        notiz:
+            "Code testen und anschließend auf GitHub committen."
     },
+
+
     {
         id: 2,
-        aufgabe: "Mathematik Kapitel wiederholen",
-        fach: "Mathematik",
-        deadline: "2026-10-08",
-        prioritaet: "hoch",
-        status: "offen"
+
+        aufgabe:
+            "Mathematik Prüfung vorbereiten",
+
+        fach:
+            "Mathematik für Computer Science 1",
+
+        typ:
+            "Prüfung",
+
+        deadline:
+            "2026-10-12",
+
+        prioritaet:
+            "hoch",
+
+        status:
+            "offen",
+
+        zeitaufwand:
+            8,
+
+        investierteZeit:
+            2,
+
+        notiz:
+            "Binärzahlen, Logik und Kombinatorik wiederholen."
     },
+
+
     {
         id: 3,
-        aufgabe: "BWL Zusammenfassung lernen",
-        fach: "BWL",
-        deadline: "2026-10-13",
-        prioritaet: "mittel",
-        status: "offen"
+
+        aufgabe:
+            "Datenmanagement Stoff wiederholen",
+
+        fach:
+            "Datenmanagement",
+
+        typ:
+            "Lernaufgabe",
+
+        deadline:
+            "2026-10-15",
+
+        prioritaet:
+            "mittel",
+
+        status:
+            "offen",
+
+        zeitaufwand:
+            4,
+
+        investierteZeit:
+            1,
+
+        notiz:
+            "Unterlagen zusammenfassen."
     },
+
+
     {
         id: 4,
-        aufgabe: "Bilanz Übungsblatt lösen",
-        fach: "Rechnungswesen",
-        deadline: "2026-10-10",
-        prioritaet: "mittel",
-        status: "offen"
+
+        aufgabe:
+            "Rechnungswesen Übungsblatt",
+
+        fach:
+            "Rechnungswesen",
+
+        typ:
+            "Hausübung",
+
+        deadline:
+            "2026-10-10",
+
+        prioritaet:
+            "mittel",
+
+        status:
+            "offen",
+
+        zeitaufwand:
+            3,
+
+        investierteZeit:
+            0.5,
+
+        notiz:
+            "Bilanz und Bestandskonten üben."
     },
+
+
     {
         id: 5,
-        aufgabe: "Englisch Vokabeln wiederholen",
-        fach: "Englisch",
-        deadline: "2026-10-17",
-        prioritaet: "niedrig",
-        status: "offen"
+
+        aufgabe:
+            "Technical English Vokabeln",
+
+        fach:
+            "Technical English",
+
+        typ:
+            "Lernaufgabe",
+
+        deadline:
+            "2026-10-18",
+
+        prioritaet:
+            "niedrig",
+
+        status:
+            "offen",
+
+        zeitaufwand:
+            2,
+
+        investierteZeit:
+            0.5,
+
+        notiz:
+            "Business und IT Vocabulary wiederholen."
     }
+
 ];
 
 
-let gespeicherteFaecher =
+
+// ======================================================
+// DATEN LADEN
+// ======================================================
+
+let faecher =
     JSON.parse(
-        localStorage.getItem("faecher")
+        localStorage.getItem(
+            "studybuddy_faecher"
+        )
+    )
+    ||
+    standardFaecher.map(
+        fach => ({
+            ...fach
+        })
     );
 
-
-let faecher;
-
-
-// Alte Version mit einfachen Fachnamen automatisch umwandeln
-if (
-    Array.isArray(gespeicherteFaecher)
-    &&
-    gespeicherteFaecher.length > 0
-    &&
-    typeof gespeicherteFaecher[0] === "string"
-) {
-
-    faecher =
-        gespeicherteFaecher.map(
-            fach => ({
-                name: fach,
-                ziel: 5,
-                gelernt: 0
-            })
-        );
-
-} else if (
-    Array.isArray(gespeicherteFaecher)
-    &&
-    gespeicherteFaecher.length > 0
-) {
-
-    faecher =
-        gespeicherteFaecher;
-
-} else {
-
-    faecher =
-        standardFaecher;
-}
 
 
 let aufgaben =
     JSON.parse(
-        localStorage.getItem("aufgaben")
+        localStorage.getItem(
+            "studybuddy_aufgaben"
+        )
     )
     ||
-    standardAufgaben;
+    standardAufgaben.map(
+        aufgabe => ({
+            ...aufgabe
+        })
+    );
 
 
-let bearbeitungsId = null;
+
+let bearbeitungsId =
+    null;
 
 
-// Timer
-let aktiverTimer = null;
-let timerStart = null;
-let timerInterval = null;
+
+let aktiverTimer =
+    null;
 
 
-// ----------------------------------------------------
+
+let timerStart =
+    null;
+
+
+
+let timerInterval =
+    null;
+
+
+
+// ======================================================
 // SPEICHERN
-// ----------------------------------------------------
+// ======================================================
 
 function speichern() {
 
     localStorage.setItem(
-        "faecher",
-        JSON.stringify(faecher)
+
+        "studybuddy_faecher",
+
+        JSON.stringify(
+            faecher
+        )
+
     );
 
+
     localStorage.setItem(
-        "aufgaben",
-        JSON.stringify(aufgaben)
+
+        "studybuddy_aufgaben",
+
+        JSON.stringify(
+            aufgaben
+        )
+
     );
+
 }
 
 
-// ----------------------------------------------------
+
+// ======================================================
 // NAVIGATION
-// ----------------------------------------------------
+// ======================================================
 
-function zeigeSeite(seitenId, button) {
+function zeigeSeite(
+    seitenId,
+    button
+) {
 
     document
-        .querySelectorAll(".seite")
+        .querySelectorAll(
+            ".seite"
+        )
         .forEach(
-            seite =>
-                seite.classList.remove("active")
+            seite => {
+
+                seite
+                    .classList
+                    .remove(
+                        "active"
+                    );
+
+            }
         );
 
 
     document
-        .getElementById(seitenId)
-        .classList.add("active");
-
-
-    document
-        .querySelectorAll(".nav-button")
-        .forEach(
-            btn =>
-                btn.classList.remove("active")
+        .getElementById(
+            seitenId
+        )
+        .classList
+        .add(
+            "active"
         );
 
 
-    button.classList.add("active");
+    document
+        .querySelectorAll(
+            ".nav-button"
+        )
+        .forEach(
+            navButton => {
+
+                navButton
+                    .classList
+                    .remove(
+                        "active"
+                    );
+
+            }
+        );
 
 
-    if (seitenId === "dashboard") {
+    button
+        .classList
+        .add(
+            "active"
+        );
+
+
+    if (
+        seitenId ===
+        "dashboard"
+    ) {
 
         aktualisiereUebersicht();
+
         zeigeDashboardAufgaben();
+
         zeigeDashboardZiele();
 
     }
 
 
-    if (seitenId === "faecher") {
+    if (
+        seitenId ===
+        "aufgaben"
+    ) {
+
+        zeigeAufgaben();
+
+    }
+
+
+    if (
+        seitenId ===
+        "faecher"
+    ) {
 
         aktualisiereFaecher();
 
     }
+
 }
 
 
-// ----------------------------------------------------
-// FÄCHER
-// ----------------------------------------------------
+
+// ======================================================
+// FACH HINZUFÜGEN
+// ======================================================
 
 function fachHinzufuegen() {
 
     const name =
         document
-            .getElementById("neuesFach")
+            .getElementById(
+                "neuesFach"
+            )
             .value
             .trim();
 
 
     const ziel =
         Number(
+
             document
-                .getElementById("neuesZiel")
+                .getElementById(
+                    "neuesZiel"
+                )
                 .value
+
         );
 
 
     if (
         name === ""
-        ||
-        !ziel
         ||
         ziel <= 0
     ) {
@@ -234,52 +451,82 @@ function fachHinzufuegen() {
         );
 
         return;
+
     }
 
 
     const existiert =
         faecher.some(
             fach =>
-                fach.name.toLowerCase()
+
+                fach.name
+                    .toLowerCase()
                 ===
-                name.toLowerCase()
+                name
+                    .toLowerCase()
         );
 
 
-    if (existiert) {
+    if (
+        existiert
+    ) {
 
         alert(
             "Dieses Fach gibt es bereits."
         );
 
         return;
+
     }
 
 
     faecher.push({
-        name: name,
-        ziel: ziel,
-        gelernt: 0
+
+        name:
+            name,
+
+        ziel:
+            ziel,
+
+        gelernt:
+            0
+
     });
 
 
     document
-        .getElementById("neuesFach")
-        .value = "";
+        .getElementById(
+            "neuesFach"
+        )
+        .value =
+        "";
 
 
     document
-        .getElementById("neuesZiel")
-        .value = "";
+        .getElementById(
+            "neuesZiel"
+        )
+        .value =
+        "";
 
 
     speichern();
+
     aktualisiereFaecher();
+
     zeigeDashboardZiele();
+
 }
 
 
-function fachLoeschen(index) {
+
+// ======================================================
+// FACH LÖSCHEN
+// ======================================================
+
+function fachLoeschen(
+    index
+) {
 
     const fach =
         faecher[index];
@@ -288,40 +535,66 @@ function fachLoeschen(index) {
     const verwendet =
         aufgaben.some(
             aufgabe =>
-                aufgabe.fach === fach.name
+
+                aufgabe.fach
+                ===
+                fach.name
         );
 
 
-    if (verwendet) {
+    if (
+        verwendet
+    ) {
 
         alert(
-            "Dieses Fach wird noch bei einer Aufgabe verwendet."
+            "Dieses Fach wird noch von mindestens einer Aufgabe verwendet."
         );
 
         return;
+
     }
 
 
-    const ok =
+    const bestaetigen =
         confirm(
-            `Möchtest du ${fach.name} wirklich löschen?`
+
+            `Möchtest du "${fach.name}" wirklich löschen?`
+
         );
 
 
-    if (!ok) {
+    if (
+        !bestaetigen
+    ) {
+
         return;
+
     }
 
 
-    faecher.splice(index, 1);
+    faecher.splice(
+        index,
+        1
+    );
+
 
     speichern();
+
     aktualisiereFaecher();
+
     zeigeDashboardZiele();
+
 }
 
 
-function zielAendern(index) {
+
+// ======================================================
+// WOCHENZIEL ÄNDERN
+// ======================================================
+
+function zielAendern(
+    index
+) {
 
     const fach =
         faecher[index];
@@ -329,20 +602,28 @@ function zielAendern(index) {
 
     const neuesZiel =
         Number(
+
             prompt(
+
                 `Neues Wochenziel für ${fach.name}:`,
+
                 fach.ziel
+
             )
+
         );
 
 
     if (
-        !neuesZiel
-        ||
         neuesZiel <= 0
+        ||
+        Number.isNaN(
+            neuesZiel
+        )
     ) {
 
         return;
+
     }
 
 
@@ -351,62 +632,103 @@ function zielAendern(index) {
 
 
     speichern();
+
     aktualisiereFaecher();
+
     zeigeDashboardZiele();
+
 }
 
 
-// ----------------------------------------------------
-// LERNZEIT
-// ----------------------------------------------------
 
-function lernzeitAendern(index, stunden) {
+// ======================================================
+// LERNZEIT MANUELL ÄNDERN
+// ======================================================
 
-    faecher[index].gelernt += stunden;
+function lernzeitAendern(
+    index,
+    stunden
+) {
+
+    faecher[index]
+        .gelernt +=
+        stunden;
 
 
     if (
-        faecher[index].gelernt < 0
+        faecher[index]
+            .gelernt < 0
     ) {
 
-        faecher[index].gelernt = 0;
+        faecher[index]
+            .gelernt =
+            0;
+
     }
 
 
-    faecher[index].gelernt =
+    faecher[index]
+        .gelernt =
         Math.round(
-            faecher[index].gelernt * 100
-        ) / 100;
+
+            faecher[index]
+                .gelernt
+            *
+            100
+
+        )
+        /
+        100;
 
 
     speichern();
 
     aktualisiereFaecher();
+
     zeigeDashboardZiele();
+
 }
 
 
-function sliderAendern(index, wert) {
 
-    faecher[index].gelernt =
-        Number(wert);
+// ======================================================
+// SLIDER
+// ======================================================
+
+function sliderAendern(
+    index,
+    wert
+) {
+
+    faecher[index]
+        .gelernt =
+        Number(
+            wert
+        );
 
 
     speichern();
 
     aktualisiereFaecher();
+
     zeigeDashboardZiele();
+
 }
 
 
-// ----------------------------------------------------
-// TIMER
-// ----------------------------------------------------
 
-function timerStarten(index) {
+// ======================================================
+// TIMER STARTEN
+// ======================================================
+
+function timerStarten(
+    index
+) {
 
     if (
-        aktiverTimer !== null
+        aktiverTimer
+        !==
+        null
     ) {
 
         alert(
@@ -414,10 +736,13 @@ function timerStarten(index) {
         );
 
         return;
+
     }
 
 
-    aktiverTimer = index;
+    aktiverTimer =
+        index;
+
 
     timerStart =
         Date.now();
@@ -425,74 +750,127 @@ function timerStarten(index) {
 
     timerInterval =
         setInterval(
+
             timerAktualisieren,
+
             1000
+
         );
 
 
     aktualisiereFaecher();
+
 }
 
+
+
+// ======================================================
+// TIMER AKTUALISIEREN
+// ======================================================
 
 function timerAktualisieren() {
 
     if (
-        aktiverTimer === null
-    ) {
-        return;
-    }
-
-
-    const vergangen =
-        Math.floor(
-            (Date.now() - timerStart)
-            / 1000
-        );
-
-
-    const anzeige =
-        document.getElementById(
-            `timer-${aktiverTimer}`
-        );
-
-
-    if (anzeige) {
-
-        anzeige.textContent =
-            sekundenFormat(vergangen);
-
-    }
-}
-
-
-function timerStoppen(index) {
-
-    if (
-        aktiverTimer !== index
+        aktiverTimer
+        ===
+        null
     ) {
 
         return;
+
     }
 
 
     const sekunden =
-        (Date.now() - timerStart)
-        / 1000;
+        Math.floor(
+
+            (
+                Date.now()
+                -
+                timerStart
+            )
+            /
+            1000
+
+        );
+
+
+    const anzeige =
+        document
+            .getElementById(
+
+                `timer-${aktiverTimer}`
+
+            );
+
+
+    if (
+        anzeige
+    ) {
+
+        anzeige.textContent =
+            sekundenFormat(
+                sekunden
+            );
+
+    }
+
+}
+
+
+
+// ======================================================
+// TIMER STOPPEN
+// ======================================================
+
+function timerStoppen(
+    index
+) {
+
+    if (
+        aktiverTimer
+        !==
+        index
+    ) {
+
+        return;
+
+    }
+
+
+    const sekunden =
+        (
+            Date.now()
+            -
+            timerStart
+        )
+        /
+        1000;
 
 
     const stunden =
-        sekunden / 3600;
+        sekunden
+        /
+        3600;
 
 
-    faecher[index].gelernt +=
+    faecher[index]
+        .gelernt +=
         stunden;
 
 
-    faecher[index].gelernt =
+    faecher[index]
+        .gelernt =
         Math.round(
-            faecher[index].gelernt
-            * 100
-        ) / 100;
+
+            faecher[index]
+                .gelernt
+            *
+            100
+
+        )
+        /
+        100;
 
 
     clearInterval(
@@ -500,82 +878,141 @@ function timerStoppen(index) {
     );
 
 
-    aktiverTimer = null;
-    timerStart = null;
-    timerInterval = null;
+    aktiverTimer =
+        null;
+
+
+    timerStart =
+        null;
+
+
+    timerInterval =
+        null;
 
 
     speichern();
 
     aktualisiereFaecher();
+
     zeigeDashboardZiele();
+
 }
 
 
-function sekundenFormat(sekunden) {
+
+// ======================================================
+// TIMER FORMAT
+// ======================================================
+
+function sekundenFormat(
+    sekunden
+) {
 
     const stunden =
         Math.floor(
-            sekunden / 3600
+            sekunden
+            /
+            3600
         );
 
 
     const minuten =
         Math.floor(
-            (sekunden % 3600)
-            / 60
+
+            (
+                sekunden
+                %
+                3600
+            )
+            /
+            60
+
         );
 
 
     const restSekunden =
-        sekunden % 60;
+        sekunden
+        %
+        60;
 
 
     return (
-        String(stunden)
-            .padStart(2, "0")
+
+        String(
+            stunden
+        )
+        .padStart(
+            2,
+            "0"
+        )
+
         +
+
         ":"
+
         +
-        String(minuten)
-            .padStart(2, "0")
+
+        String(
+            minuten
+        )
+        .padStart(
+            2,
+            "0"
+        )
+
         +
+
         ":"
+
         +
-        String(restSekunden)
-            .padStart(2, "0")
+
+        String(
+            restSekunden
+        )
+        .padStart(
+            2,
+            "0"
+        )
+
     );
+
 }
 
 
-// ----------------------------------------------------
-// FACH-KARTEN
-// ----------------------------------------------------
+
+// ======================================================
+// FÄCHER ANZEIGEN
+// ======================================================
 
 function aktualisiereFaecher() {
 
     const liste =
-        document.getElementById(
-            "fachListe"
-        );
+        document
+            .getElementById(
+                "fachListe"
+            );
 
 
     const aufgabeFach =
-        document.getElementById(
-            "aufgabeFach"
-        );
+        document
+            .getElementById(
+                "aufgabeFach"
+            );
 
 
     const fachFilter =
-        document.getElementById(
-            "fachFilter"
-        );
+        document
+            .getElementById(
+                "fachFilter"
+            );
 
 
-    liste.innerHTML = "";
+    liste.innerHTML =
+        "";
 
 
     aufgabeFach.innerHTML =
+
         `
         <option value="">
             Fach auswählen
@@ -584,6 +1021,7 @@ function aktualisiereFaecher() {
 
 
     fachFilter.innerHTML =
+
         `
         <option value="alle">
             Alle Fächer
@@ -591,93 +1029,128 @@ function aktualisiereFaecher() {
         `;
 
 
+
     faecher.forEach(
-        (fach, index) => {
 
+        (
+            fach,
+            index
+        ) => {
 
-            // Dropdown Aufgabe
 
             const option =
-                document.createElement(
-                    "option"
-                );
+                document
+                    .createElement(
+                        "option"
+                    );
+
 
             option.value =
                 fach.name;
 
+
             option.textContent =
                 fach.name;
 
-            aufgabeFach.appendChild(
-                option
-            );
+
+            aufgabeFach
+                .appendChild(
+                    option
+                );
 
 
-            // Dropdown Filter
 
             const filterOption =
-                document.createElement(
-                    "option"
-                );
+                document
+                    .createElement(
+                        "option"
+                    );
+
 
             filterOption.value =
                 fach.name;
 
+
             filterOption.textContent =
                 fach.name;
 
-            fachFilter.appendChild(
-                filterOption
-            );
+
+            fachFilter
+                .appendChild(
+                    filterOption
+                );
 
 
-            // Fortschritt
 
             const prozent =
                 Math.min(
+
                     100,
+
                     Math.round(
+
                         (
                             fach.gelernt
                             /
                             fach.ziel
                         )
-                        * 100
+
+                        *
+
+                        100
+
                     )
+
                 );
+
 
 
             const sliderMax =
                 Math.max(
+
                     fach.ziel,
+
                     fach.gelernt,
+
                     1
+
                 );
+
 
 
             const karte =
-                document.createElement(
-                    "div"
-                );
+                document
+                    .createElement(
+                        "div"
+                    );
 
 
             karte.className =
                 "fach-card";
 
 
+
             const timerLaeuft =
-                aktiverTimer === index;
+                aktiverTimer
+                ===
+                index;
+
 
 
             karte.innerHTML = `
 
+
                 <h3>
+
                     ${fach.name}
+
                 </h3>
+
 
                 <div class="lern-info">
 
                     Wochenziel:
+
                     <strong>
                         ${fach.ziel} Stunden
                     </strong>
@@ -686,11 +1159,15 @@ function aktualisiereFaecher() {
 
 
                 <input
+
                     class="slider"
+
                     type="range"
 
                     min="0"
+
                     max="${sliderMax}"
+
                     step="0.25"
 
                     value="${fach.gelernt}"
@@ -707,11 +1184,17 @@ function aktualisiereFaecher() {
                 <div class="progress-info">
 
                     <span>
-                        ${fach.gelernt.toFixed(2)} h gelernt
+
+                        ${fach.gelernt.toFixed(2)}
+                        h gelernt
+
                     </span>
 
+
                     <span>
+
                         ${prozent} %
+
                     </span>
 
                 </div>
@@ -720,12 +1203,14 @@ function aktualisiereFaecher() {
                 <div class="progress">
 
                     <div
+
                         class="progress-inner"
 
                         style="
                             width:
                             ${prozent}%;
                         "
+
                     ></div>
 
                 </div>
@@ -733,7 +1218,9 @@ function aktualisiereFaecher() {
 
                 <div class="zeit-buttons">
 
+
                     <button
+
                         class="btn-lila"
 
                         onclick="
@@ -743,11 +1230,15 @@ function aktualisiereFaecher() {
                             )
                         "
                     >
+
                         + 30 Min.
+
                     </button>
 
 
+
                     <button
+
                         class="btn-lila"
 
                         onclick="
@@ -757,11 +1248,15 @@ function aktualisiereFaecher() {
                             )
                         "
                     >
+
                         + 1 Std.
+
                     </button>
 
 
+
                     <button
+
                         class="btn-gelb"
 
                         onclick="
@@ -770,26 +1265,30 @@ function aktualisiereFaecher() {
                             )
                         "
                     >
+
                         Ziel ändern
+
                     </button>
+
 
                 </div>
 
 
+
                 <div class="timer">
 
+
                     <span
+
                         class="timer-anzeige"
+
                         id="timer-${index}"
                     >
-                        ${
-                            timerLaeuft
-                            ?
-                            "00:00:00"
-                            :
-                            "00:00:00"
-                        }
+
+                        00:00:00
+
                     </span>
+
 
 
                     ${
@@ -799,6 +1298,7 @@ function aktualisiereFaecher() {
 
                         `
                         <button
+
                             class="btn-rot"
 
                             onclick="
@@ -807,7 +1307,9 @@ function aktualisiereFaecher() {
                                 )
                             "
                         >
+
                             ⏹ Stoppen
+
                         </button>
                         `
 
@@ -815,6 +1317,7 @@ function aktualisiereFaecher() {
 
                         `
                         <button
+
                             class="btn-primary"
 
                             onclick="
@@ -823,17 +1326,23 @@ function aktualisiereFaecher() {
                                 )
                             "
                         >
+
                             ▶ Lernen
+
                         </button>
                         `
                     }
 
+
                 </div>
+
 
 
                 <div class="zeit-buttons">
 
+
                     <button
+
                         class="btn-rot"
 
                         onclick="
@@ -842,35 +1351,44 @@ function aktualisiereFaecher() {
                             )
                         "
                     >
+
                         Fach löschen
+
                     </button>
+
 
                 </div>
 
             `;
 
 
-            liste.appendChild(
-                karte
-            );
+            liste
+                .appendChild(
+                    karte
+                );
 
         }
+
     );
 
 
     if (
-        aktiverTimer !== null
+        aktiverTimer
+        !==
+        null
     ) {
 
         timerAktualisieren();
 
     }
+
 }
 
 
-// ----------------------------------------------------
+
+// ======================================================
 // AUFGABE SPEICHERN
-// ----------------------------------------------------
+// ======================================================
 
 function aufgabeSpeichern() {
 
@@ -887,6 +1405,14 @@ function aufgabeSpeichern() {
         document
             .getElementById(
                 "aufgabeFach"
+            )
+            .value;
+
+
+    const typ =
+        document
+            .getElementById(
+                "typ"
             )
             .value;
 
@@ -915,6 +1441,40 @@ function aufgabeSpeichern() {
             .value;
 
 
+    const zeitaufwand =
+        Number(
+
+            document
+                .getElementById(
+                    "zeitaufwand"
+                )
+                .value
+
+        );
+
+
+    const investierteZeit =
+        Number(
+
+            document
+                .getElementById(
+                    "investierteZeit"
+                )
+                .value
+
+        );
+
+
+    const notiz =
+        document
+            .getElementById(
+                "notiz"
+            )
+            .value
+            .trim();
+
+
+
     if (
         name === ""
         ||
@@ -928,17 +1488,22 @@ function aufgabeSpeichern() {
         );
 
         return;
+
     }
 
 
+
     if (
-        bearbeitungsId !== null
+        bearbeitungsId
+        !==
+        null
     ) {
+
 
         const aufgabe =
             aufgaben.find(
-                a =>
-                    a.id
+                aufgabe =>
+                    aufgabe.id
                     ===
                     bearbeitungsId
             );
@@ -947,21 +1512,42 @@ function aufgabeSpeichern() {
         aufgabe.aufgabe =
             name;
 
+
         aufgabe.fach =
             fach;
+
+
+        aufgabe.typ =
+            typ;
+
 
         aufgabe.deadline =
             deadline;
 
+
         aufgabe.prioritaet =
             prioritaet;
+
 
         aufgabe.status =
             status;
 
 
+        aufgabe.zeitaufwand =
+            zeitaufwand;
+
+
+        aufgabe.investierteZeit =
+            investierteZeit;
+
+
+        aufgabe.notiz =
+            notiz;
+
+
         bearbeitungsId =
             null;
+
 
     } else {
 
@@ -977,6 +1563,9 @@ function aufgabeSpeichern() {
             fach:
                 fach,
 
+            typ:
+                typ,
+
             deadline:
                 deadline,
 
@@ -984,28 +1573,44 @@ function aufgabeSpeichern() {
                 prioritaet,
 
             status:
-                status
+                status,
+
+            zeitaufwand:
+                zeitaufwand,
+
+            investierteZeit:
+                investierteZeit,
+
+            notiz:
+                notiz
 
         });
 
     }
 
 
+
     formularLeeren();
+
 
     speichern();
 
+
     zeigeAufgaben();
+
 
     aktualisiereUebersicht();
 
+
     zeigeDashboardAufgaben();
+
 }
 
 
-// ----------------------------------------------------
+
+// ======================================================
 // FORMULAR LEEREN
-// ----------------------------------------------------
+// ======================================================
 
 function formularLeeren() {
 
@@ -1013,49 +1618,101 @@ function formularLeeren() {
         .getElementById(
             "aufgabeName"
         )
-        .value = "";
+        .value =
+        "";
 
 
     document
         .getElementById(
             "aufgabeFach"
         )
-        .value = "";
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "typ"
+        )
+        .value =
+        "Prüfung";
 
 
     document
         .getElementById(
             "deadline"
         )
-        .value = "";
+        .value =
+        "";
 
 
     document
         .getElementById(
             "prioritaet"
         )
-        .value = "hoch";
+        .value =
+        "hoch";
 
 
     document
         .getElementById(
             "status"
         )
-        .value = "offen";
+        .value =
+        "offen";
+
+
+    document
+        .getElementById(
+            "zeitaufwand"
+        )
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "investierteZeit"
+        )
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "notiz"
+        )
+        .value =
+        "";
+
 }
 
 
-// ----------------------------------------------------
-// AUFGABE BEARBEITEN
-// ----------------------------------------------------
 
-function aufgabeBearbeiten(id) {
+// ======================================================
+// AUFGABE BEARBEITEN
+// ======================================================
+
+function aufgabeBearbeiten(
+    id
+) {
 
     const aufgabe =
         aufgaben.find(
-            a =>
-                a.id === id
+            aufgabe =>
+                aufgabe.id
+                ===
+                id
         );
+
+
+    if (
+        !aufgabe
+    ) {
+
+        return;
+
+    }
 
 
     document
@@ -1072,6 +1729,16 @@ function aufgabeBearbeiten(id) {
         )
         .value =
         aufgabe.fach;
+
+
+    document
+        .getElementById(
+            "typ"
+        )
+        .value =
+        aufgabe.typ
+        ||
+        "Lernaufgabe";
 
 
     document
@@ -1098,54 +1765,117 @@ function aufgabeBearbeiten(id) {
         aufgabe.status;
 
 
+    document
+        .getElementById(
+            "zeitaufwand"
+        )
+        .value =
+        aufgabe.zeitaufwand
+        ||
+        0;
+
+
+    document
+        .getElementById(
+            "investierteZeit"
+        )
+        .value =
+        aufgabe.investierteZeit
+        ||
+        0;
+
+
+    document
+        .getElementById(
+            "notiz"
+        )
+        .value =
+        aufgabe.notiz
+        ||
+        "";
+
+
     bearbeitungsId =
         id;
 
 
+    const aufgabenButton =
+        document
+            .querySelectorAll(
+                ".nav-button"
+            )[1];
+
+
+    zeigeSeite(
+        "aufgaben",
+        aufgabenButton
+    );
+
+
     window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+
+        top:
+            0,
+
+        behavior:
+            "smooth"
+
     });
+
 }
 
 
-// ----------------------------------------------------
+
+// ======================================================
 // AUFGABE LÖSCHEN
-// ----------------------------------------------------
+// ======================================================
 
-function aufgabeLoeschen(id) {
+function aufgabeLoeschen(
+    id
+) {
 
-    const ok =
+    const bestaetigen =
         confirm(
             "Möchtest du diese Aufgabe wirklich löschen?"
         );
 
 
-    if (!ok) {
+    if (
+        !bestaetigen
+    ) {
+
         return;
+
     }
 
 
     aufgaben =
         aufgaben.filter(
             aufgabe =>
-                aufgabe.id !== id
+                aufgabe.id
+                !==
+                id
         );
 
 
     speichern();
 
+
     zeigeAufgaben();
+
 
     aktualisiereUebersicht();
 
+
     zeigeDashboardAufgaben();
+
 }
 
 
-// ----------------------------------------------------
-// DEADLINE
-// ----------------------------------------------------
+
+// ======================================================
+// DEADLINE IN TAGEN
+// ======================================================
 
 function tageBisDeadline(
     deadline
@@ -1156,7 +1886,10 @@ function tageBisDeadline(
 
 
     heute.setHours(
-        0, 0, 0, 0
+        0,
+        0,
+        0,
+        0
     );
 
 
@@ -1167,17 +1900,23 @@ function tageBisDeadline(
 
 
     datum.setHours(
-        0, 0, 0, 0
+        0,
+        0,
+        0,
+        0
     );
 
 
     return Math.ceil(
+
         (
             datum
             -
             heute
         )
+
         /
+
         (
             1000
             *
@@ -1187,11 +1926,20 @@ function tageBisDeadline(
             *
             24
         )
+
     );
+
 }
 
 
-function deadlineText(tage) {
+
+// ======================================================
+// DEADLINE TEXT
+// ======================================================
+
+function deadlineText(
+    tage
+) {
 
     if (
         tage < 0
@@ -1253,12 +2001,14 @@ function deadlineText(tage) {
             ""
 
     };
+
 }
 
 
-// ----------------------------------------------------
-// DATUM
-// ----------------------------------------------------
+
+// ======================================================
+// DEUTSCHES DATUM
+// ======================================================
 
 function deutschesDatum(
     datum
@@ -1270,71 +2020,271 @@ function deutschesDatum(
     .toLocaleDateString(
         "de-DE"
     );
+
 }
 
 
-// ----------------------------------------------------
-// PRIORITÄT
-// ----------------------------------------------------
 
-function prioritaetsWert(
-    prioritaet
+// ======================================================
+// ALGORITHMUS
+// DRINGLICHKEIT BERECHNEN
+// ======================================================
+
+function berechneDringlichkeit(
+    aufgabe
 ) {
 
+    let punkte =
+        0;
+
+
+
+    // ==============================
+    // PRIORITÄT
+    // ==============================
+
     if (
-        prioritaet === "hoch"
+        aufgabe.prioritaet
+        ===
+        "hoch"
     ) {
-        return 3;
+
+        punkte +=
+            30;
+
+    }
+
+    else if (
+        aufgabe.prioritaet
+        ===
+        "mittel"
+    ) {
+
+        punkte +=
+            20;
+
+    }
+
+    else {
+
+        punkte +=
+            10;
+
     }
 
 
+
+    // ==============================
+    // DEADLINE
+    // ==============================
+
+    const tage =
+        tageBisDeadline(
+            aufgabe.deadline
+        );
+
+
     if (
-        prioritaet === "mittel"
+        tage <= 0
     ) {
-        return 2;
+
+        punkte +=
+            50;
+
+    }
+
+    else if (
+        tage === 1
+    ) {
+
+        punkte +=
+            40;
+
+    }
+
+    else if (
+        tage <= 3
+    ) {
+
+        punkte +=
+            30;
+
+    }
+
+    else if (
+        tage <= 7
+    ) {
+
+        punkte +=
+            20;
+
+    }
+
+    else {
+
+        punkte +=
+            10;
+
     }
 
 
-    return 1;
+
+    // ==============================
+    // STATUS
+    // ==============================
+
+    if (
+        aufgabe.status
+        ===
+        "offen"
+    ) {
+
+        punkte +=
+            10;
+
+    }
+
+    else if (
+        aufgabe.status
+        ===
+        "in Bearbeitung"
+    ) {
+
+        punkte +=
+            5;
+
+    }
+
+    else if (
+        aufgabe.status
+        ===
+        "erledigt"
+    ) {
+
+        punkte -=
+            100;
+
+    }
+
+
+
+    // ==============================
+    // NOCH BENÖTIGTE ZEIT
+    // ==============================
+
+    const zeitaufwand =
+        Number(
+            aufgabe.zeitaufwand
+            ||
+            0
+        );
+
+
+    const investiert =
+        Number(
+            aufgabe.investierteZeit
+            ||
+            0
+        );
+
+
+    const restzeit =
+        Math.max(
+
+            0,
+
+            zeitaufwand
+            -
+            investiert
+
+        );
+
+
+    if (
+        restzeit >= 5
+    ) {
+
+        punkte +=
+            20;
+
+    }
+
+    else if (
+        restzeit >= 3
+    ) {
+
+        punkte +=
+            15;
+
+    }
+
+    else if (
+        restzeit >= 1
+    ) {
+
+        punkte +=
+            10;
+
+    }
+
+
+
+    return punkte;
+
 }
 
 
-// ----------------------------------------------------
-// AUFGABEN ANZEIGEN
-// ----------------------------------------------------
+
+// ======================================================
+// AUFGABEN FILTERN UND ANZEIGEN
+// ======================================================
 
 function zeigeAufgaben() {
 
     const liste =
-        document.getElementById(
-            "aufgabenListe"
-        );
+        document
+            .getElementById(
+                "aufgabenListe"
+            );
 
 
     const suche =
-        document.getElementById(
-            "suche"
-        )
-        .value
-        .toLowerCase();
+        document
+            .getElementById(
+                "suche"
+            )
+            .value
+            .toLowerCase();
 
 
     const fach =
-        document.getElementById(
-            "fachFilter"
-        )
-        .value;
+        document
+            .getElementById(
+                "fachFilter"
+            )
+            .value;
 
 
     const status =
-        document.getElementById(
-            "statusFilter"
-        )
-        .value;
+        document
+            .getElementById(
+                "statusFilter"
+            )
+            .value;
+
+
+    const typ =
+        document
+            .getElementById(
+                "typFilter"
+            )
+            .value;
+
 
 
     let gefiltert =
         [...aufgaben];
+
 
 
     if (
@@ -1344,23 +2294,35 @@ function zeigeAufgaben() {
         gefiltert =
             gefiltert.filter(
                 aufgabe =>
+
                     aufgabe.aufgabe
-                    .toLowerCase()
-                    .includes(
-                        suche
-                    )
+                        .toLowerCase()
+                        .includes(
+                            suche
+                        )
+
+                    ||
+
+                    aufgabe.fach
+                        .toLowerCase()
+                        .includes(
+                            suche
+                        )
             );
 
     }
 
 
+
     if (
-        fach !== "alle"
+        fach !==
+        "alle"
     ) {
 
         gefiltert =
             gefiltert.filter(
                 aufgabe =>
+
                     aufgabe.fach
                     ===
                     fach
@@ -1369,13 +2331,16 @@ function zeigeAufgaben() {
     }
 
 
+
     if (
-        status !== "alle"
+        status !==
+        "alle"
     ) {
 
         gefiltert =
             gefiltert.filter(
                 aufgabe =>
+
                     aufgabe.status
                     ===
                     status
@@ -1384,71 +2349,99 @@ function zeigeAufgaben() {
     }
 
 
-    gefiltert.sort(
-        (a, b) => {
 
-            const datumA =
-                new Date(
-                    a.deadline
-                );
+    if (
+        typ !==
+        "alle"
+    ) {
 
+        gefiltert =
+            gefiltert.filter(
+                aufgabe =>
 
-            const datumB =
-                new Date(
-                    b.deadline
-                );
-
-
-            if (
-                datumA.getTime()
-                !==
-                datumB.getTime()
-            ) {
-
-                return (
-                    datumA
-                    -
-                    datumB
-                );
-
-            }
-
-
-            return (
-                prioritaetsWert(
-                    b.prioritaet
-                )
-                -
-                prioritaetsWert(
-                    a.prioritaet
-                )
+                    aufgabe.typ
+                    ===
+                    typ
             );
 
-        }
+    }
+
+
+
+    // ==================================================
+    // SORTIERUNG NACH DRINGLICHKEITSALGORITHMUS
+    // ==================================================
+
+    gefiltert.sort(
+
+        (
+            a,
+            b
+        ) =>
+
+            berechneDringlichkeit(
+                b
+            )
+
+            -
+
+            berechneDringlichkeit(
+                a
+            )
+
     );
 
 
-    liste.innerHTML = "";
+
+    liste.innerHTML =
+        "";
+
+
+
+    if (
+        gefiltert.length
+        ===
+        0
+    ) {
+
+        liste.innerHTML =
+
+            `
+            <div class="leer">
+
+                Keine passenden Aufgaben gefunden.
+
+            </div>
+            `;
+
+        return;
+
+    }
+
 
 
     gefiltert.forEach(
         aufgabe => {
 
             liste.appendChild(
+
                 erstelleAufgabenKarte(
                     aufgabe,
                     true
                 )
+
             );
 
         }
     );
+
 }
 
 
-// ----------------------------------------------------
-// AUFGABENKARTE
-// ----------------------------------------------------
+
+// ======================================================
+// AUFGABENKARTE ERSTELLEN
+// ======================================================
 
 function erstelleAufgabenKarte(
     aufgabe,
@@ -1467,23 +2460,64 @@ function erstelleAufgabenKarte(
         );
 
 
-    const karte =
-        document.createElement(
-            "div"
+    const dringlichkeit =
+        berechneDringlichkeit(
+            aufgabe
         );
+
+
+    const zeitaufwand =
+        Number(
+            aufgabe.zeitaufwand
+            ||
+            0
+        );
+
+
+    const investierteZeit =
+        Number(
+            aufgabe.investierteZeit
+            ||
+            0
+        );
+
+
+    const restzeit =
+        Math.max(
+
+            0,
+
+            zeitaufwand
+            -
+            investierteZeit
+
+        );
+
+
+    const karte =
+        document
+            .createElement(
+                "div"
+            );
 
 
     karte.className =
         `aufgaben-karte ${aufgabe.prioritaet}`;
 
 
+
     karte.innerHTML = `
+
 
         <div class="kartenkopf">
 
+
             <h3>
+
                 ${aufgabe.aufgabe}
+
             </h3>
+
 
             <span
                 class="
@@ -1496,30 +2530,113 @@ function erstelleAufgabenKarte(
 
             </span>
 
+
         </div>
 
 
-        <div class="fach-badge">
-            ${aufgabe.fach}
+
+        <div>
+
+
+            <span class="fach-badge">
+
+                ${aufgabe.fach}
+
+            </span>
+
+
+            <span class="typ-badge">
+
+                ${aufgabe.typ || "Lernaufgabe"}
+
+            </span>
+
+
         </div>
+
 
 
         <div class="karten-info">
 
             📅 Deadline:
-            ${deutschesDatum(
-                aufgabe.deadline
-            )}
+
+            <strong>
+
+                ${deutschesDatum(
+                    aufgabe.deadline
+                )}
+
+            </strong>
 
         </div>
+
 
 
         <div class="karten-info">
 
-            Status:
+            📌 Status:
+
             ${aufgabe.status}
 
         </div>
+
+
+
+        <div class="karten-info">
+
+            ⏱ Geschätzter Aufwand:
+
+            ${zeitaufwand.toFixed(1)}
+            Stunden
+
+        </div>
+
+
+
+        <div class="karten-info">
+
+            ✅ Bereits investiert:
+
+            ${investierteZeit.toFixed(1)}
+            Stunden
+
+        </div>
+
+
+
+        <div class="karten-info">
+
+            ⌛ Noch benötigte Zeit:
+
+            <strong>
+
+                ${restzeit.toFixed(1)}
+                Stunden
+
+            </strong>
+
+        </div>
+
+
+
+        ${
+            aufgabe.notiz
+
+            ?
+
+            `
+            <div class="karten-info">
+
+                📝 ${aufgabe.notiz}
+
+            </div>
+            `
+
+            :
+
+            ""
+        }
+
 
 
         <div
@@ -1534,6 +2651,18 @@ function erstelleAufgabenKarte(
         </div>
 
 
+
+        <div class="dringlichkeit">
+
+            🔥 Dringlichkeitswert:
+
+            ${dringlichkeit}
+            Punkte
+
+        </div>
+
+
+
         ${
             mitButtons
 
@@ -1542,7 +2671,9 @@ function erstelleAufgabenKarte(
             `
             <div class="aktionen">
 
+
                 <button
+
                     class="btn-gelb"
 
                     onclick="
@@ -1551,11 +2682,15 @@ function erstelleAufgabenKarte(
                         )
                     "
                 >
+
                     Bearbeiten
+
                 </button>
 
 
+
                 <button
+
                     class="btn-rot"
 
                     onclick="
@@ -1564,8 +2699,11 @@ function erstelleAufgabenKarte(
                         )
                     "
                 >
+
                     Löschen
+
                 </button>
+
 
             </div>
             `
@@ -1575,79 +2713,62 @@ function erstelleAufgabenKarte(
             ""
         }
 
+
     `;
 
 
     return karte;
+
 }
 
 
-// ----------------------------------------------------
+
+// ======================================================
 // DASHBOARD AUFGABEN
-// ----------------------------------------------------
+// ======================================================
 
 function zeigeDashboardAufgaben() {
 
     const liste =
-        document.getElementById(
-            "dashboardAufgaben"
-        );
+        document
+            .getElementById(
+                "dashboardAufgaben"
+            );
 
 
-    liste.innerHTML = "";
+    liste.innerHTML =
+        "";
 
 
-    const naechste =
+
+    const wichtigste =
         [...aufgaben]
 
         .filter(
             aufgabe =>
+
                 aufgabe.status
                 !==
                 "erledigt"
         )
 
         .sort(
-            (a, b) => {
 
-                const datumA =
-                    new Date(
-                        a.deadline
-                    );
+            (
+                a,
+                b
+            ) =>
 
+                berechneDringlichkeit(
+                    b
+                )
 
-                const datumB =
-                    new Date(
-                        b.deadline
-                    );
+                -
 
+                berechneDringlichkeit(
+                    a
+                )
 
-                if (
-                    datumA
-                    !==
-                    datumB
-                ) {
-
-                    return (
-                        datumA
-                        -
-                        datumB
-                    );
-
-                }
-
-
-                return (
-                    prioritaetsWert(
-                        b.prioritaet
-                    )
-                    -
-                    prioritaetsWert(
-                        a.prioritaet
-                    )
-                );
-
-            }
         )
 
         .slice(
@@ -1656,109 +2777,142 @@ function zeigeDashboardAufgaben() {
         );
 
 
-    naechste.forEach(
+
+    wichtigste.forEach(
         aufgabe => {
 
             liste.appendChild(
+
                 erstelleAufgabenKarte(
                     aufgabe,
                     false
                 )
+
             );
 
         }
     );
+
 }
 
 
-// ----------------------------------------------------
+
+// ======================================================
 // DASHBOARD LERNZIELE
-// ----------------------------------------------------
+// ======================================================
 
 function zeigeDashboardZiele() {
 
     const container =
-        document.getElementById(
-            "dashboardZiele"
-        );
+        document
+            .getElementById(
+                "dashboardZiele"
+            );
 
 
-    container.innerHTML = "";
+    container.innerHTML =
+        "";
+
 
 
     faecher.forEach(
         fach => {
 
+
             const prozent =
                 Math.min(
+
                     100,
 
                     Math.round(
+
                         (
                             fach.gelernt
                             /
                             fach.ziel
                         )
+
                         *
+
                         100
+
                     )
+
                 );
+
 
 
             const box =
-                document.createElement(
-                    "div"
-                );
+                document
+                    .createElement(
+                        "div"
+                    );
 
 
             box.className =
                 "mini-ziel";
 
 
+
             box.innerHTML = `
 
+
                 <h4>
+
                     ${fach.name}
+
                 </h4>
+
 
                 <p>
 
                     ${fach.gelernt.toFixed(2)}
+
                     von
+
                     ${fach.ziel}
-                    Stunden
+
+                    Stunden gelernt
 
                 </p>
 
 
                 <div class="progress">
 
+
                     <div
+
                         class="progress-inner"
 
                         style="
                             width:
                             ${prozent}%;
                         "
+
                     ></div>
 
+
                 </div>
+
 
             `;
 
 
-            container.appendChild(
-                box
-            );
+            container
+                .appendChild(
+                    box
+                );
 
         }
     );
+
 }
 
 
-// ----------------------------------------------------
+
+// ======================================================
 // ÜBERSICHT
-// ----------------------------------------------------
+// ======================================================
 
 function aktualisiereUebersicht() {
 
@@ -1770,6 +2924,7 @@ function aktualisiereUebersicht() {
         aufgaben.length;
 
 
+
     document
         .getElementById(
             "offen"
@@ -1778,10 +2933,13 @@ function aktualisiereUebersicht() {
 
         aufgaben.filter(
             aufgabe =>
+
                 aufgabe.status
                 !==
                 "erledigt"
+
         ).length;
+
 
 
     document
@@ -1793,39 +2951,119 @@ function aktualisiereUebersicht() {
         aufgaben.filter(
             aufgabe => {
 
-                const tage =
-                    tageBisDeadline(
-                        aufgabe.deadline
-                    );
+                if (
+                    aufgabe.status
+                    ===
+                    "erledigt"
+                ) {
+
+                    return false;
+
+                }
 
 
                 return (
-                    aufgabe.status
-                    !==
-                    "erledigt"
-                    &&
-                    tage >= 0
-                    &&
-                    tage <= 3
+
+                    berechneDringlichkeit(
+                        aufgabe
+                    )
+
+                    >=
+
+                    70
+
                 );
 
             }
+
         ).length;
+
 }
 
 
-// ----------------------------------------------------
-// APP STARTEN
-// ----------------------------------------------------
+
+// ======================================================
+// BEISPIELDATEN ZURÜCKSETZEN
+// ======================================================
+
+function demoDatenZuruecksetzen() {
+
+    const bestaetigen =
+        confirm(
+
+            "Alle selbst eingegebenen StudyBuddy-Daten werden gelöscht und die Beispieldaten wiederhergestellt. Fortfahren?"
+
+        );
+
+
+    if (
+        !bestaetigen
+    ) {
+
+        return;
+
+    }
+
+
+    faecher =
+        standardFaecher.map(
+            fach => ({
+                ...fach
+            })
+        );
+
+
+    aufgaben =
+        standardAufgaben.map(
+            aufgabe => ({
+                ...aufgabe
+            })
+        );
+
+
+    speichern();
+
+
+    aktualisiereFaecher();
+
+
+    zeigeAufgaben();
+
+
+    aktualisiereUebersicht();
+
+
+    zeigeDashboardAufgaben();
+
+
+    zeigeDashboardZiele();
+
+
+    alert(
+        "Die Beispieldaten wurden wiederhergestellt."
+    );
+
+}
+
+
+
+// ======================================================
+// APP START
+// ======================================================
 
 speichern();
 
+
 aktualisiereFaecher();
+
 
 zeigeAufgaben();
 
+
 aktualisiereUebersicht();
 
+
 zeigeDashboardAufgaben();
+
 
 zeigeDashboardZiele();

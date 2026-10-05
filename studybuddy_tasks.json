@@ -1,42 +1,107 @@
-[
-  {
-    "id": 1,
-    "aufgabe": "Mathematik lernen",
-    "fach": "Mathematik",
-    "deadline": "2026-10-07",
-    "prioritaet": "hoch",
-    "status": "offen"
-  },
-  {
-    "id": 2,
-    "aufgabe": "BWL Hausübung abgeben",
-    "fach": "BWL",
-    "deadline": "2026-10-06",
-    "prioritaet": "hoch",
-    "status": "offen"
-  },
-  {
-    "id": 3,
-    "aufgabe": "JavaScript Übungen machen",
-    "fach": "Wirtschaftsinformatik",
-    "deadline": "2026-10-12",
-    "prioritaet": "mittel",
-    "status": "in Bearbeitung"
-  },
-  {
-    "id": 4,
-    "aufgabe": "Englisch Vokabeln lernen",
-    "fach": "Englisch",
-    "deadline": "2026-10-20",
-    "prioritaet": "niedrig",
-    "status": "offen"
-  },
-  {
-    "id": 5,
-    "aufgabe": "Bilanz Aufgabe fertigstellen",
-    "fach": "Rechnungswesen",
-    "deadline": "2026-10-08",
-    "prioritaet": "mittel",
-    "status": "erledigt"
-  }
-]
+{
+  "faecher": [
+    {
+      "name": "Datenmanagement",
+      "wochenzielStunden": 4,
+      "gelernteStunden": 0
+    },
+    {
+      "name": "Einführung in die Wirtschaftsinformatik",
+      "wochenzielStunden": 4,
+      "gelernteStunden": 0
+    },
+    {
+      "name": "Kompetenz und Kooperation",
+      "wochenzielStunden": 2,
+      "gelernteStunden": 0
+    },
+    {
+      "name": "Mathematik für Computer Science 1",
+      "wochenzielStunden": 6,
+      "gelernteStunden": 0
+    },
+    {
+      "name": "Rechnungswesen",
+      "wochenzielStunden": 5,
+      "gelernteStunden": 0
+    },
+    {
+      "name": "Strukturierte Programmierung",
+      "wochenzielStunden": 6,
+      "gelernteStunden": 0
+    },
+    {
+      "name": "Technical English",
+      "wochenzielStunden": 3,
+      "gelernteStunden": 0
+    },
+    {
+      "name": "Unternehmensführung",
+      "wochenzielStunden": 3,
+      "gelernteStunden": 0
+    }
+  ],
+
+  "aufgaben": [
+    {
+      "id": 1,
+      "aufgabe": "JavaScript Übung fertigstellen",
+      "fach": "Strukturierte Programmierung",
+      "typ": "Abgabe",
+      "deadline": "2026-10-08",
+      "prioritaet": "hoch",
+      "status": "in Bearbeitung",
+      "zeitaufwand": 5,
+      "investierteZeit": 2,
+      "notiz": "Code testen und anschließend auf GitHub committen."
+    },
+    {
+      "id": 2,
+      "aufgabe": "Mathematik Prüfung vorbereiten",
+      "fach": "Mathematik für Computer Science 1",
+      "typ": "Prüfung",
+      "deadline": "2026-10-12",
+      "prioritaet": "hoch",
+      "status": "offen",
+      "zeitaufwand": 8,
+      "investierteZeit": 2,
+      "notiz": "Binärzahlen, Logik und Kombinatorik wiederholen."
+    },
+    {
+      "id": 3,
+      "aufgabe": "Datenmanagement Stoff wiederholen",
+      "fach": "Datenmanagement",
+      "typ": "Lernaufgabe",
+      "deadline": "2026-10-15",
+      "prioritaet": "mittel",
+      "status": "offen",
+      "zeitaufwand": 4,
+      "investierteZeit": 1,
+      "notiz": "Unterlagen zusammenfassen."
+    },
+    {
+      "id": 4,
+      "aufgabe": "Rechnungswesen Übungsblatt",
+      "fach": "Rechnungswesen",
+      "typ": "Hausübung",
+      "deadline": "2026-10-10",
+      "prioritaet": "mittel",
+      "status": "offen",
+      "zeitaufwand": 3,
+      "investierteZeit": 0.5,
+      "notiz": "Bilanz und Bestandskonten üben."
+    },
+    {
+      "id": 5,
+      "aufgabe": "Technical English Vokabeln",
+      "fach": "Technical English",
+      "typ": "Lernaufgabe",
+      "deadline": "2026-10-18",
+      "prioritaet": "niedrig",
+      "status": "offen",
+      "zeitaufwand": 2,
+      "investierteZeit": 0.5,
+      "notiz": "Business und IT Vocabulary wiederholen."
+    }
+  ]
+}

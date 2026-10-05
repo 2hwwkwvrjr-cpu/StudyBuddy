@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>StudyBuddy</title>
+
 
     <style>
 
@@ -15,396 +21,659 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+
         :root {
-            --mint: #87d7b0;
-            --mint-light: #dff7e9;
-            --mint-dark: #458b6b;
 
-            --lila: #a995d9;
-            --lila-light: #eee8fb;
+            --mint: #91ddbc;
+            --mint-dark: #4f9d7a;
+            --mint-light: #e3f8ee;
 
-            --gelb: #f4dc7b;
-            --gelb-light: #fff7d7;
+            --lila: #a995da;
+            --lila-light: #eee9fb;
 
-            --rot: #db6262;
-            --rot-light: #ffe5e5;
+            --gelb: #f4dc79;
+            --gelb-light: #fff7d5;
 
-            --text: #30363b;
-            --grau: #758078;
-            --background: #f7f8f4;
+            --rosa: #efaaaa;
+            --rosa-light: #fff0f0;
+
+            --rot: #d95b5b;
+
+            --text: #30383b;
+            --grau: #707b76;
 
             --white: #ffffff;
         }
 
+
         body {
+
             background:
                 linear-gradient(
-                    140deg,
-                    #f6fff8 0%,
-                    #f8f5ff 50%,
-                    #fffdf4 100%
+                    135deg,
+                    #f4fff8,
+                    #faf7ff,
+                    #fffdf3
                 );
 
             color: var(--text);
+
             min-height: 100vh;
         }
 
-        /* APP */
+
+        /* ==========================
+           APP
+        ========================== */
 
         .app {
+
             display: flex;
+
             min-height: 100vh;
         }
 
 
-        /* SIDEBAR */
+        /* ==========================
+           SIDEBAR
+        ========================== */
 
         .sidebar {
-            width: 245px;
+
+            width: 250px;
 
             background:
                 linear-gradient(
                     180deg,
-                    #79cca5,
-                    #9fdcbc
+                    #87d7b0,
+                    #a5dfc2
                 );
 
             padding: 30px 22px;
 
             position: fixed;
+
             top: 0;
-            bottom: 0;
             left: 0;
+            bottom: 0;
+
+            display: flex;
+            flex-direction: column;
         }
+
 
         .logo {
-            font-size: 29px;
+
+            font-size: 30px;
+
             font-weight: 800;
+
             color: white;
-            margin-bottom: 8px;
+
+            margin-bottom: 6px;
         }
+
 
         .logo span {
-            color: #fff1a9;
+
+            color: #fff2a9;
         }
+
 
         .logo-text {
+
+            color: #effff7;
+
             font-size: 13px;
-            color: #effff5;
-            margin-bottom: 38px;
+
+            margin-bottom: 40px;
         }
 
+
         .nav-button {
+
             width: 100%;
 
-            background: transparent;
+            padding: 14px;
+
+            margin-bottom: 9px;
+
             border: none;
-
-            color: white;
-
-            padding: 14px 15px;
-            margin-bottom: 8px;
 
             border-radius: 13px;
 
-            text-align: left;
+            background: transparent;
+
+            color: white;
 
             font-size: 15px;
+
             font-weight: 600;
+
+            text-align: left;
 
             cursor: pointer;
         }
 
+
         .nav-button:hover,
         .nav-button.active {
-            background: rgba(255, 255, 255, 0.25);
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.26
+                );
         }
 
 
-        /* MAIN */
+        .sidebar-bottom {
+
+            margin-top: auto;
+        }
+
+
+        .reset-button {
+
+            width: 100%;
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.22
+                );
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 12px;
+        }
+
+
+        /* ==========================
+           MAIN
+        ========================== */
 
         .main {
-            margin-left: 245px;
-            width: calc(100% - 245px);
+
+            margin-left: 250px;
+
+            width:
+                calc(
+                    100% - 250px
+                );
+
             padding: 35px;
         }
 
+
         .seite {
+
             display: none;
         }
 
+
         .seite.active {
+
             display: block;
         }
 
 
-        /* HERO */
+        /* ==========================
+           HERO
+        ========================== */
 
         .hero {
+
+            padding: 34px;
+
+            margin-bottom: 25px;
+
+            border-radius: 26px;
+
             background:
                 linear-gradient(
                     125deg,
-                    #b9eccf,
-                    #d8cff5 65%,
-                    #f9e994
+                    #b8efd4,
+                    #d9d0f7 65%,
+                    #f8e999
                 );
 
-            border-radius: 26px;
-            padding: 34px;
-
             box-shadow:
-                0 10px 30px rgba(68, 90, 76, 0.08);
-
-            margin-bottom: 25px;
+                0 10px 30px
+                rgba(
+                    50,
+                    80,
+                    60,
+                    0.08
+                );
 
             position: relative;
+
             overflow: hidden;
         }
 
-        .hero::after {
-            content: "";
-            position: absolute;
-            width: 160px;
-            height: 160px;
 
-            background:
-                rgba(255, 255, 255, 0.23);
+        .hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 170px;
+
+            height: 170px;
 
             border-radius: 50%;
 
-            right: -35px;
-            top: -45px;
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.25
+                );
+
+            right: -45px;
+
+            top: -55px;
         }
+
 
         .hero h1 {
-            color: #34433b;
+
             font-size: 38px;
-            margin-bottom: 9px;
+
+            color: #34423b;
+
+            margin-bottom: 8px;
         }
+
 
         .hero p {
-            color: #57665e;
-            font-size: 17px;
+
+            color: #56635b;
+
+            font-size: 16px;
         }
 
 
-        /* STATISTIK */
+        /* ==========================
+           STATS
+        ========================== */
 
         .stats {
-            display: grid;
-            grid-template-columns:
-                repeat(3, 1fr);
 
-            gap: 17px;
-            margin-bottom: 27px;
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    1fr
+                );
+
+            gap: 18px;
+
+            margin-bottom: 30px;
         }
+
 
         .stat {
+
             background: white;
-            border-radius: 20px;
+
             padding: 22px;
 
-            box-shadow:
-                0 7px 22px rgba(0,0,0,0.05);
+            border-radius: 20px;
 
-            border-top: 5px solid var(--mint);
+            box-shadow:
+                0 8px 22px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.05
+                );
+
+            border-top:
+                5px solid
+                var(--mint);
         }
+
 
         .stat:nth-child(2) {
-            border-color: var(--lila);
+
+            border-color:
+                var(--lila);
         }
+
 
         .stat:nth-child(3) {
-            border-color: var(--gelb);
+
+            border-color:
+                var(--gelb);
         }
 
+
         .stat p {
+
             color: var(--grau);
+
             font-size: 14px;
         }
 
+
         .stat strong {
+
             display: block;
-            margin-top: 9px;
-            font-size: 31px;
-            color: #445047;
+
+            margin-top: 8px;
+
+            font-size: 32px;
+
+            color: #3e4b43;
         }
 
 
-        /* TITEL */
+        /* ==========================
+           ÜBERSCHRIFTEN
+        ========================== */
 
         .section-heading {
-            margin-bottom: 17px;
+
+            margin-bottom: 18px;
         }
 
+
         .section-heading h2 {
+
             font-size: 25px;
+
+            color: #39453d;
+
             margin-bottom: 5px;
         }
 
+
         .section-heading p {
+
             color: var(--grau);
+
             font-size: 14px;
         }
 
 
-        /* BEREICH */
+        /* ==========================
+           BEREICH
+        ========================== */
 
         .bereich {
-            background: white;
 
-            padding: 24px;
+            background: white;
 
             border-radius: 22px;
 
-            box-shadow:
-                0 7px 22px rgba(0,0,0,0.05);
+            padding: 24px;
 
             margin-bottom: 25px;
+
+            box-shadow:
+                0 8px 22px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.05
+                );
         }
 
 
-        /* FORMULAR */
+        /* ==========================
+           FORMULAR
+        ========================== */
 
         .formular {
+
             display: grid;
 
             grid-template-columns:
-                repeat(2, 1fr);
+                repeat(
+                    2,
+                    1fr
+                );
 
             gap: 14px;
         }
 
+
         input,
-        select {
+        select,
+        textarea {
+
             width: 100%;
-
-            border:
-                1px solid #d9e5dc;
-
-            background: #fbfdfb;
 
             padding: 13px 14px;
 
+            border:
+                1px solid #d9e3dd;
+
             border-radius: 12px;
+
+            background: #fcfdfc;
 
             font-size: 14px;
 
             outline: none;
         }
 
-        input:focus,
-        select:focus {
-            border-color: var(--mint);
-            box-shadow:
-                0 0 0 3px
-                rgba(135, 215, 176, 0.18);
+
+        textarea {
+
+            resize: vertical;
+
+            min-height: 90px;
         }
 
 
-        /* BUTTONS */
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            border-color:
+                var(--mint);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(
+                    145,
+                    221,
+                    188,
+                    0.18
+                );
+        }
+
+
+        .full-width {
+
+            grid-column:
+                1 / -1;
+        }
+
+
+        /* ==========================
+           BUTTONS
+        ========================== */
 
         button {
+
             border: none;
+
             cursor: pointer;
+
             font-weight: 600;
         }
 
-        .btn-primary {
-            padding: 12px 17px;
-            border-radius: 12px;
 
-            background: var(--mint);
+        .btn-primary {
+
+            background:
+                var(--mint);
+
             color: white;
+
+            padding:
+                12px 16px;
+
+            border-radius: 11px;
         }
+
 
         .btn-primary:hover {
-            background: #72c59a;
+
+            background:
+                #78cba6;
         }
+
 
         .btn-lila {
-            padding: 9px 13px;
-            border-radius: 10px;
 
-            background: var(--lila-light);
-            color: #705ba4;
+            background:
+                var(--lila-light);
+
+            color:
+                #705ba4;
+
+            padding:
+                9px 12px;
+
+            border-radius: 10px;
         }
+
 
         .btn-gelb {
-            padding: 9px 13px;
-            border-radius: 10px;
 
-            background: var(--gelb-light);
-            color: #837022;
+            background:
+                var(--gelb-light);
+
+            color:
+                #816c18;
+
+            padding:
+                9px 12px;
+
+            border-radius: 10px;
         }
+
 
         .btn-rot {
-            padding: 9px 13px;
-            border-radius: 10px;
 
-            background: var(--rot-light);
-            color: #b64343;
+            background:
+                var(--rosa-light);
+
+            color:
+                #b54545;
+
+            padding:
+                9px 12px;
+
+            border-radius: 10px;
         }
 
 
-        /* FILTER */
+        /* ==========================
+           FILTER
+        ========================== */
 
         .filter {
+
             display: grid;
 
             grid-template-columns:
-                2fr 1fr 1fr;
+                2fr 1fr 1fr 1fr;
 
             gap: 12px;
         }
 
 
-        /* AUFGABEN */
+        /* ==========================
+           AUFGABEN
+        ========================== */
 
         .karten {
+
             display: grid;
 
             grid-template-columns:
                 repeat(
                     auto-fit,
-                    minmax(285px, 1fr)
+                    minmax(
+                        290px,
+                        1fr
+                    )
                 );
 
-            gap: 17px;
+            gap: 18px;
         }
 
+
         .aufgaben-karte {
+
             background: white;
+
+            padding: 21px;
 
             border-radius: 20px;
 
-            padding: 20px;
-
             border:
-                1px solid #e8ece8;
+                1px solid #e9ece9;
 
             box-shadow:
-                0 7px 19px rgba(0,0,0,0.045);
+                0 8px 20px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.045
+                );
 
             position: relative;
         }
 
+
         .aufgaben-karte.hoch {
+
             border-left:
-                5px solid #e26666;
+                6px solid #e26565;
         }
+
 
         .aufgaben-karte.mittel {
+
             border-left:
-                5px solid var(--gelb);
+                6px solid var(--gelb);
         }
+
 
         .aufgaben-karte.niedrig {
+
             border-left:
-                5px solid var(--mint);
+                6px solid var(--mint);
         }
 
+
         .kartenkopf {
+
             display: flex;
 
             justify-content:
@@ -413,156 +682,299 @@
             align-items:
                 flex-start;
 
-            gap: 10px;
+            gap: 12px;
 
-            margin-bottom: 13px;
+            margin-bottom: 12px;
         }
 
+
         .kartenkopf h3 {
-            font-size: 18px;
+
+            font-size: 19px;
+
             line-height: 1.3;
         }
 
+
         .prio {
-            font-size: 12px;
-            padding: 6px 10px;
+
+            padding:
+                6px 10px;
+
             border-radius: 999px;
+
+            font-size: 12px;
+
+            font-weight: bold;
 
             white-space: nowrap;
-            font-weight: bold;
         }
+
 
         .prio-hoch {
-            color: #bb4040;
-            background: var(--rot-light);
+
+            background:
+                #ffe5e5;
+
+            color:
+                #bd4242;
         }
+
 
         .prio-mittel {
-            color: #8b741d;
-            background: var(--gelb-light);
+
+            background:
+                var(--gelb-light);
+
+            color:
+                #826c17;
         }
+
 
         .prio-niedrig {
-            color: var(--mint-dark);
-            background: var(--mint-light);
+
+            background:
+                var(--mint-light);
+
+            color:
+                var(--mint-dark);
         }
 
+
         .fach-badge {
+
             display: inline-block;
 
-            padding: 6px 11px;
-            margin-bottom: 13px;
+            padding:
+                6px 11px;
 
             border-radius: 999px;
 
-            background: var(--lila-light);
-            color: #6d5a9e;
+            background:
+                var(--lila-light);
+
+            color:
+                #705da0;
+
+            font-size: 12px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .typ-badge {
+
+            display: inline-block;
+
+            margin-left: 5px;
+
+            padding:
+                6px 11px;
+
+            border-radius: 999px;
+
+            background:
+                var(--gelb-light);
+
+            color:
+                #806c1f;
 
             font-size: 12px;
         }
 
+
         .karten-info {
-            color: #68726b;
+
+            color: #67716a;
+
             font-size: 14px;
 
-            margin-bottom: 6px;
+            margin-bottom: 7px;
+
+            line-height: 1.4;
         }
 
+
         .deadline {
+
             margin-top: 12px;
 
-            padding: 10px 12px;
+            padding:
+                11px 12px;
 
             border-radius: 11px;
 
-            background: var(--mint-light);
+            background:
+                var(--mint-light);
 
-            color: var(--mint-dark);
+            color:
+                var(--mint-dark);
 
             font-weight: bold;
+
             font-size: 13px;
         }
 
+
         .deadline.dringend {
-            background: var(--gelb-light);
-            color: #806916;
+
+            background:
+                var(--gelb-light);
+
+            color:
+                #826b17;
         }
+
 
         .deadline.ueberfaellig {
-            background: var(--rot-light);
-            color: #ad3e3e;
+
+            background:
+                #ffe3e3;
+
+            color:
+                #b53f3f;
         }
 
+
+        .dringlichkeit {
+
+            margin-top: 12px;
+
+            padding:
+                10px 12px;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eee8fb,
+                    #f8f3ff
+                );
+
+            color:
+                #6d579d;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
         .aktionen {
+
             display: flex;
+
+            flex-wrap: wrap;
+
             gap: 8px;
+
             margin-top: 15px;
         }
 
 
-        /* FÄCHER */
+        /* ==========================
+           FÄCHER
+        ========================== */
 
         .fach-grid {
+
             display: grid;
 
             grid-template-columns:
                 repeat(
                     auto-fit,
-                    minmax(290px, 1fr)
+                    minmax(
+                        290px,
+                        1fr
+                    )
                 );
 
             gap: 18px;
         }
 
+
         .fach-card {
+
             background: white;
 
-            border-radius: 22px;
             padding: 22px;
 
-            box-shadow:
-                0 7px 22px rgba(0,0,0,0.05);
+            border-radius: 21px;
 
             border:
-                1px solid #ececec;
+                1px solid #eceeec;
+
+            box-shadow:
+                0 8px 22px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.05
+                );
         }
+
 
         .fach-card:nth-child(3n + 1) {
+
             border-top:
-                5px solid var(--mint);
+                5px solid
+                var(--mint);
         }
+
 
         .fach-card:nth-child(3n + 2) {
+
             border-top:
-                5px solid var(--lila);
+                5px solid
+                var(--lila);
         }
+
 
         .fach-card:nth-child(3n + 3) {
+
             border-top:
-                5px solid var(--gelb);
+                5px solid
+                var(--gelb);
         }
+
 
         .fach-card h3 {
-            font-size: 19px;
-            margin-bottom: 5px;
+
+            font-size: 18px;
+
+            margin-bottom: 7px;
         }
+
 
         .lern-info {
-            color: #6e786f;
+
+            color: var(--grau);
+
             font-size: 14px;
-            margin-bottom: 15px;
+
+            margin-bottom: 14px;
         }
 
 
-        /* SLIDER */
+        /* ==========================
+           SLIDER
+        ========================== */
 
         .slider {
+
             width: 100%;
-            accent-color: #83d3aa;
+
+            accent-color:
+                #83d3ab;
+
             cursor: pointer;
         }
 
+
         .progress-info {
+
             display: flex;
 
             justify-content:
@@ -570,27 +982,37 @@
 
             margin-top: 6px;
 
-            color: #737e76;
             font-size: 13px;
+
+            color:
+                var(--grau);
         }
 
 
-        /* PROGRESS BAR */
+        /* ==========================
+           PROGRESS BAR
+        ========================== */
 
         .progress {
-            background: #edf2ed;
-
-            border-radius: 999px;
 
             height: 10px;
 
-            margin-top: 15px;
+            border-radius: 999px;
+
+            background:
+                #edf2ed;
 
             overflow: hidden;
+
+            margin-top: 14px;
         }
 
+
         .progress-inner {
+
             height: 100%;
+
+            border-radius: 999px;
 
             background:
                 linear-gradient(
@@ -598,38 +1020,39 @@
                     var(--mint),
                     var(--lila)
                 );
-
-            border-radius: 999px;
         }
 
 
-        /* ZEIT BUTTONS */
+        /* ==========================
+           TIMER
+        ========================== */
 
         .zeit-buttons {
+
             display: flex;
+
             flex-wrap: wrap;
 
             gap: 7px;
 
-            margin-top: 15px;
+            margin-top: 14px;
         }
 
 
-        /* TIMER */
-
         .timer {
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--lila-light),
-                    #f7f3ff
-                );
+
+            margin-top: 15px;
 
             padding: 12px;
 
             border-radius: 12px;
 
-            margin-top: 15px;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--lila-light),
+                    #f8f5ff
+                );
 
             display: flex;
 
@@ -638,25 +1061,36 @@
 
             align-items: center;
 
-            gap: 10px;
+            gap: 8px;
         }
 
+
         .timer-anzeige {
+
+            color:
+                #705ba4;
+
             font-weight: bold;
-            color: #705aa6;
+
             font-size: 16px;
         }
 
 
-        /* DASHBOARD LERNZIELE */
+        /* ==========================
+           DASHBOARD ZIELE
+        ========================== */
 
         .dashboard-ziele {
+
             display: grid;
 
             grid-template-columns:
                 repeat(
                     auto-fit,
-                    minmax(220px, 1fr)
+                    minmax(
+                        220px,
+                        1fr
+                    )
                 );
 
             gap: 15px;
@@ -664,7 +1098,9 @@
             margin-bottom: 30px;
         }
 
+
         .mini-ziel {
+
             background: white;
 
             border-radius: 18px;
@@ -672,145 +1108,256 @@
             padding: 18px;
 
             box-shadow:
-                0 7px 19px rgba(0,0,0,0.04);
+                0 7px 18px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.04
+                );
         }
+
 
         .mini-ziel h4 {
-            margin-bottom: 10px;
+
+            margin-bottom: 8px;
         }
+
 
         .mini-ziel p {
-            font-size: 13px;
+
             color: var(--grau);
+
+            font-size: 13px;
         }
 
 
-        @media(max-width: 850px) {
+        .leer {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 20px;
+
+            color: var(--grau);
+
+            text-align: center;
+        }
+
+
+        /* ==========================
+           RESPONSIVE
+        ========================== */
+
+        @media(max-width: 900px) {
 
             .sidebar {
+
                 position: static;
+
                 width: 100%;
             }
 
+
             .app {
+
                 display: block;
             }
 
+
             .main {
+
                 margin-left: 0;
+
                 width: 100%;
+
                 padding: 20px;
             }
+
 
             .stats,
             .formular,
             .filter {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
             }
 
         }
 
     </style>
+
 </head>
+
 
 
 <body>
 
+
 <div class="app">
 
 
-    <!-- SIDEBAR -->
+    <!-- ==========================
+         SIDEBAR
+    ========================== -->
 
     <aside class="sidebar">
 
+
         <div class="logo">
+
             Study<span>Buddy</span>
+
         </div>
 
+
         <div class="logo-text">
+
             Dein persönlicher Lernbegleiter
+
         </div>
+
 
 
         <button
             class="nav-button active"
             onclick="zeigeSeite('dashboard', this)"
         >
+
             🏠 Dashboard
+
         </button>
+
 
 
         <button
             class="nav-button"
             onclick="zeigeSeite('aufgaben', this)"
         >
+
             ✓ Aufgaben
+
         </button>
+
 
 
         <button
             class="nav-button"
             onclick="zeigeSeite('faecher', this)"
         >
+
             📚 Fächer & Lernziele
+
         </button>
+
+
+        <div class="sidebar-bottom">
+
+            <button
+                class="reset-button"
+                onclick="demoDatenZuruecksetzen()"
+            >
+
+                Beispieldaten zurücksetzen
+
+            </button>
+
+        </div>
+
 
     </aside>
 
 
 
-    <!-- HAUPTBEREICH -->
+    <!-- ==========================
+         MAIN
+    ========================== -->
 
     <main class="main">
 
 
-        <!-- DASHBOARD -->
+        <!-- ======================
+             DASHBOARD
+        ====================== -->
 
         <section
             id="dashboard"
             class="seite active"
         >
 
+
             <div class="hero">
 
-                <h1>Hallo! Bereit zum Lernen? ✨</h1>
+                <h1>
+                    Hallo! Bereit zum Lernen? ✨
+                </h1>
 
                 <p>
-                    Hier siehst du deine nächsten Aufgaben
-                    und deinen Lernfortschritt für diese Woche.
+                    Deine wichtigsten Aufgaben und Lernziele
+                    auf einen Blick.
                 </p>
 
             </div>
 
 
+
             <div class="stats">
 
+
                 <div class="stat">
-                    <p>Alle Aufgaben</p>
-                    <strong id="gesamt">0</strong>
+
+                    <p>
+                        Alle Aufgaben
+                    </p>
+
+                    <strong id="gesamt">
+                        0
+                    </strong>
+
                 </div>
 
 
+
                 <div class="stat">
-                    <p>Offene Aufgaben</p>
-                    <strong id="offen">0</strong>
+
+                    <p>
+                        Offene Aufgaben
+                    </p>
+
+                    <strong id="offen">
+                        0
+                    </strong>
+
                 </div>
 
 
+
                 <div class="stat">
-                    <p>Dringend</p>
-                    <strong id="dringend">0</strong>
+
+                    <p>
+                        Dringende Aufgaben
+                    </p>
+
+                    <strong id="dringend">
+                        0
+                    </strong>
+
                 </div>
+
 
             </div>
 
 
+
             <div class="section-heading">
 
-                <h2>Deine Lernziele diese Woche</h2>
+                <h2>
+                    Deine Lernziele diese Woche
+                </h2>
 
                 <p>
-                    So weit bist du bei deinen Fächern.
+                    Dein Lernfortschritt pro Fach.
                 </p>
 
             </div>
@@ -822,12 +1369,16 @@
             ></div>
 
 
+
             <div class="section-heading">
 
-                <h2>Als Nächstes</h2>
+                <h2>
+                    Deine wichtigsten Aufgaben 🔥
+                </h2>
 
                 <p>
-                    Deine wichtigsten kommenden Aufgaben.
+                    StudyBuddy berechnet automatisch,
+                    was gerade am dringendsten ist.
                 </p>
 
             </div>
@@ -838,41 +1389,58 @@
                 class="karten"
             ></div>
 
+
         </section>
 
 
 
-        <!-- AUFGABEN -->
+        <!-- ======================
+             AUFGABEN
+        ====================== -->
 
         <section
             id="aufgaben"
             class="seite"
         >
 
+
             <div class="section-heading">
 
-                <h2>Aufgaben</h2>
+                <h2>
+                    Aufgaben
+                </h2>
 
                 <p>
-                    Erstelle, bearbeite und organisiere deine Aufgaben.
+                    Prüfungen, Abgaben und Lernaufgaben
+                    verwalten.
                 </p>
 
             </div>
 
 
+
             <div class="bereich">
 
+
                 <div class="section-heading">
-                    <h2>Neue Aufgabe</h2>
+
+                    <h2>
+                        Neue Aufgabe hinzufügen
+                    </h2>
+
                 </div>
+
 
 
                 <div class="formular">
 
+
                     <input
                         id="aufgabeName"
-                        placeholder="z. B. Mathe Kapitel 4 lernen"
+                        type="text"
+                        placeholder="z. B. Mathematik Prüfung vorbereiten"
                     >
+
 
 
                     <select id="aufgabeFach">
@@ -884,10 +1452,42 @@
                     </select>
 
 
+
+                    <select id="typ">
+
+                        <option value="Prüfung">
+                            Prüfung
+                        </option>
+
+                        <option value="Abgabe">
+                            Abgabe
+                        </option>
+
+                        <option value="Hausübung">
+                            Hausübung
+                        </option>
+
+                        <option value="Lernaufgabe">
+                            Lernaufgabe
+                        </option>
+
+                        <option value="Projekt">
+                            Projekt
+                        </option>
+
+                        <option value="Sonstiges">
+                            Sonstiges
+                        </option>
+
+                    </select>
+
+
+
                     <input
                         id="deadline"
                         type="date"
                     >
+
 
 
                     <select id="prioritaet">
@@ -907,6 +1507,7 @@
                     </select>
 
 
+
                     <select id="status">
 
                         <option value="offen">
@@ -924,27 +1525,74 @@
                     </select>
 
 
+
+                    <input
+                        id="zeitaufwand"
+                        type="number"
+                        min="0"
+                        step="0.5"
+                        placeholder="Geschätzter Aufwand in Stunden"
+                    >
+
+
+
+                    <input
+                        id="investierteZeit"
+                        type="number"
+                        min="0"
+                        step="0.5"
+                        placeholder="Bereits investierte Stunden"
+                    >
+
+
+
+                    <textarea
+                        id="notiz"
+                        class="full-width"
+                        placeholder="Notiz, z. B. Kapitel 1–5 lernen"
+                    ></textarea>
+
+
+
                     <button
-                        class="btn-primary"
+                        class="btn-primary full-width"
                         onclick="aufgabeSpeichern()"
                     >
+
                         Aufgabe speichern
+
                     </button>
 
+
                 </div>
+
 
             </div>
 
 
+
             <div class="bereich">
+
+
+                <div class="section-heading">
+
+                    <h2>
+                        Aufgaben suchen & filtern
+                    </h2>
+
+                </div>
+
 
                 <div class="filter">
 
+
                     <input
                         id="suche"
+                        type="text"
                         placeholder="🔎 Aufgabe suchen..."
                         oninput="zeigeAufgaben()"
                     >
+
 
 
                     <select
@@ -957,6 +1605,7 @@
                         </option>
 
                     </select>
+
 
 
                     <select
@@ -982,9 +1631,45 @@
 
                     </select>
 
+
+
+                    <select
+                        id="typFilter"
+                        onchange="zeigeAufgaben()"
+                    >
+
+                        <option value="alle">
+                            Alle Typen
+                        </option>
+
+                        <option value="Prüfung">
+                            Prüfung
+                        </option>
+
+                        <option value="Abgabe">
+                            Abgabe
+                        </option>
+
+                        <option value="Hausübung">
+                            Hausübung
+                        </option>
+
+                        <option value="Lernaufgabe">
+                            Lernaufgabe
+                        </option>
+
+                        <option value="Projekt">
+                            Projekt
+                        </option>
+
+                    </select>
+
+
                 </div>
 
+
             </div>
+
 
 
             <div
@@ -992,42 +1677,58 @@
                 class="karten"
             ></div>
 
+
         </section>
 
 
 
-        <!-- FÄCHER -->
+        <!-- ======================
+             FÄCHER
+        ====================== -->
 
         <section
             id="faecher"
             class="seite"
         >
 
+
             <div class="section-heading">
 
-                <h2>Fächer & Lernziele 📚</h2>
+                <h2>
+                    Fächer & Lernziele 📚
+                </h2>
 
                 <p>
-                    Lege fest, wie viele Stunden du
-                    pro Woche für jedes Fach lernen möchtest.
+                    Setze dir pro Fach ein Wochenziel
+                    und dokumentiere deine Lernzeit.
                 </p>
 
             </div>
 
 
+
             <div class="bereich">
 
+
                 <div class="section-heading">
-                    <h2>Neues Fach hinzufügen</h2>
+
+                    <h2>
+                        Neues Fach hinzufügen
+                    </h2>
+
                 </div>
+
 
 
                 <div class="formular">
 
+
                     <input
                         id="neuesFach"
+                        type="text"
                         placeholder="Name des Faches"
                     >
+
 
 
                     <input
@@ -1039,16 +1740,22 @@
                     >
 
 
+
                     <button
-                        class="btn-primary"
+                        class="btn-primary full-width"
                         onclick="fachHinzufuegen()"
                     >
+
                         + Fach hinzufügen
+
                     </button>
+
 
                 </div>
 
+
             </div>
+
 
 
             <div
@@ -1056,15 +1763,20 @@
                 class="fach-grid"
             ></div>
 
+
         </section>
 
 
     </main>
 
+
 </div>
+
 
 
 <script src="studybuddy.js"></script>
 
+
 </body>
+
 </html>
