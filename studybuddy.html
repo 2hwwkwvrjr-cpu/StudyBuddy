@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyBuddy</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        :root {
+            --mint: #87d7b0;
+            --mint-light: #dff7e9;
+            --mint-dark: #458b6b;
+
+            --lila: #a995d9;
+            --lila-light: #eee8fb;
+
+            --gelb: #f4dc7b;
+            --gelb-light: #fff7d7;
+
+            --rot: #db6262;
+            --rot-light: #ffe5e5;
+
+            --text: #30363b;
+            --grau: #758078;
+            --background: #f7f8f4;
+
+            --white: #ffffff;
+        }
+
+        body {
+            background:
+                linear-gradient(
+                    140deg,
+                    #f6fff8 0%,
+                    #f8f5ff 50%,
+                    #fffdf4 100%
+                );
+
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* APP */
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 245px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #79cca5,
+                    #9fdcbc
+                );
+
+            padding: 30px 22px;
+
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .logo {
+            font-size: 29px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .logo span {
+            color: #fff1a9;
+        }
+
+        .logo-text {
+            font-size: 13px;
+            color: #effff5;
+            margin-bottom: 38px;
+        }
+
+        .nav-button {
+            width: 100%;
+
+            background: transparent;
+            border: none;
+
+            color: white;
+
+            padding: 14px 15px;
+            margin-bottom: 8px;
+
+            border-radius: 13px;
+
+            text-align: left;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .nav-button:hover,
+        .nav-button.active {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+
+        /* MAIN */
+
+        .main {
+            margin-left: 245px;
+            width: calc(100% - 245px);
+            padding: 35px;
+        }
+
+        .seite {
+            display: none;
+        }
+
+        .seite.active {
+            display: block;
+        }
+
+
+        /* HERO */
+
+        .hero {
+            background:
+                linear-gradient(
+                    125deg,
+                    #b9eccf,
+                    #d8cff5 65%,
+                    #f9e994
+                );
+
+            border-radius: 26px;
+            padding: 34px;
+
+            box-shadow:
+                0 10px 30px rgba(68, 90, 76, 0.08);
+
+            margin-bottom: 25px;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+
+            background:
+                rgba(255, 255, 255, 0.23);
+
+            border-radius: 50%;
+
+            right: -35px;
+            top: -45px;
+        }
+
+        .hero h1 {
+            color: #34433b;
+            font-size: 38px;
+            margin-bottom: 9px;
+        }
+
+        .hero p {
+            color: #57665e;
+            font-size: 17px;
+        }
+
+
+        /* STATISTIK */
+
+        .stats {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 17px;
+            margin-bottom: 27px;
+        }
+
+        .stat {
+            background: white;
+            border-radius: 20px;
+            padding: 22px;
+
+            box-shadow:
+                0 7px 22px rgba(0,0,0,0.05);
+
+            border-top: 5px solid var(--mint);
+        }
+
+        .stat:nth-child(2) {
+            border-color: var(--lila);
+        }
+
+        .stat:nth-child(3) {
+            border-color: var(--gelb);
+        }
+
+        .stat p {
+            color: var(--grau);
+            font-size: 14px;
+        }
+
+        .stat strong {
+            display: block;
+            margin-top: 9px;
+            font-size: 31px;
+            color: #445047;
+        }
+
+
+        /* TITEL */
+
+        .section-heading {
+            margin-bottom: 17px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .section-heading p {
+            color: var(--grau);
+            font-size: 14px;
+        }
+
+
+        /* BEREICH */
+
+        .bereich {
+            background: white;
+
+            padding: 24px;
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 7px 22px rgba(0,0,0,0.05);
+
+            margin-bottom: 25px;
+        }
+
+
+        /* FORMULAR */
+
+        .formular {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+        }
+
+        input,
+        select {
+            width: 100%;
+
+            border:
+                1px solid #d9e5dc;
+
+            background: #fbfdfb;
+
+            padding: 13px 14px;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--mint);
+            box-shadow:
+                0 0 0 3px
+                rgba(135, 215, 176, 0.18);
+        }
+
+
+        /* BUTTONS */
+
+        button {
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            padding: 12px 17px;
+            border-radius: 12px;
+
+            background: var(--mint);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #72c59a;
+        }
+
+        .btn-lila {
+            padding: 9px 13px;
+            border-radius: 10px;
+
+            background: var(--lila-light);
+            color: #705ba4;
+        }
+
+        .btn-gelb {
+            padding: 9px 13px;
+            border-radius: 10px;
+
+            background: var(--gelb-light);
+            color: #837022;
+        }
+
+        .btn-rot {
+            padding: 9px 13px;
+            border-radius: 10px;
+
+            background: var(--rot-light);
+            color: #b64343;
+        }
+
+
+        /* FILTER */
+
+        .filter {
+            display: grid;
+
+            grid-template-columns:
+                2fr 1fr 1fr;
+
+            gap: 12px;
+        }
+
+
+        /* AUFGABEN */
+
+        .karten {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(285px, 1fr)
+                );
+
+            gap: 17px;
+        }
+
+        .aufgaben-karte {
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid #e8ece8;
+
+            box-shadow:
+                0 7px 19px rgba(0,0,0,0.045);
+
+            position: relative;
+        }
+
+        .aufgaben-karte.hoch {
+            border-left:
+                5px solid #e26666;
+        }
+
+        .aufgaben-karte.mittel {
+            border-left:
+                5px solid var(--gelb);
+        }
+
+        .aufgaben-karte.niedrig {
+            border-left:
+                5px solid var(--mint);
+        }
+
+        .kartenkopf {
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                flex-start;
+
+            gap: 10px;
+
+            margin-bottom: 13px;
+        }
+
+        .kartenkopf h3 {
+            font-size: 18px;
+            line-height: 1.3;
+        }
+
+        .prio {
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 999px;
+
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+        .prio-hoch {
+            color: #bb4040;
+            background: var(--rot-light);
+        }
+
+        .prio-mittel {
+            color: #8b741d;
+            background: var(--gelb-light);
+        }
+
+        .prio-niedrig {
+            color: var(--mint-dark);
+            background: var(--mint-light);
+        }
+
+        .fach-badge {
+            display: inline-block;
+
+            padding: 6px 11px;
+            margin-bottom: 13px;
+
+            border-radius: 999px;
+
+            background: var(--lila-light);
+            color: #6d5a9e;
+
+            font-size: 12px;
+        }
+
+        .karten-info {
+            color: #68726b;
+            font-size: 14px;
+
+            margin-bottom: 6px;
+        }
+
+        .deadline {
+            margin-top: 12px;
+
+            padding: 10px 12px;
+
+            border-radius: 11px;
+
+            background: var(--mint-light);
+
+            color: var(--mint-dark);
+
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .deadline.dringend {
+            background: var(--gelb-light);
+            color: #806916;
+        }
+
+        .deadline.ueberfaellig {
+            background: var(--rot-light);
+            color: #ad3e3e;
+        }
+
+        .aktionen {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+
+        /* FÄCHER */
+
+        .fach-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(290px, 1fr)
+                );
+
+            gap: 18px;
+        }
+
+        .fach-card {
+            background: white;
+
+            border-radius: 22px;
+            padding: 22px;
+
+            box-shadow:
+                0 7px 22px rgba(0,0,0,0.05);
+
+            border:
+                1px solid #ececec;
+        }
+
+        .fach-card:nth-child(3n + 1) {
+            border-top:
+                5px solid var(--mint);
+        }
+
+        .fach-card:nth-child(3n + 2) {
+            border-top:
+                5px solid var(--lila);
+        }
+
+        .fach-card:nth-child(3n + 3) {
+            border-top:
+                5px solid var(--gelb);
+        }
+
+        .fach-card h3 {
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .lern-info {
+            color: #6e786f;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+
+        /* SLIDER */
+
+        .slider {
+            width: 100%;
+            accent-color: #83d3aa;
+            cursor: pointer;
+        }
+
+        .progress-info {
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            margin-top: 6px;
+
+            color: #737e76;
+            font-size: 13px;
+        }
+
+
+        /* PROGRESS BAR */
+
+        .progress {
+            background: #edf2ed;
+
+            border-radius: 999px;
+
+            height: 10px;
+
+            margin-top: 15px;
+
+            overflow: hidden;
+        }
+
+        .progress-inner {
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--mint),
+                    var(--lila)
+                );
+
+            border-radius: 999px;
+        }
+
+
+        /* ZEIT BUTTONS */
+
+        .zeit-buttons {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 7px;
+
+            margin-top: 15px;
+        }
+
+
+        /* TIMER */
+
+        .timer {
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--lila-light),
+                    #f7f3ff
+                );
+
+            padding: 12px;
+
+            border-radius: 12px;
+
+            margin-top: 15px;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .timer-anzeige {
+            font-weight: bold;
+            color: #705aa6;
+            font-size: 16px;
+        }
+
+
+        /* DASHBOARD LERNZIELE */
+
+        .dashboard-ziele {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(220px, 1fr)
+                );
+
+            gap: 15px;
+
+            margin-bottom: 30px;
+        }
+
+        .mini-ziel {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 7px 19px rgba(0,0,0,0.04);
+        }
+
+        .mini-ziel h4 {
+            margin-bottom: 10px;
+        }
+
+        .mini-ziel p {
+            font-size: 13px;
+            color: var(--grau);
+        }
+
+
+        @media(max-width: 850px) {
+
+            .sidebar {
+                position: static;
+                width: 100%;
+            }
+
+            .app {
+                display: block;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .stats,
+            .formular,
+            .filter {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            Study<span>Buddy</span>
+        </div>
+
+        <div class="logo-text">
+            Dein persönlicher Lernbegleiter
+        </div>
+
+
+        <button
+            class="nav-button active"
+            onclick="zeigeSeite('dashboard', this)"
+        >
+            🏠 Dashboard
+        </button>
+
+
+        <button
+            class="nav-button"
+            onclick="zeigeSeite('aufgaben', this)"
+        >
+            ✓ Aufgaben
+        </button>
+
+
+        <button
+            class="nav-button"
+            onclick="zeigeSeite('faecher', this)"
+        >
+            📚 Fächer & Lernziele
+        </button>
+
+    </aside>
+
+
+
+    <!-- HAUPTBEREICH -->
+
+    <main class="main">
+
+
+        <!-- DASHBOARD -->
+
+        <section
+            id="dashboard"
+            class="seite active"
+        >
+
+            <div class="hero">
+
+                <h1>Hallo! Bereit zum Lernen? ✨</h1>
+
+                <p>
+                    Hier siehst du deine nächsten Aufgaben
+                    und deinen Lernfortschritt für diese Woche.
+                </p>
+
+            </div>
+
+
+            <div class="stats">
+
+                <div class="stat">
+                    <p>Alle Aufgaben</p>
+                    <strong id="gesamt">0</strong>
+                </div>
+
+
+                <div class="stat">
+                    <p>Offene Aufgaben</p>
+                    <strong id="offen">0</strong>
+                </div>
+
+
+                <div class="stat">
+                    <p>Dringend</p>
+                    <strong id="dringend">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="section-heading">
+
+                <h2>Deine Lernziele diese Woche</h2>
+
+                <p>
+                    So weit bist du bei deinen Fächern.
+                </p>
+
+            </div>
+
+
+            <div
+                id="dashboardZiele"
+                class="dashboard-ziele"
+            ></div>
+
+
+            <div class="section-heading">
+
+                <h2>Als Nächstes</h2>
+
+                <p>
+                    Deine wichtigsten kommenden Aufgaben.
+                </p>
+
+            </div>
+
+
+            <div
+                id="dashboardAufgaben"
+                class="karten"
+            ></div>
+
+        </section>
+
+
+
+        <!-- AUFGABEN -->
+
+        <section
+            id="aufgaben"
+            class="seite"
+        >
+
+            <div class="section-heading">
+
+                <h2>Aufgaben</h2>
+
+                <p>
+                    Erstelle, bearbeite und organisiere deine Aufgaben.
+                </p>
+
+            </div>
+
+
+            <div class="bereich">
+
+                <div class="section-heading">
+                    <h2>Neue Aufgabe</h2>
+                </div>
+
+
+                <div class="formular">
+
+                    <input
+                        id="aufgabeName"
+                        placeholder="z. B. Mathe Kapitel 4 lernen"
+                    >
+
+
+                    <select id="aufgabeFach">
+
+                        <option value="">
+                            Fach auswählen
+                        </option>
+
+                    </select>
+
+
+                    <input
+                        id="deadline"
+                        type="date"
+                    >
+
+
+                    <select id="prioritaet">
+
+                        <option value="hoch">
+                            Hohe Priorität
+                        </option>
+
+                        <option value="mittel">
+                            Mittlere Priorität
+                        </option>
+
+                        <option value="niedrig">
+                            Niedrige Priorität
+                        </option>
+
+                    </select>
+
+
+                    <select id="status">
+
+                        <option value="offen">
+                            Offen
+                        </option>
+
+                        <option value="in Bearbeitung">
+                            In Bearbeitung
+                        </option>
+
+                        <option value="erledigt">
+                            Erledigt
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        class="btn-primary"
+                        onclick="aufgabeSpeichern()"
+                    >
+                        Aufgabe speichern
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="bereich">
+
+                <div class="filter">
+
+                    <input
+                        id="suche"
+                        placeholder="🔎 Aufgabe suchen..."
+                        oninput="zeigeAufgaben()"
+                    >
+
+
+                    <select
+                        id="fachFilter"
+                        onchange="zeigeAufgaben()"
+                    >
+
+                        <option value="alle">
+                            Alle Fächer
+                        </option>
+
+                    </select>
+
+
+                    <select
+                        id="statusFilter"
+                        onchange="zeigeAufgaben()"
+                    >
+
+                        <option value="alle">
+                            Alle Status
+                        </option>
+
+                        <option value="offen">
+                            Offen
+                        </option>
+
+                        <option value="in Bearbeitung">
+                            In Bearbeitung
+                        </option>
+
+                        <option value="erledigt">
+                            Erledigt
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="aufgabenListe"
+                class="karten"
+            ></div>
+
+        </section>
+
+
+
+        <!-- FÄCHER -->
+
+        <section
+            id="faecher"
+            class="seite"
+        >
+
+            <div class="section-heading">
+
+                <h2>Fächer & Lernziele 📚</h2>
+
+                <p>
+                    Lege fest, wie viele Stunden du
+                    pro Woche für jedes Fach lernen möchtest.
+                </p>
+
+            </div>
+
+
+            <div class="bereich">
+
+                <div class="section-heading">
+                    <h2>Neues Fach hinzufügen</h2>
+                </div>
+
+
+                <div class="formular">
+
+                    <input
+                        id="neuesFach"
+                        placeholder="Name des Faches"
+                    >
+
+
+                    <input
+                        id="neuesZiel"
+                        type="number"
+                        min="0.5"
+                        step="0.5"
+                        placeholder="Wochenziel in Stunden"
+                    >
+
+
+                    <button
+                        class="btn-primary"
+                        onclick="fachHinzufuegen()"
+                    >
+                        + Fach hinzufügen
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="fachListe"
+                class="fach-grid"
+            ></div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script src="studybuddy.js"></script>
+
+</body>
+</html>
