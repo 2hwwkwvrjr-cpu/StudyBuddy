@@ -67,9 +67,7 @@ const fachFarben = [
 ];
 
 
-function farbeFuerFach(
-    fachName
-) {
+function farbeFuerFach(fachName) {
 
     const index =
         faecher.findIndex(
@@ -78,9 +76,7 @@ function farbeFuerFach(
         );
 
 
-    if (
-        index === -1
-    ) {
+    if (index === -1) {
 
         return fachFarben[0];
     }
@@ -174,9 +170,7 @@ async function appStarten() {
             aufgaben =
                 daten.aufgaben;
 
-        } catch (
-            fehler
-        ) {
+        } catch (fehler) {
 
             console.error(
                 "JSON konnte nicht geladen werden:",
@@ -281,9 +275,7 @@ function zeigeSeite(
         );
 
 
-    if (
-        seitenId === "dashboard"
-    ) {
+    if (seitenId === "dashboard") {
 
         aktualisiereUebersicht();
 
@@ -292,43 +284,30 @@ function zeigeSeite(
         zeigeDashboardAufgaben();
 
         zeigeDashboardZiele();
-
     }
 
 
-    if (
-        seitenId === "heute"
-    ) {
+    if (seitenId === "heute") {
 
         zeigeHeute();
-
     }
 
 
-    if (
-        seitenId === "aufgaben"
-    ) {
+    if (seitenId === "aufgaben") {
 
         zeigeAufgaben();
-
     }
 
 
-    if (
-        seitenId === "erledigt"
-    ) {
+    if (seitenId === "erledigt") {
 
         zeigeErledigteAufgaben();
-
     }
 
 
-    if (
-        seitenId === "faecher"
-    ) {
+    if (seitenId === "faecher") {
 
         aktualisiereFaecher();
-
     }
 }
 
@@ -338,9 +317,7 @@ function zeigeSeite(
 // DATUM
 // ======================================================
 
-function tageBisDeadline(
-    deadline
-) {
+function tageBisDeadline(deadline) {
 
     const heute =
         new Date();
@@ -355,9 +332,7 @@ function tageBisDeadline(
 
 
     const datum =
-        new Date(
-            deadline
-        );
+        new Date(deadline);
 
 
     datum.setHours(
@@ -390,9 +365,7 @@ function tageBisDeadline(
 }
 
 
-function deutschesDatum(
-    datum
-) {
+function deutschesDatum(datum) {
 
     return new Date(
         datum
@@ -466,9 +439,7 @@ function berechneDringlichkeit(
     let stundenProTag;
 
 
-    if (
-        tage > 0
-    ) {
+    if (tage > 0) {
 
         stundenProTag =
             restzeit / tage;
@@ -480,7 +451,6 @@ function berechneDringlichkeit(
                 ? Infinity
                 : 0;
     }
-
 
 
     if (
@@ -506,7 +476,6 @@ function berechneDringlichkeit(
 
         };
     }
-
 
 
     if (
@@ -538,7 +507,6 @@ function berechneDringlichkeit(
     }
 
 
-
     if (
         tage <= 7
         ||
@@ -562,7 +530,6 @@ function berechneDringlichkeit(
 
         };
     }
-
 
 
     return {
@@ -674,9 +641,7 @@ function updateAufgabe(
         );
 
 
-    if (
-        !aufgabe
-    ) {
+    if (!aufgabe) {
 
         return;
     }
@@ -689,15 +654,11 @@ function updateAufgabe(
     ) {
 
         wert =
-            Number(
-                wert
-            );
+            Number(wert);
 
 
         if (
-            Number.isNaN(
-                wert
-            )
+            Number.isNaN(wert)
             ||
             wert < 0
         ) {
@@ -722,9 +683,7 @@ function updateAufgabe(
 // ERLEDIGT / WIEDER ÖFFNEN
 // ======================================================
 
-function erledigtUmschalten(
-    id
-) {
+function erledigtUmschalten(id) {
 
     const aufgabe =
         aufgaben.find(
@@ -733,9 +692,7 @@ function erledigtUmschalten(
         );
 
 
-    if (
-        !aufgabe
-    ) {
+    if (!aufgabe) {
 
         return;
     }
@@ -991,9 +948,7 @@ function formularLeeren() {
 // AUFGABE LÖSCHEN
 // ======================================================
 
-function aufgabeLoeschen(
-    id
-) {
+function aufgabeLoeschen(id) {
 
     if (
         !confirm(
@@ -1023,9 +978,7 @@ function aufgabeLoeschen(
 // SICHERER TEXT
 // ======================================================
 
-function sichererText(
-    text
-) {
+function sichererText(text) {
 
     return String(
         text ?? ""
@@ -1103,9 +1056,7 @@ function erstelleAufgabenKarte(
         `6px solid ${farbe.rand}`;
 
 
-    if (
-        bearbeitbar
-    ) {
+    if (bearbeitbar) {
 
         karte.innerHTML = `
 
@@ -1826,12 +1777,6 @@ function zeigeAufgaben() {
             .value;
 
 
-    /*
-        WICHTIG:
-        Erledigte Aufgaben kommen NICHT
-        mehr in die normale Aufgabenliste.
-    */
-
     let gefiltert =
         aufgaben.filter(
             aufgabe =>
@@ -1840,9 +1785,7 @@ function zeigeAufgaben() {
         );
 
 
-    if (
-        suche !== ""
-    ) {
+    if (suche !== "") {
 
         gefiltert =
             gefiltert.filter(
@@ -1865,10 +1808,7 @@ function zeigeAufgaben() {
     }
 
 
-    if (
-        fach !==
-        "alle"
-    ) {
+    if (fach !== "alle") {
 
         gefiltert =
             gefiltert.filter(
@@ -1879,10 +1819,7 @@ function zeigeAufgaben() {
     }
 
 
-    if (
-        status !==
-        "alle"
-    ) {
+    if (status !== "alle") {
 
         gefiltert =
             gefiltert.filter(
@@ -1893,10 +1830,7 @@ function zeigeAufgaben() {
     }
 
 
-    if (
-        typ !==
-        "alle"
-    ) {
+    if (typ !== "alle") {
 
         gefiltert =
             gefiltert.filter(
@@ -1955,7 +1889,7 @@ function zeigeAufgaben() {
 
 
 // ======================================================
-// ERLEDIGTE AUFGABEN ANZEIGEN
+// ERLEDIGTE AUFGABEN
 // ======================================================
 
 function zeigeErledigteAufgaben() {
@@ -2342,7 +2276,7 @@ function aktualisiereWochenstatistik() {
         )
         .textContent =
 
-        `${gesamtGelernt.toFixed(1)} h`;
+        `${gesamtGelernt.toFixed(2)} h`;
 
 
     document
@@ -2479,9 +2413,7 @@ function fachHinzufuegen() {
 // FACH LÖSCHEN
 // ======================================================
 
-function fachLoeschen(
-    index
-) {
+function fachLoeschen(index) {
 
     const fach =
         faecher[index];
@@ -2495,9 +2427,7 @@ function fachLoeschen(
         );
 
 
-    if (
-        verwendet
-    ) {
+    if (verwendet) {
 
         alert(
             "Dieses Fach wird noch bei mindestens einer Aufgabe verwendet."
@@ -2535,9 +2465,7 @@ function fachLoeschen(
 // ZIEL ÄNDERN
 // ======================================================
 
-function zielAendern(
-    index
-) {
+function zielAendern(index) {
 
     const neuesZiel =
         Number(
@@ -2575,7 +2503,7 @@ function zielAendern(
 
 
 // ======================================================
-// LERNZEIT
+// LERNZEIT MANUELL ÄNDERN
 // ======================================================
 
 function lernzeitAendern(
@@ -2583,28 +2511,43 @@ function lernzeitAendern(
     stunden
 ) {
 
-    faecher[index]
-        .gelernt +=
+    /*
+        Hier können positive UND negative Werte
+        übergeben werden.
+
+        Beispiele:
+
+        +0.5 = plus 30 Minuten
+        +1   = plus 1 Stunde
+        -0.5 = minus 30 Minuten
+        -1   = minus 1 Stunde
+    */
+
+    faecher[index].gelernt +=
         stunden;
 
 
+    /*
+        Lernzeit darf niemals unter 0 fallen.
+    */
+
     if (
-        faecher[index]
-            .gelernt < 0
+        faecher[index].gelernt < 0
     ) {
 
-        faecher[index]
-            .gelernt =
+        faecher[index].gelernt =
             0;
     }
 
 
-    faecher[index]
-        .gelernt =
+    /*
+        Auf zwei Nachkommastellen runden.
+    */
+
+    faecher[index].gelernt =
         Math.round(
 
-            faecher[index]
-                .gelernt
+            faecher[index].gelernt
             *
             100
 
@@ -2621,13 +2564,17 @@ function lernzeitAendern(
 }
 
 
+
+// ======================================================
+// LERNZEIT MIT SLIDER ÄNDERN
+// ======================================================
+
 function sliderAendern(
     index,
     wert
 ) {
 
-    faecher[index]
-        .gelernt =
+    faecher[index].gelernt =
         Number(
             wert
         );
@@ -2641,12 +2588,10 @@ function sliderAendern(
 
 
 // ======================================================
-// TIMER
+// TIMER STARTEN
 // ======================================================
 
-function timerStarten(
-    index
-) {
+function timerStarten(index) {
 
     if (
         aktiverTimer !==
@@ -2684,6 +2629,11 @@ function timerStarten(
 }
 
 
+
+// ======================================================
+// TIMER ANZEIGE AKTUALISIEREN
+// ======================================================
+
 function timerAktualisieren() {
 
     if (
@@ -2720,9 +2670,7 @@ function timerAktualisieren() {
             );
 
 
-    if (
-        anzeige
-    ) {
+    if (anzeige) {
 
         anzeige.textContent =
             sekundenFormat(
@@ -2732,9 +2680,12 @@ function timerAktualisieren() {
 }
 
 
-function timerStoppen(
-    index
-) {
+
+// ======================================================
+// TIMER STOPPEN
+// ======================================================
+
+function timerStoppen(index) {
 
     if (
         aktiverTimer !==
@@ -2745,7 +2696,11 @@ function timerStoppen(
     }
 
 
-    const sekunden =
+    /*
+        Wie viele Sekunden sind seit Start vergangen?
+    */
+
+    const vergangeneSekunden =
         (
             Date.now()
             -
@@ -2757,23 +2712,40 @@ function timerStoppen(
         1000;
 
 
-    const stunden =
-        sekunden
+    /*
+        Sekunden in Stunden umrechnen.
+
+        Beispiel:
+
+        1800 Sekunden
+        / 3600
+        =
+        0,5 Stunden
+    */
+
+    const gelernteStunden =
+        vergangeneSekunden
         /
         3600;
 
 
-    faecher[index]
-        .gelernt +=
-        stunden;
+    /*
+        Timer-Zeit automatisch zur
+        bereits gelernten Zeit addieren.
+    */
+
+    faecher[index].gelernt +=
+        gelernteStunden;
 
 
-    faecher[index]
-        .gelernt =
+    /*
+        Auf zwei Nachkommastellen runden.
+    */
+
+    faecher[index].gelernt =
         Math.round(
 
-            faecher[index]
-                .gelernt
+            faecher[index].gelernt
             *
             100
 
@@ -2804,6 +2776,11 @@ function timerStoppen(
     allesAktualisieren();
 }
 
+
+
+// ======================================================
+// TIMER FORMATIEREN
+// ======================================================
 
 function sekundenFormat(
     sekunden
@@ -3145,6 +3122,38 @@ function aktualisiereFaecher() {
                     >
 
                         + 1 Std.
+
+                    </button>
+
+
+                    <button
+                        class="btn-rot"
+
+                        onclick="
+                            lernzeitAendern(
+                                ${index},
+                                -0.5
+                            )
+                        "
+                    >
+
+                        − 30 Min.
+
+                    </button>
+
+
+                    <button
+                        class="btn-rot"
+
+                        onclick="
+                            lernzeitAendern(
+                                ${index},
+                                -1
+                            )
+                        "
+                    >
+
+                        − 1 Std.
 
                     </button>
 
