@@ -5,6 +5,9 @@ let aktiverTimer = null;
 let timerStart = null;
 let timerInterval = null;
 
+let kalenderDatum = new Date();
+
+
 
 const fachFarben = [
 
@@ -59,6 +62,7 @@ const fachFarben = [
 ];
 
 
+
 function farbeFuerFach(fachName) {
 
     const index =
@@ -69,6 +73,7 @@ function farbeFuerFach(fachName) {
 
 
     if (index === -1) {
+
         return fachFarben[0];
     }
 
@@ -92,8 +97,9 @@ function darkModeLaden() {
 
         document.body
             .classList
-            .add("dark-mode");
-
+            .add(
+                "dark-mode"
+            );
     }
 
 
@@ -145,6 +151,7 @@ function darkModeButtonAktualisieren() {
 
 
     if (!icon || !text) {
+
         return;
     }
 
@@ -159,14 +166,16 @@ function darkModeButtonAktualisieren() {
 
     if (aktiv) {
 
-        icon.textContent = "☀️";
+        icon.textContent =
+            "☀️";
 
         text.textContent =
             "Light Mode";
 
     } else {
 
-        icon.textContent = "🌙";
+        icon.textContent =
+            "🌙";
 
         text.textContent =
             "Dark Mode";
@@ -230,15 +239,6 @@ async function appStarten() {
                         name:
                             fach.name,
 
-                        ziel:
-                            Number(
-                                fach.wochenzielStunden
-                                ??
-                                fach.ziel
-                                ??
-                                5
-                            ),
-
                         gelernt:
                             Number(
                                 fach.gelernteStunden
@@ -258,15 +258,34 @@ async function appStarten() {
         } catch (fehler) {
 
             console.error(
-                "JSON konnte nicht geladen werden:",
                 fehler
             );
 
 
             faecher = [];
+
             aufgaben = [];
         }
     }
+
+
+    faecher =
+        faecher.map(
+            fach => ({
+
+                name:
+                    fach.name,
+
+                gelernt:
+                    Number(
+                        fach.gelernt || 0
+                    )
+
+            })
+        );
+
+
+    pruefeAutomatischErledigteAufgaben();
 
 
     speichern();
@@ -279,14 +298,24 @@ async function appStarten() {
 function speichern() {
 
     localStorage.setItem(
+
         "studybuddy_faecher",
-        JSON.stringify(faecher)
+
+        JSON.stringify(
+            faecher
+        )
+
     );
 
 
     localStorage.setItem(
+
         "studybuddy_aufgaben",
-        JSON.stringify(aufgaben)
+
+        JSON.stringify(
+            aufgaben
+        )
+
     );
 }
 
@@ -342,31 +371,20 @@ function zeigeSeite(
         );
 
 
-    if (seitenId === "dashboard") {
+    if (
+        seitenId ===
+        "kalender"
+    ) {
 
-        aktualisiereUebersicht();
-        aktualisiereWochenstatistik();
-        zeigeDashboardAufgaben();
-        zeigeDashboardZiele();
+        zeigeKalender();
     }
 
 
-    if (seitenId === "heute") {
-        zeigeHeute();
-    }
+    if (
+        seitenId ===
+        "faecher"
+    ) {
 
-
-    if (seitenId === "aufgaben") {
-        zeigeAufgaben();
-    }
-
-
-    if (seitenId === "erledigt") {
-        zeigeErledigteAufgaben();
-    }
-
-
-    if (seitenId === "faecher") {
         aktualisiereFaecher();
     }
 }
@@ -374,23 +392,21 @@ function zeigeSeite(
 
 
 // ======================================================
-// BERECHNUNGSLOGIK: TAGE BIS ZUR DEADLINE
+// BERECHNUNGSLOGIK:
+// TAGE BIS ZUR DEADLINE
 // ======================================================
 //
-// Berechnet, wie viele Tage bis zur Deadline bleiben.
+// Berechnet die Anzahl der Tage zwischen heute
+// und der Deadline.
 //
-// Diese Zahl wird später vom
-// Dringlichkeitsalgorithmus verwendet.
-//
-// Beispiel:
-//
-// Heute:    10.10.
-// Deadline: 13.10.
-//
-// Ergebnis: 3 Tage
+// Diese Berechnung wird sowohl für die
+// Dringlichkeit als auch für das automatische
+// Wochenziel verwendet.
 //
 
-function tageBisDeadline(deadline) {
+function tageBisDeadline(
+    deadline
+) {
 
     const heute =
         new Date();
@@ -405,7 +421,9 @@ function tageBisDeadline(deadline) {
 
 
     const datum =
-        new Date(deadline);
+        new Date(
+            deadline + "T00:00:00"
+        );
 
 
     datum.setHours(
@@ -419,7 +437,8 @@ function tageBisDeadline(deadline) {
     return Math.ceil(
 
         (
-            datum - heute
+            datum -
+            heute
         )
 
         /
@@ -439,31 +458,97 @@ function tageBisDeadline(deadline) {
 
 
 
-function deutschesDatum(datum) {
+function deutschesDatum(
+    datum
+) {
 
-    return new Date(
-        datum
-    )
-    .toLocaleDateString(
-        "de-DE"
+    const teile =
+        datum.split("-");
+
+
+    return (
+        teile[2]
+        +
+        "."
+        +
+        teile[1]
+        +
+        "."
+        +
+        teile[0]
     );
 }
 
 
 
 // ======================================================
-// HAUPTALGORITHMUS: DRINGLICHKEIT EINER AUFGABE
+// ENTSCHEIDUNGSLOGIK:
+// AUFGABE AUTOMATISCH ERLEDIGEN
+// ======================================================
+//
+// Wenn:
+//
+// investierteZeit >= zeitaufwand
+//
+// wird die Aufgabe automatisch als erledigt markiert.
+//
+// Beispiel:
+//
+// Aufwand:     8 h
+// Investiert:  8 h
+//
+// Ergebnis:
+//
+// ✅ Erledigt
+//
+
+function pruefeAutomatischErledigteAufgaben() {
+
+    aufgaben.forEach(
+        aufgabe => {
+
+
+            const aufwand =
+                Number(
+                    aufgabe.zeitaufwand || 0
+                );
+
+
+            const investiert =
+                Number(
+                    aufgabe.investierteZeit || 0
+                );
+
+
+            if (
+                aufwand > 0
+                &&
+                investiert >= aufwand
+            ) {
+
+                aufgabe.status =
+                    "erledigt";
+            }
+
+        }
+    );
+}
+
+
+
+// ======================================================
+// HAUPTALGORITHMUS:
+// DRINGLICHKEIT EINER AUFGABE
 // ======================================================
 //
 // Berücksichtigt:
 //
-// - Status
 // - Deadline
 // - Priorität
-// - geschätzten Gesamtaufwand
-// - bereits investierte Zeit
-// - verbleibenden Arbeitsaufwand
-// - benötigte Arbeitsstunden pro Tag
+// - Gesamtaufwand
+// - investierte Zeit
+// - Restaufwand
+// - benötigte Stunden pro Tag
 //
 //
 // Restaufwand:
@@ -516,7 +601,7 @@ function berechneDringlichkeit(
         );
 
 
-    const zeitaufwand =
+    const aufwand =
         Number(
             aufgabe.zeitaufwand || 0
         );
@@ -528,27 +613,58 @@ function berechneDringlichkeit(
         );
 
 
-    const restzeit =
+    const restaufwand =
         Math.max(
+
             0,
-            zeitaufwand - investiert
+
+            aufwand -
+            investiert
+
         );
+
+
+    if (
+        aufwand > 0
+        &&
+        restaufwand === 0
+    ) {
+
+        return {
+
+            rang: 0,
+
+            emoji: "✅",
+
+            text: "Erledigt",
+
+            klasse: "fertig",
+
+            stundenProTag: 0
+
+        };
+    }
 
 
     let stundenProTag;
 
 
-    if (tage > 0) {
+    if (
+        tage > 0
+    ) {
 
         stundenProTag =
-            restzeit / tage;
+            restaufwand /
+            tage;
 
     } else {
 
         stundenProTag =
-            restzeit > 0
-                ? Infinity
-                : 0;
+            restaufwand > 0
+                ?
+                Infinity
+                :
+                0;
     }
 
 
@@ -581,7 +697,8 @@ function berechneDringlichkeit(
         stundenProTag >= 1.5
         ||
         (
-            aufgabe.prioritaet === "hoch"
+            aufgabe.prioritaet ===
+            "hoch"
             &&
             tage <= 5
         )
@@ -609,7 +726,8 @@ function berechneDringlichkeit(
         ||
         stundenProTag >= 0.75
         ||
-        aufgabe.prioritaet === "hoch"
+        aufgabe.prioritaet ===
+        "hoch"
     ) {
 
         return {
@@ -648,30 +766,239 @@ function berechneDringlichkeit(
 
 
 // ======================================================
-// ALGORITHMUS: AUTOMATISCHE SORTIERUNG DER AUFGABEN
+// HAUPTALGORITHMUS:
+// AUTOMATISCHES WOCHENZIEL
 // ======================================================
 //
-// Sortierung:
+// Das Wochenziel wird NICHT mehr manuell eingegeben.
 //
-// 1. Dringlichkeitsstufe
-// 2. benötigte Arbeitsstunden pro Tag
+// Für jede offene Aufgabe wird zuerst berechnet:
+//
+// Restaufwand =
+// Zeitaufwand - investierte Zeit
+//
+//
+// Danach wird berechnet,
+// wie viel davon pro Tag erledigt werden sollte:
+//
+// Restaufwand / verbleibende Tage
+//
+//
+// Anschließend wird nur der Anteil berechnet,
+// der noch in DIESE WOCHE fällt.
+//
+// Beispiel:
+//
+// Restaufwand: 12 Stunden
+// Noch 21 Tage bis Deadline
+//
+// 12 / 21 = ca. 0,57 Stunden pro Tag
+//
+// Sind noch 5 Tage bis Sonntag:
+//
+// 0,57 * 5 = ca. 2,85 Stunden
+//
+// Diese Aufgabe erhöht das aktuelle Wochenziel
+// also nur um ca. 2,85 Stunden.
+//
+// Gibt es mehrere Aufgaben für ein Fach,
+// werden deren Wochenanteile addiert.
+//
+
+function wochenAnteilAufgabe(
+    aufgabe
+) {
+
+    if (
+        aufgabe.status ===
+        "erledigt"
+    ) {
+
+        return 0;
+    }
+
+
+    const aufwand =
+        Number(
+            aufgabe.zeitaufwand || 0
+        );
+
+
+    const investiert =
+        Number(
+            aufgabe.investierteZeit || 0
+        );
+
+
+    const restaufwand =
+        Math.max(
+
+            0,
+
+            aufwand -
+            investiert
+
+        );
+
+
+    if (
+        restaufwand <= 0
+    ) {
+
+        return 0;
+    }
+
+
+    const tage =
+        tageBisDeadline(
+            aufgabe.deadline
+        );
+
+
+    if (
+        tage <= 0
+    ) {
+
+        return restaufwand;
+    }
+
+
+    const heute =
+        new Date();
+
+
+    const wochentag =
+        heute.getDay();
+
+
+    const tageBisSonntag =
+        wochentag === 0
+            ?
+            1
+            :
+            8 - wochentag;
+
+
+    const tageGesamt =
+        tage + 1;
+
+
+    const tageDieseWoche =
+        Math.min(
+
+            tageGesamt,
+
+            tageBisSonntag
+
+        );
+
+
+    const stundenProTag =
+        restaufwand /
+        tageGesamt;
+
+
+    return (
+        stundenProTag
+        *
+        tageDieseWoche
+    );
+}
+
+
+
+function wochenzielFuerFach(
+    fachName
+) {
+
+    const ziel =
+        aufgaben
+
+        .filter(
+            aufgabe =>
+                aufgabe.fach ===
+                    fachName
+                &&
+                aufgabe.status !==
+                    "erledigt"
+        )
+
+        .reduce(
+            (
+                summe,
+                aufgabe
+            ) =>
+
+                summe
+                +
+                wochenAnteilAufgabe(
+                    aufgabe
+                ),
+
+            0
+        );
+
+
+    return Math.round(
+        ziel * 100
+    ) / 100;
+}
+
+
+
+function gesamtesWochenziel() {
+
+    return faecher.reduce(
+        (
+            summe,
+            fach
+        ) =>
+
+            summe
+            +
+            wochenzielFuerFach(
+                fach.name
+            ),
+
+        0
+    );
+}
+
+
+
+// ======================================================
+// ALGORITHMUS:
+// AUTOMATISCHE SORTIERUNG
+// ======================================================
+//
+// Sortiert nach:
+//
+// 1. Dringlichkeit
+// 2. benötigten Stunden pro Tag
 // 3. Deadline
 //
-// Dadurch stehen die wichtigsten Aufgaben
-// automatisch ganz oben.
-//
 
-function sortiereAufgaben(liste) {
+function sortiereAufgaben(
+    liste
+) {
 
     return liste.sort(
-        (a, b) => {
+        (
+            a,
+            b
+        ) => {
+
 
             const aInfo =
-                berechneDringlichkeit(a);
+                berechneDringlichkeit(
+                    a
+                );
 
 
             const bInfo =
-                berechneDringlichkeit(b);
+                berechneDringlichkeit(
+                    b
+                );
 
 
             if (
@@ -680,8 +1007,7 @@ function sortiereAufgaben(liste) {
             ) {
 
                 return (
-                    bInfo.rang
-                    -
+                    bInfo.rang -
                     aInfo.rang
                 );
             }
@@ -693,17 +1019,20 @@ function sortiereAufgaben(liste) {
             ) {
 
                 return (
-                    bInfo.stundenProTag
-                    -
+                    bInfo.stundenProTag -
                     aInfo.stundenProTag
                 );
             }
 
 
             return (
-                new Date(a.deadline)
+                new Date(
+                    a.deadline
+                )
                 -
-                new Date(b.deadline)
+                new Date(
+                    b.deadline
+                )
             );
 
         }
@@ -726,22 +1055,29 @@ function updateAufgabe(
 
 
     if (!aufgabe) {
+
         return;
     }
 
 
     if (
-        feld === "zeitaufwand"
+        feld ===
+            "zeitaufwand"
         ||
-        feld === "investierteZeit"
+        feld ===
+            "investierteZeit"
     ) {
 
         wert =
-            Number(wert);
+            Number(
+                wert
+            );
 
 
         if (
-            Number.isNaN(wert)
+            Number.isNaN(
+                wert
+            )
             ||
             wert < 0
         ) {
@@ -755,6 +1091,9 @@ function updateAufgabe(
         wert;
 
 
+    pruefeAutomatischErledigteAufgaben();
+
+
     speichern();
 
     allesAktualisieren();
@@ -762,7 +1101,9 @@ function updateAufgabe(
 
 
 
-function erledigtUmschalten(id) {
+function erledigtUmschalten(
+    id
+) {
 
     const aufgabe =
         aufgaben.find(
@@ -772,6 +1113,7 @@ function erledigtUmschalten(id) {
 
 
     if (!aufgabe) {
+
         return;
     }
 
@@ -783,6 +1125,35 @@ function erledigtUmschalten(id) {
 
         aufgabe.status =
             "offen";
+
+
+        if (
+            Number(
+                aufgabe.zeitaufwand
+            ) > 0
+            &&
+            Number(
+                aufgabe.investierteZeit
+            )
+            >=
+            Number(
+                aufgabe.zeitaufwand
+            )
+        ) {
+
+            aufgabe.investierteZeit =
+                Math.max(
+
+                    0,
+
+                    Number(
+                        aufgabe.zeitaufwand
+                    )
+                    -
+                    0.5
+
+                );
+        }
 
     } else {
 
@@ -841,7 +1212,7 @@ function aufgabeSpeichern() {
             .value;
 
 
-    const status =
+    let status =
         document
             .getElementById(
                 "status"
@@ -894,6 +1265,19 @@ function aufgabeSpeichern() {
     }
 
 
+    if (
+        zeitaufwand > 0
+        &&
+        investierteZeit
+        >=
+        zeitaufwand
+    ) {
+
+        status =
+            "erledigt";
+    }
+
+
     aufgaben.push({
 
         id:
@@ -931,6 +1315,7 @@ function aufgabeSpeichern() {
 
     formularLeeren();
 
+
     speichern();
 
     allesAktualisieren();
@@ -940,76 +1325,63 @@ function aufgabeSpeichern() {
 
 function formularLeeren() {
 
-    document
-        .getElementById(
-            "aufgabeName"
-        )
-        .value = "";
+    document.getElementById(
+        "aufgabeName"
+    ).value = "";
 
 
-    document
-        .getElementById(
-            "aufgabeFach"
-        )
-        .value = "";
+    document.getElementById(
+        "aufgabeFach"
+    ).value = "";
 
 
-    document
-        .getElementById(
-            "typ"
-        )
-        .value = "Prüfung";
+    document.getElementById(
+        "deadline"
+    ).value = "";
 
 
-    document
-        .getElementById(
-            "deadline"
-        )
-        .value = "";
+    document.getElementById(
+        "zeitaufwand"
+    ).value = "";
 
 
-    document
-        .getElementById(
-            "prioritaet"
-        )
-        .value = "hoch";
+    document.getElementById(
+        "investierteZeit"
+    ).value = "";
 
 
-    document
-        .getElementById(
-            "status"
-        )
-        .value = "offen";
+    document.getElementById(
+        "notiz"
+    ).value = "";
 
 
-    document
-        .getElementById(
-            "zeitaufwand"
-        )
-        .value = "";
+    document.getElementById(
+        "typ"
+    ).value =
+        "Prüfung";
 
 
-    document
-        .getElementById(
-            "investierteZeit"
-        )
-        .value = "";
+    document.getElementById(
+        "prioritaet"
+    ).value =
+        "hoch";
 
 
-    document
-        .getElementById(
-            "notiz"
-        )
-        .value = "";
+    document.getElementById(
+        "status"
+    ).value =
+        "offen";
 }
 
 
 
-function aufgabeLoeschen(id) {
+function aufgabeLoeschen(
+    id
+) {
 
     if (
         !confirm(
-            "Möchtest du diese Aufgabe wirklich löschen?"
+            "Aufgabe wirklich löschen?"
         )
     ) {
 
@@ -1020,7 +1392,8 @@ function aufgabeLoeschen(id) {
     aufgaben =
         aufgaben.filter(
             aufgabe =>
-                aufgabe.id !== id
+                aufgabe.id !==
+                id
         );
 
 
@@ -1031,23 +1404,29 @@ function aufgabeLoeschen(id) {
 
 
 
-function sichererText(text) {
+function sichererText(
+    text
+) {
 
     return String(
         text ?? ""
     )
+
     .replaceAll(
         "&",
         "&amp;"
     )
+
     .replaceAll(
         "\"",
         "&quot;"
     )
+
     .replaceAll(
         "<",
         "&lt;"
     )
+
     .replaceAll(
         ">",
         "&gt;"
@@ -1075,9 +1454,7 @@ function erstelleAufgabenKarte(
             Number(
                 aufgabe.zeitaufwand || 0
             )
-
             -
-
             Number(
                 aufgabe.investierteZeit || 0
             )
@@ -1105,7 +1482,9 @@ function erstelleAufgabenKarte(
         `6px solid ${farbe.rand}`;
 
 
-    if (bearbeitbar) {
+    if (
+        bearbeitbar
+    ) {
 
         karte.innerHTML = `
 
@@ -1146,9 +1525,11 @@ function erstelleAufgabenKarte(
 
 
                 <span class="typ-badge">
+
                     ${sichererText(
                         aufgabe.typ
                     )}
+
                 </span>
 
             </div>
@@ -1156,9 +1537,7 @@ function erstelleAufgabenKarte(
 
             <div class="edit-row">
 
-                <label>
-                    📚 Fach
-                </label>
+                <label>📚 Fach</label>
 
                 <select
                     class="inline-select"
@@ -1181,7 +1560,8 @@ function erstelleAufgabenKarte(
                                 )}"
 
                                 ${
-                                    fach.name ===
+                                    fach.name
+                                    ===
                                     aufgabe.fach
 
                                     ?
@@ -1208,9 +1588,7 @@ function erstelleAufgabenKarte(
 
             <div class="edit-row">
 
-                <label>
-                    📝 Typ
-                </label>
+                <label>📝 Typ</label>
 
                 <select
                     class="inline-select"
@@ -1231,6 +1609,7 @@ function erstelleAufgabenKarte(
                         "Lernaufgabe",
                         "Projekt",
                         "Sonstiges"
+
                     ].map(
                         typ => `
 
@@ -1263,13 +1642,13 @@ function erstelleAufgabenKarte(
 
             <div class="edit-row">
 
-                <label>
-                    📅 Deadline
-                </label>
+                <label>📅 Deadline</label>
 
                 <input
                     class="inline-input"
+
                     type="date"
+
                     value="${aufgabe.deadline}"
 
                     onchange="
@@ -1286,9 +1665,7 @@ function erstelleAufgabenKarte(
 
             <div class="edit-row">
 
-                <label>
-                    🚦 Priorität
-                </label>
+                <label>🚦 Priorität</label>
 
                 <select
                     class="inline-select"
@@ -1304,21 +1681,44 @@ function erstelleAufgabenKarte(
 
                     <option
                         value="hoch"
-                        ${aufgabe.prioritaet === "hoch" ? "selected" : ""}
+                        ${
+                            aufgabe.prioritaet ===
+                            "hoch"
+                            ?
+                            "selected"
+                            :
+                            ""
+                        }
                     >
                         Hoch
                     </option>
 
+
                     <option
                         value="mittel"
-                        ${aufgabe.prioritaet === "mittel" ? "selected" : ""}
+                        ${
+                            aufgabe.prioritaet ===
+                            "mittel"
+                            ?
+                            "selected"
+                            :
+                            ""
+                        }
                     >
                         Mittel
                     </option>
 
+
                     <option
                         value="niedrig"
-                        ${aufgabe.prioritaet === "niedrig" ? "selected" : ""}
+                        ${
+                            aufgabe.prioritaet ===
+                            "niedrig"
+                            ?
+                            "selected"
+                            :
+                            ""
+                        }
                     >
                         Niedrig
                     </option>
@@ -1330,9 +1730,7 @@ function erstelleAufgabenKarte(
 
             <div class="edit-row">
 
-                <label>
-                    📌 Status
-                </label>
+                <label>📌 Status</label>
 
                 <select
                     class="inline-select"
@@ -1348,21 +1746,44 @@ function erstelleAufgabenKarte(
 
                     <option
                         value="offen"
-                        ${aufgabe.status === "offen" ? "selected" : ""}
+                        ${
+                            aufgabe.status ===
+                            "offen"
+                            ?
+                            "selected"
+                            :
+                            ""
+                        }
                     >
                         Offen
                     </option>
 
+
                     <option
                         value="in Bearbeitung"
-                        ${aufgabe.status === "in Bearbeitung" ? "selected" : ""}
+                        ${
+                            aufgabe.status ===
+                            "in Bearbeitung"
+                            ?
+                            "selected"
+                            :
+                            ""
+                        }
                     >
                         In Bearbeitung
                     </option>
 
+
                     <option
                         value="erledigt"
-                        ${aufgabe.status === "erledigt" ? "selected" : ""}
+                        ${
+                            aufgabe.status ===
+                            "erledigt"
+                            ?
+                            "selected"
+                            :
+                            ""
+                        }
                     >
                         Erledigt
                     </option>
@@ -1374,14 +1795,15 @@ function erstelleAufgabenKarte(
 
             <div class="edit-row">
 
-                <label>
-                    ⏱ Aufwand
-                </label>
+                <label>⏱ Aufwand</label>
 
                 <input
                     class="inline-input"
+
                     type="number"
+
                     min="0"
+
                     step="0.5"
 
                     value="${Number(
@@ -1402,14 +1824,15 @@ function erstelleAufgabenKarte(
 
             <div class="edit-row">
 
-                <label>
-                    ✅ Investiert
-                </label>
+                <label>✅ Investiert</label>
 
                 <input
                     class="inline-input"
+
                     type="number"
+
                     min="0"
+
                     step="0.5"
 
                     value="${Number(
@@ -1433,8 +1856,10 @@ function erstelleAufgabenKarte(
                 Noch benötigte Zeit:
 
                 <strong>
+
                     ${restzeit.toFixed(1)}
                     Stunden
+
                 </strong>
 
             </div>
@@ -1442,6 +1867,7 @@ function erstelleAufgabenKarte(
 
             <textarea
                 class="notiz-inline"
+
                 placeholder="Notiz..."
 
                 onchange="
@@ -1462,8 +1888,11 @@ function erstelleAufgabenKarte(
                     ${info.klasse}
                 "
             >
+
                 ${info.emoji}
+
                 ${info.text}
+
             </div>
 
 
@@ -1502,7 +1931,7 @@ function erstelleAufgabenKarte(
 
         karte.innerHTML = `
 
-            <h3 style="margin-bottom:12px;">
+            <h3>
                 ${sichererText(
                     aufgabe.aufgabe
                 )}
@@ -1522,16 +1951,20 @@ function erstelleAufgabenKarte(
                         ${farbe.text};
                     "
                 >
+
                     ${sichererText(
                         aufgabe.fach
                     )}
+
                 </span>
 
 
                 <span class="typ-badge">
+
                     ${sichererText(
                         aufgabe.typ
                     )}
+
                 </span>
 
             </div>
@@ -1540,6 +1973,7 @@ function erstelleAufgabenKarte(
             <div class="restzeit">
 
                 📅
+
                 ${deutschesDatum(
                     aufgabe.deadline
                 )}
@@ -1553,7 +1987,7 @@ function erstelleAufgabenKarte(
 
                 ${restzeit.toFixed(1)}
 
-                Stunden Arbeitsaufwand
+                Stunden
 
             </div>
 
@@ -1564,8 +1998,11 @@ function erstelleAufgabenKarte(
                     ${info.klasse}
                 "
             >
+
                 ${info.emoji}
+
                 ${info.text}
+
             </div>
 
         `;
@@ -1581,100 +2018,29 @@ function erstelleErledigtKarte(
     aufgabe
 ) {
 
-    const farbe =
-        farbeFuerFach(
-            aufgabe.fach
-        );
-
-
     const karte =
-        document.createElement(
-            "div"
+        erstelleAufgabenKarte(
+            aufgabe,
+            false
         );
 
 
-    karte.className =
-        "aufgaben-karte erledigt-karte";
-
-
-    karte.style.borderLeft =
-        `6px solid ${farbe.rand}`;
-
-
-    karte.innerHTML = `
+    karte.innerHTML =
+        `
 
         <div class="erledigt-banner">
             ✅ Erledigt
         </div>
 
+        `
 
-        <h3 style="margin-bottom:12px;">
-            ${sichererText(
-                aufgabe.aufgabe
-            )}
-        </h3>
+        +
 
+        karte.innerHTML
 
-        <div class="badges">
+        +
 
-            <span
-                class="fach-badge"
-
-                style="
-                    background:
-                    ${farbe.hintergrund};
-
-                    color:
-                    ${farbe.text};
-                "
-            >
-                ${sichererText(
-                    aufgabe.fach
-                )}
-            </span>
-
-
-            <span class="typ-badge">
-                ${sichererText(
-                    aufgabe.typ
-                )}
-            </span>
-
-        </div>
-
-
-        <div class="restzeit">
-
-            📅 Ursprüngliche Deadline:
-
-            <strong>
-                ${deutschesDatum(
-                    aufgabe.deadline
-                )}
-            </strong>
-
-        </div>
-
-
-        ${
-            aufgabe.notiz
-
-            ?
-
-            `
-            <div class="restzeit">
-                📝
-                ${sichererText(
-                    aufgabe.notiz
-                )}
-            </div>
-            `
-
-            :
-
-            ""
-        }
-
+        `
 
         <div class="aktionen">
 
@@ -1705,7 +2071,7 @@ function erstelleErledigtKarte(
 
         </div>
 
-    `;
+        `;
 
 
     return karte;
@@ -1758,51 +2124,69 @@ function zeigeAufgaben() {
         );
 
 
-    if (suche !== "") {
+    if (
+        suche !== ""
+    ) {
 
         gefiltert =
             gefiltert.filter(
                 aufgabe =>
 
                     aufgabe.aufgabe
-                        .toLowerCase()
-                        .includes(suche)
+                    .toLowerCase()
+                    .includes(
+                        suche
+                    )
 
                     ||
 
                     aufgabe.fach
-                        .toLowerCase()
-                        .includes(suche)
+                    .toLowerCase()
+                    .includes(
+                        suche
+                    )
             );
     }
 
 
-    if (fach !== "alle") {
+    if (
+        fach !==
+        "alle"
+    ) {
 
         gefiltert =
             gefiltert.filter(
                 aufgabe =>
-                    aufgabe.fach === fach
+                    aufgabe.fach ===
+                    fach
             );
     }
 
 
-    if (status !== "alle") {
+    if (
+        status !==
+        "alle"
+    ) {
 
         gefiltert =
             gefiltert.filter(
                 aufgabe =>
-                    aufgabe.status === status
+                    aufgabe.status ===
+                    status
             );
     }
 
 
-    if (typ !== "alle") {
+    if (
+        typ !==
+        "alle"
+    ) {
 
         gefiltert =
             gefiltert.filter(
                 aufgabe =>
-                    aufgabe.typ === typ
+                    aufgabe.typ ===
+                    typ
             );
     }
 
@@ -1827,12 +2211,13 @@ function zeigeAufgaben() {
 
         `;
 
+
         return;
     }
 
 
     gefiltert.forEach(
-        aufgabe => {
+        aufgabe =>
 
             liste.appendChild(
 
@@ -1841,9 +2226,7 @@ function zeigeAufgaben() {
                     true
                 )
 
-            );
-
-        }
+            )
     );
 }
 
@@ -1858,18 +2241,11 @@ function zeigeErledigteAufgaben() {
 
 
     const erledigte =
-        aufgaben
-            .filter(
-                aufgabe =>
-                    aufgabe.status ===
-                    "erledigt"
-            )
-            .sort(
-                (a, b) =>
-                    new Date(b.deadline)
-                    -
-                    new Date(a.deadline)
-            );
+        aufgaben.filter(
+            aufgabe =>
+                aufgabe.status ===
+                "erledigt"
+        );
 
 
     container.innerHTML = "";
@@ -1882,17 +2258,18 @@ function zeigeErledigteAufgaben() {
         container.innerHTML = `
 
             <div class="leer">
-                Hier landen deine erledigten Aufgaben. ✅
+                Noch keine erledigten Aufgaben.
             </div>
 
         `;
+
 
         return;
     }
 
 
     erledigte.forEach(
-        aufgabe => {
+        aufgabe =>
 
             container.appendChild(
 
@@ -1900,9 +2277,7 @@ function zeigeErledigteAufgaben() {
                     aufgabe
                 )
 
-            );
-
-        }
+            )
     );
 }
 
@@ -1935,13 +2310,13 @@ function zeigeHeute() {
                 }
 
 
-                const tage =
+                return (
                     tageBisDeadline(
                         aufgabe.deadline
-                    );
-
-
-                return tage <= 2;
+                    )
+                    <=
+                    2
+                );
 
             }
         );
@@ -1956,31 +2331,24 @@ function zeigeHeute() {
 
 
     if (
-        relevante.length === 0
+        relevante.length ===
+        0
     ) {
 
         text.textContent =
-            "🎉 Für heute und die nächsten zwei Tage steht nichts Dringendes an.";
+            "🎉 In den nächsten zwei Tagen ist nichts fällig.";
 
-
-        container.innerHTML = `
-
-            <div class="leer">
-                Du kannst dich entspannt auf deine Lernziele konzentrieren. 😌
-            </div>
-
-        `;
 
         return;
     }
 
 
     text.textContent =
-        `Du hast ${relevante.length} Aufgabe(n), die jetzt oder sehr bald relevant sind.`;
+        `${relevante.length} Aufgabe(n) sind jetzt besonders wichtig.`;
 
 
     relevante.forEach(
-        aufgabe => {
+        aufgabe =>
 
             container.appendChild(
 
@@ -1989,9 +2357,7 @@ function zeigeHeute() {
                     false
                 )
 
-            );
-
-        }
+            )
     );
 }
 
@@ -2005,10 +2371,7 @@ function zeigeDashboardAufgaben() {
         );
 
 
-    container.innerHTML = "";
-
-
-    const wichtigste =
+    const liste =
         aufgaben.filter(
             aufgabe =>
                 aufgabe.status !==
@@ -2017,33 +2380,20 @@ function zeigeDashboardAufgaben() {
 
 
     sortiereAufgaben(
-        wichtigste
+        liste
     );
 
 
-    if (
-        wichtigste.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div class="leer">
-                Alle Aufgaben erledigt. Stark! 🎉
-            </div>
-
-        `;
-
-        return;
-    }
+    container.innerHTML = "";
 
 
-    wichtigste
+    liste
         .slice(
             0,
             3
         )
         .forEach(
-            aufgabe => {
+            aufgabe =>
 
                 container.appendChild(
 
@@ -2052,9 +2402,7 @@ function zeigeDashboardAufgaben() {
                         false
                     )
 
-                );
-
-            }
+                )
         );
 }
 
@@ -2064,15 +2412,13 @@ function aktualisiereUebersicht() {
 
     document.getElementById(
         "gesamt"
-    )
-    .textContent =
+    ).textContent =
         aufgaben.length;
 
 
     document.getElementById(
         "offen"
-    )
-    .textContent =
+    ).textContent =
         aufgaben.filter(
             aufgabe =>
                 aufgabe.status !==
@@ -2082,129 +2428,104 @@ function aktualisiereUebersicht() {
 
     document.getElementById(
         "dringend"
-    )
-    .textContent =
+    ).textContent =
         aufgaben.filter(
-            aufgabe => {
+            aufgabe =>
 
-                const info =
-                    berechneDringlichkeit(
-                        aufgabe
-                    );
-
-
-                return (
-                    info.rang >= 3
-                    &&
-                    aufgabe.status !==
+                aufgabe.status !==
                     "erledigt"
-                );
 
-            }
+                &&
+
+                berechneDringlichkeit(
+                    aufgabe
+                ).rang >= 3
         ).length;
 }
 
 
 
 // ======================================================
-// BERECHNUNGSLOGIK: WOCHENSTATISTIK
+// BERECHNUNGSLOGIK:
+// GESAMTER WOCHENFORTSCHRITT
 // ======================================================
 //
-// Addiert die Lernstunden aller Fächer.
+// Alle automatisch berechneten Fachziele
+// werden addiert.
 //
-// Anschließend:
+// Danach:
 //
-// gesamte Lernzeit / gesamtes Wochenziel * 100
-//
-// Beispiel:
-//
-// 15 Stunden / 30 Stunden * 100
-// = 50 %
+// gelernte Stunden / Wochenziel * 100
 //
 
 function aktualisiereWochenstatistik() {
 
-    const gesamtGelernt =
+    const gelernt =
         faecher.reduce(
-            (summe, fach) =>
+            (
+                summe,
+                fach
+            ) =>
+
                 summe
                 +
                 Number(
                     fach.gelernt || 0
                 ),
+
             0
         );
 
 
-    const gesamtZiel =
-        faecher.reduce(
-            (summe, fach) =>
-                summe
-                +
-                Number(
-                    fach.ziel || 0
-                ),
-            0
-        );
+    const ziel =
+        gesamtesWochenziel();
 
 
     let prozent = 0;
 
 
     if (
-        gesamtZiel > 0
+        ziel > 0
     ) {
 
         prozent =
             Math.round(
 
-                (
-                    gesamtGelernt
-                    /
-                    gesamtZiel
-                )
-
+                gelernt
+                /
+                ziel
                 *
-
                 100
 
             );
     }
 
 
-    const angezeigtesProzent =
-        Math.min(
-            100,
-            prozent
-        );
+    document.getElementById(
+        "wochenStunden"
+    ).textContent =
+        `${gelernt.toFixed(2)} h`;
 
 
     document.getElementById(
-        "wochenStunden"
-    )
-    .textContent =
-        `${gesamtGelernt.toFixed(2)} h`;
+        "wochenZiel"
+    ).textContent =
+        `${ziel.toFixed(2)} h`;
 
 
     document.getElementById(
         "wochenProzent"
-    )
-    .textContent =
-        `${prozent} %`;
+    ).textContent =
+        `${prozent} % erreicht`;
 
 
-    const progress =
-        document.getElementById(
-            "wochenProgress"
-        );
-
-
-    progress.style.width =
-        `${angezeigtesProzent}%`;
-
-
-    progress.style.background =
-        "linear-gradient(90deg, #94dfbd, #ad9ade)";
+    document.getElementById(
+        "wochenProgress"
+    ).style.width =
+        `${Math.min(
+            100,
+            prozent
+        )}%`;
 }
 
 
@@ -2212,30 +2533,20 @@ function aktualisiereWochenstatistik() {
 function fachHinzufuegen() {
 
     const name =
-        document.getElementById(
-            "neuesFach"
-        )
-        .value
-        .trim();
-
-
-    const ziel =
-        Number(
-            document.getElementById(
-                "neuesZiel"
+        document
+            .getElementById(
+                "neuesFach"
             )
             .value
-        );
+            .trim();
 
 
     if (
         name === ""
-        ||
-        ziel <= 0
     ) {
 
         alert(
-            "Bitte Fachname und Wochenziel eingeben."
+            "Bitte einen Fachnamen eingeben."
         );
 
         return;
@@ -2246,15 +2557,15 @@ function fachHinzufuegen() {
         faecher.some(
             fach =>
                 fach.name
-                    .toLowerCase()
-
+                .toLowerCase()
                 ===
-
                 name.toLowerCase()
         );
 
 
-    if (existiert) {
+    if (
+        existiert
+    ) {
 
         alert(
             "Dieses Fach gibt es bereits."
@@ -2266,25 +2577,18 @@ function fachHinzufuegen() {
 
     faecher.push({
 
-        name: name,
+        name:
+            name,
 
-        ziel: ziel,
-
-        gelernt: 0
+        gelernt:
+            0
 
     });
 
 
     document.getElementById(
         "neuesFach"
-    )
-    .value = "";
-
-
-    document.getElementById(
-        "neuesZiel"
-    )
-    .value = "";
+    ).value = "";
 
 
     speichern();
@@ -2294,13 +2598,15 @@ function fachHinzufuegen() {
 
 
 
-function fachLoeschen(index) {
+function fachLoeschen(
+    index
+) {
 
     const fach =
         faecher[index];
 
 
-    const verwendet =
+    const benutzt =
         aufgaben.some(
             aufgabe =>
                 aufgabe.fach ===
@@ -2308,10 +2614,12 @@ function fachLoeschen(index) {
         );
 
 
-    if (verwendet) {
+    if (
+        benutzt
+    ) {
 
         alert(
-            "Dieses Fach wird noch bei mindestens einer Aufgabe verwendet."
+            "Dieses Fach wird noch bei Aufgaben verwendet."
         );
 
         return;
@@ -2319,80 +2627,37 @@ function fachLoeschen(index) {
 
 
     if (
-        !confirm(
-            `Möchtest du "${fach.name}" wirklich löschen?`
+        confirm(
+            `Fach "${fach.name}" löschen?`
         )
     ) {
 
-        return;
-    }
-
-
-    faecher.splice(
-        index,
-        1
-    );
-
-
-    speichern();
-
-    allesAktualisieren();
-}
-
-
-
-function zielAendern(index) {
-
-    const neuesZiel =
-        Number(
-            prompt(
-
-                `Neues Wochenziel für ${faecher[index].name}:`,
-
-                faecher[index].ziel
-
-            )
+        faecher.splice(
+            index,
+            1
         );
 
 
-    if (
-        neuesZiel <= 0
-        ||
-        Number.isNaN(
-            neuesZiel
-        )
-    ) {
+        speichern();
 
-        return;
+        allesAktualisieren();
     }
-
-
-    faecher[index].ziel =
-        neuesZiel;
-
-
-    speichern();
-
-    allesAktualisieren();
 }
 
 
 
 // ======================================================
-// BERECHNUNGSLOGIK: LERNZEIT ÄNDERN
+// BERECHNUNGSLOGIK:
+// LERNZEIT ADDIEREN UND SUBTRAHIEREN
 // ======================================================
-//
-// Positive Werte:
 //
 // +0.5 = +30 Minuten
 // +1   = +1 Stunde
 //
-// Negative Werte:
-//
 // -0.5 = -30 Minuten
 // -1   = -1 Stunde
 //
-// Die Lernzeit darf nicht unter 0 fallen.
+// Die Lernzeit darf niemals negativ werden.
 //
 
 function lernzeitAendern(
@@ -2408,7 +2673,8 @@ function lernzeitAendern(
         faecher[index].gelernt < 0
     ) {
 
-        faecher[index].gelernt = 0;
+        faecher[index].gelernt =
+            0;
     }
 
 
@@ -2451,7 +2717,9 @@ function sliderAendern(
 
 
 
-function timerStarten(index) {
+function timerStarten(
+    index
+) {
 
     if (
         aktiverTimer !==
@@ -2459,7 +2727,7 @@ function timerStarten(index) {
     ) {
 
         alert(
-            "Es läuft bereits ein Lerntimer."
+            "Es läuft bereits ein Timer."
         );
 
         return;
@@ -2476,11 +2744,8 @@ function timerStarten(index) {
 
     timerInterval =
         setInterval(
-
             timerAktualisieren,
-
             1000
-
         );
 
 
@@ -2518,13 +2783,13 @@ function timerAktualisieren() {
 
     const anzeige =
         document.getElementById(
-
             `timer-${aktiverTimer}`
-
         );
 
 
-    if (anzeige) {
+    if (
+        anzeige
+    ) {
 
         anzeige.textContent =
             sekundenFormat(
@@ -2536,26 +2801,24 @@ function timerAktualisieren() {
 
 
 // ======================================================
-// BERECHNUNGSLOGIK: TIMERZEIT ADDIEREN
+// BERECHNUNGSLOGIK:
+// TIMERZEIT AUTOMATISCH ADDIEREN
 // ======================================================
 //
-// Beim Stoppen:
-//
-// aktuelle Zeit - Startzeit
-// = vergangene Zeit
-//
-// Sekunden / 3600
-// = Stunden
+// Sekunden / 3600 = Stunden
 //
 // Beispiel:
 //
-// 1800 / 3600 = 0,5 Stunden
+// 1800 Sekunden / 3600
+// = 0,5 Stunden
 //
-// Diese Zeit wird automatisch zur
-// bereits gelernten Zeit addiert.
+// Diese Zeit wird automatisch zur Lernzeit
+// des jeweiligen Faches addiert.
 //
 
-function timerStoppen(index) {
+function timerStoppen(
+    index
+) {
 
     if (
         aktiverTimer !==
@@ -2566,7 +2829,7 @@ function timerStoppen(index) {
     }
 
 
-    const vergangeneSekunden =
+    const sekunden =
         (
             Date.now()
             -
@@ -2578,14 +2841,13 @@ function timerStoppen(index) {
         1000;
 
 
-    const gelernteStunden =
-        vergangeneSekunden
-        /
+    const stunden =
+        sekunden /
         3600;
 
 
     faecher[index].gelernt +=
-        gelernteStunden;
+        stunden;
 
 
     faecher[index].gelernt =
@@ -2607,9 +2869,16 @@ function timerStoppen(index) {
     );
 
 
-    aktiverTimer = null;
-    timerStart = null;
-    timerInterval = null;
+    aktiverTimer =
+        null;
+
+
+    timerStart =
+        null;
+
+
+    timerInterval =
+        null;
 
 
     speichern();
@@ -2625,7 +2894,8 @@ function sekundenFormat(
 
     const stunden =
         Math.floor(
-            sekunden / 3600
+            sekunden /
+            3600
         );
 
 
@@ -2633,7 +2903,8 @@ function sekundenFormat(
         Math.floor(
 
             (
-                sekunden % 3600
+                sekunden %
+                3600
             )
 
             /
@@ -2644,7 +2915,8 @@ function sekundenFormat(
 
 
     const rest =
-        sekunden % 60;
+        sekunden %
+        60;
 
 
     return (
@@ -2732,7 +3004,10 @@ function aktualisiereFaecher() {
 
 
     faecher.forEach(
-        (fach, index) => {
+        (
+            fach,
+            index
+        ) => {
 
 
             const option =
@@ -2754,52 +3029,66 @@ function aktualisiereFaecher() {
             );
 
 
-            const filterOption =
+            const filter =
                 document.createElement(
                     "option"
                 );
 
 
-            filterOption.value =
+            filter.value =
                 fach.name;
 
 
-            filterOption.textContent =
+            filter.textContent =
                 fach.name;
 
 
             fachFilter.appendChild(
-                filterOption
+                filter
             );
 
 
-            const prozent =
-                Math.min(
+            const ziel =
+                wochenzielFuerFach(
+                    fach.name
+                );
 
-                    100,
 
+            let prozent = 0;
+
+
+            if (
+                ziel > 0
+            ) {
+
+                prozent =
                     Math.round(
 
-                        (
+                        Number(
                             fach.gelernt
-                            /
-                            fach.ziel
                         )
+
+                        /
+
+                        ziel
 
                         *
 
                         100
 
-                    )
-
-                );
+                    );
+            }
 
 
             const sliderMax =
                 Math.max(
-                    fach.ziel,
+
+                    ziel,
+
                     fach.gelernt,
+
                     1
+
                 );
 
 
@@ -2807,6 +3096,11 @@ function aktualisiereFaecher() {
                 farbeFuerFach(
                     fach.name
                 );
+
+
+            const timerLaeuft =
+                aktiverTimer ===
+                index;
 
 
             const karte =
@@ -2823,28 +3117,23 @@ function aktualisiereFaecher() {
                 `5px solid ${farbe.rand}`;
 
 
-            const timerLaeuft =
-                aktiverTimer ===
-                index;
-
-
             karte.innerHTML = `
 
                 <h3>
+
                     ${sichererText(
                         fach.name
                     )}
+
                 </h3>
 
 
-                <div class="lern-info">
+                <div class="wochenziel-auto">
 
-                    Wochenziel:
+                    🎯 Empfohlenes Wochenziel:
 
-                    <strong>
-                        ${fach.ziel}
-                        Stunden
-                    </strong>
+                    ${ziel.toFixed(2)}
+                    Stunden
 
                 </div>
 
@@ -2874,12 +3163,17 @@ function aktualisiereFaecher() {
                 <div class="progress-info">
 
                     <span>
+
                         ${fach.gelernt.toFixed(2)}
                         h gelernt
+
                     </span>
 
+
                     <span>
+
                         ${prozent} %
+
                     </span>
 
                 </div>
@@ -2892,7 +3186,10 @@ function aktualisiereFaecher() {
 
                         style="
                             width:
-                            ${prozent}%;
+                            ${Math.min(
+                                100,
+                                prozent
+                            )}%;
 
                             background:
                             ${farbe.rand};
@@ -2957,19 +3254,6 @@ function aktualisiereFaecher() {
                         "
                     >
                         − 1 Std.
-                    </button>
-
-
-                    <button
-                        class="btn-gelb"
-
-                        onclick="
-                            zielAendern(
-                                ${index}
-                            )
-                        "
-                    >
-                        Ziel ändern
                     </button>
 
                 </div>
@@ -3053,7 +3337,8 @@ function aktualisiereFaecher() {
 
 
     if (
-        aktiverTimer !== null
+        aktiverTimer !==
+        null
     ) {
 
         timerAktualisieren();
@@ -3077,25 +3362,9 @@ function zeigeDashboardZiele() {
         fach => {
 
 
-            const prozent =
-                Math.min(
-
-                    100,
-
-                    Math.round(
-
-                        (
-                            fach.gelernt
-                            /
-                            fach.ziel
-                        )
-
-                        *
-
-                        100
-
-                    )
-
+            const ziel =
+                wochenzielFuerFach(
+                    fach.name
                 );
 
 
@@ -3103,6 +3372,26 @@ function zeigeDashboardZiele() {
                 farbeFuerFach(
                     fach.name
                 );
+
+
+            let prozent = 0;
+
+
+            if (
+                ziel > 0
+            ) {
+
+                prozent =
+                    Math.round(
+
+                        fach.gelernt
+                        /
+                        ziel
+                        *
+                        100
+
+                    );
+            }
 
 
             const box =
@@ -3122,21 +3411,27 @@ function zeigeDashboardZiele() {
             box.innerHTML = `
 
                 <h4>
+
                     ${sichererText(
                         fach.name
                     )}
+
                 </h4>
 
 
                 <p>
 
                     ${fach.gelernt.toFixed(2)}
+                    h gelernt
 
-                    von
+                </p>
 
-                    ${fach.ziel}
 
-                    Stunden
+                <p>
+
+                    🎯 Empfehlung:
+                    ${ziel.toFixed(2)}
+                    h
 
                 </p>
 
@@ -3148,7 +3443,10 @@ function zeigeDashboardZiele() {
 
                         style="
                             width:
-                            ${prozent}%;
+                            ${Math.min(
+                                100,
+                                prozent
+                            )}%;
 
                             background:
                             ${farbe.rand};
@@ -3170,7 +3468,347 @@ function zeigeDashboardZiele() {
 
 
 
+// ======================================================
+// ALGORITHMUS:
+// KALENDER NACH DEADLINES AUFBAUEN
+// ======================================================
+//
+// Für jeden Tag des ausgewählten Monats wird geprüft:
+//
+// Gibt es Aufgaben mit genau dieser Deadline?
+//
+// Wenn ja:
+// Die Aufgabe wird im entsprechenden Kalendertag
+// angezeigt.
+//
+// Die Farbe wird über farbeFuerFach()
+// aus dem zugehörigen Fach übernommen.
+//
+
+function zeigeKalender() {
+
+    const grid =
+        document.getElementById(
+            "kalenderGrid"
+        );
+
+
+    const titel =
+        document.getElementById(
+            "kalenderTitel"
+        );
+
+
+    if (
+        !grid
+        ||
+        !titel
+    ) {
+
+        return;
+    }
+
+
+    const jahr =
+        kalenderDatum.getFullYear();
+
+
+    const monat =
+        kalenderDatum.getMonth();
+
+
+    titel.textContent =
+        new Date(
+            jahr,
+            monat,
+            1
+        )
+        .toLocaleDateString(
+            "de-DE",
+            {
+                month:
+                    "long",
+
+                year:
+                    "numeric"
+            }
+        );
+
+
+    grid.innerHTML = "";
+
+
+    const ersterTag =
+        new Date(
+            jahr,
+            monat,
+            1
+        );
+
+
+    const letzterTag =
+        new Date(
+            jahr,
+            monat + 1,
+            0
+        );
+
+
+    let startPosition =
+        ersterTag.getDay();
+
+
+    if (
+        startPosition === 0
+    ) {
+
+        startPosition =
+            7;
+    }
+
+
+    startPosition =
+        startPosition - 1;
+
+
+    for (
+        let i = 0;
+        i < startPosition;
+        i++
+    ) {
+
+        const leer =
+            document.createElement(
+                "div"
+            );
+
+
+        leer.className =
+            "kalender-tag leer-tag";
+
+
+        grid.appendChild(
+            leer
+        );
+    }
+
+
+    const heute =
+        new Date();
+
+
+    for (
+        let tag = 1;
+        tag <= letzterTag.getDate();
+        tag++
+    ) {
+
+        const datum =
+            new Date(
+                jahr,
+                monat,
+                tag
+            );
+
+
+        const datumString =
+            [
+                datum.getFullYear(),
+
+                String(
+                    datum.getMonth() + 1
+                )
+                .padStart(
+                    2,
+                    "0"
+                ),
+
+                String(
+                    datum.getDate()
+                )
+                .padStart(
+                    2,
+                    "0"
+                )
+
+            ].join("-");
+
+
+        const tagBox =
+            document.createElement(
+                "div"
+            );
+
+
+        tagBox.className =
+            "kalender-tag";
+
+
+        if (
+            datum.getFullYear() ===
+                heute.getFullYear()
+            &&
+            datum.getMonth() ===
+                heute.getMonth()
+            &&
+            datum.getDate() ===
+                heute.getDate()
+        ) {
+
+            tagBox.classList.add(
+                "heute-tag"
+            );
+        }
+
+
+        const nummer =
+            document.createElement(
+                "div"
+            );
+
+
+        nummer.className =
+            "kalender-tagnummer";
+
+
+        nummer.textContent =
+            tag;
+
+
+        tagBox.appendChild(
+            nummer
+        );
+
+
+        const tagesAufgaben =
+            aufgaben.filter(
+                aufgabe =>
+                    aufgabe.deadline ===
+                    datumString
+            );
+
+
+        tagesAufgaben.forEach(
+            aufgabe => {
+
+
+                const farbe =
+                    farbeFuerFach(
+                        aufgabe.fach
+                    );
+
+
+                const event =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                event.className =
+                    "kalender-event";
+
+
+                if (
+                    aufgabe.status ===
+                    "erledigt"
+                ) {
+
+                    event.classList.add(
+                        "erledigt-event"
+                    );
+                }
+
+
+                event.style.background =
+                    farbe.hintergrund;
+
+
+                event.style.color =
+                    farbe.text;
+
+
+                event.style.borderLeft =
+                    `4px solid ${farbe.rand}`;
+
+
+                event.innerHTML = `
+
+                    ${aufgabe.status ===
+                    "erledigt"
+                        ?
+                        "✅"
+                        :
+                        "•"
+                    }
+
+                    ${sichererText(
+                        aufgabe.aufgabe
+                    )}
+
+                `;
+
+
+                event.title =
+                    `${aufgabe.fach} | ${aufgabe.typ} | ${deutschesDatum(
+                        aufgabe.deadline
+                    )}`;
+
+
+                tagBox.appendChild(
+                    event
+                );
+
+            }
+        );
+
+
+        grid.appendChild(
+            tagBox
+        );
+    }
+}
+
+
+
+function kalenderMonatAendern(
+    richtung
+) {
+
+    kalenderDatum =
+        new Date(
+
+            kalenderDatum
+                .getFullYear(),
+
+            kalenderDatum
+                .getMonth()
+                +
+                richtung,
+
+            1
+
+        );
+
+
+    zeigeKalender();
+}
+
+
+
+function kalenderHeute() {
+
+    kalenderDatum =
+        new Date();
+
+
+    zeigeKalender();
+}
+
+
+
 function allesAktualisieren() {
+
+    pruefeAutomatischErledigteAufgaben();
 
     aktualisiereFaecher();
 
@@ -3178,15 +3816,20 @@ function allesAktualisieren() {
 
     zeigeErledigteAufgaben();
 
+    zeigeHeute();
+
+    zeigeDashboardAufgaben();
+
     aktualisiereUebersicht();
 
     aktualisiereWochenstatistik();
 
-    zeigeDashboardAufgaben();
-
     zeigeDashboardZiele();
 
-    zeigeHeute();
+    zeigeKalender();
+
+
+    speichern();
 }
 
 
