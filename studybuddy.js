@@ -1,7 +1,3 @@
-// ======================================================
-// STUDYBUDDY
-// ======================================================
-
 let faecher = [];
 let aufgaben = [];
 
@@ -9,10 +5,6 @@ let aktiverTimer = null;
 let timerStart = null;
 let timerInterval = null;
 
-
-// ======================================================
-// FACHFARBEN
-// ======================================================
 
 const fachFarben = [
 
@@ -77,7 +69,6 @@ function farbeFuerFach(fachName) {
 
 
     if (index === -1) {
-
         return fachFarben[0];
     }
 
@@ -89,11 +80,105 @@ function farbeFuerFach(fachName) {
 
 
 
-// ======================================================
-// APP START
-// ======================================================
+function darkModeLaden() {
+
+    const gespeichert =
+        localStorage.getItem(
+            "studybuddy_darkmode"
+        );
+
+
+    if (gespeichert === "true") {
+
+        document.body
+            .classList
+            .add("dark-mode");
+
+    }
+
+
+    darkModeButtonAktualisieren();
+}
+
+
+
+function darkModeUmschalten() {
+
+    document.body
+        .classList
+        .toggle(
+            "dark-mode"
+        );
+
+
+    const aktiv =
+        document.body
+            .classList
+            .contains(
+                "dark-mode"
+            );
+
+
+    localStorage.setItem(
+        "studybuddy_darkmode",
+        aktiv
+    );
+
+
+    darkModeButtonAktualisieren();
+}
+
+
+
+function darkModeButtonAktualisieren() {
+
+    const icon =
+        document.getElementById(
+            "darkmodeIcon"
+        );
+
+
+    const text =
+        document.getElementById(
+            "darkmodeText"
+        );
+
+
+    if (!icon || !text) {
+        return;
+    }
+
+
+    const aktiv =
+        document.body
+            .classList
+            .contains(
+                "dark-mode"
+            );
+
+
+    if (aktiv) {
+
+        icon.textContent = "☀️";
+
+        text.textContent =
+            "Light Mode";
+
+    } else {
+
+        icon.textContent = "🌙";
+
+        text.textContent =
+            "Dark Mode";
+    }
+}
+
+
 
 async function appStarten() {
+
+    darkModeLaden();
+
 
     const gespeicherteFaecher =
         localStorage.getItem(
@@ -191,39 +276,21 @@ async function appStarten() {
 
 
 
-// ======================================================
-// SPEICHERN
-// ======================================================
-
 function speichern() {
 
     localStorage.setItem(
-
         "studybuddy_faecher",
-
-        JSON.stringify(
-            faecher
-        )
-
+        JSON.stringify(faecher)
     );
 
 
     localStorage.setItem(
-
         "studybuddy_aufgaben",
-
-        JSON.stringify(
-            aufgaben
-        )
-
+        JSON.stringify(aufgaben)
     );
 }
 
 
-
-// ======================================================
-// NAVIGATION
-// ======================================================
 
 function zeigeSeite(
     seitenId,
@@ -278,35 +345,28 @@ function zeigeSeite(
     if (seitenId === "dashboard") {
 
         aktualisiereUebersicht();
-
         aktualisiereWochenstatistik();
-
         zeigeDashboardAufgaben();
-
         zeigeDashboardZiele();
     }
 
 
     if (seitenId === "heute") {
-
         zeigeHeute();
     }
 
 
     if (seitenId === "aufgaben") {
-
         zeigeAufgaben();
     }
 
 
     if (seitenId === "erledigt") {
-
         zeigeErledigteAufgaben();
     }
 
 
     if (seitenId === "faecher") {
-
         aktualisiereFaecher();
     }
 }
@@ -314,8 +374,21 @@ function zeigeSeite(
 
 
 // ======================================================
-// DATUM
+// BERECHNUNGSLOGIK: TAGE BIS ZUR DEADLINE
 // ======================================================
+//
+// Berechnet, wie viele Tage bis zur Deadline bleiben.
+//
+// Diese Zahl wird später vom
+// Dringlichkeitsalgorithmus verwendet.
+//
+// Beispiel:
+//
+// Heute:    10.10.
+// Deadline: 13.10.
+//
+// Ergebnis: 3 Tage
+//
 
 function tageBisDeadline(deadline) {
 
@@ -365,6 +438,7 @@ function tageBisDeadline(deadline) {
 }
 
 
+
 function deutschesDatum(datum) {
 
     return new Date(
@@ -378,8 +452,38 @@ function deutschesDatum(datum) {
 
 
 // ======================================================
-// DRINGLICHKEITSALGORITHMUS
+// HAUPTALGORITHMUS: DRINGLICHKEIT EINER AUFGABE
 // ======================================================
+//
+// Berücksichtigt:
+//
+// - Status
+// - Deadline
+// - Priorität
+// - geschätzten Gesamtaufwand
+// - bereits investierte Zeit
+// - verbleibenden Arbeitsaufwand
+// - benötigte Arbeitsstunden pro Tag
+//
+//
+// Restaufwand:
+//
+// zeitaufwand - investierteZeit
+//
+//
+// Stunden pro Tag:
+//
+// Restaufwand / verbleibende Tage
+//
+//
+// Ergebnis:
+//
+// 😰 Sehr dringend
+// 😬 Dringend
+// 🙂 Bald einplanen
+// 😌 Noch genug Zeit
+// ✅ Erledigt
+//
 
 function berechneDringlichkeit(
     aufgabe
@@ -426,13 +530,8 @@ function berechneDringlichkeit(
 
     const restzeit =
         Math.max(
-
             0,
-
-            zeitaufwand
-            -
-            investiert
-
+            zeitaufwand - investiert
         );
 
 
@@ -454,8 +553,6 @@ function berechneDringlichkeit(
 
 
     if (
-        tage <= 0
-        ||
         tage <= 1
         ||
         stundenProTag >= 2.5
@@ -551,31 +648,30 @@ function berechneDringlichkeit(
 
 
 // ======================================================
-// SORTIERUNG
+// ALGORITHMUS: AUTOMATISCHE SORTIERUNG DER AUFGABEN
 // ======================================================
+//
+// Sortierung:
+//
+// 1. Dringlichkeitsstufe
+// 2. benötigte Arbeitsstunden pro Tag
+// 3. Deadline
+//
+// Dadurch stehen die wichtigsten Aufgaben
+// automatisch ganz oben.
+//
 
-function sortiereAufgaben(
-    liste
-) {
+function sortiereAufgaben(liste) {
 
     return liste.sort(
-
-        (
-            a,
-            b
-        ) => {
-
+        (a, b) => {
 
             const aInfo =
-                berechneDringlichkeit(
-                    a
-                );
+                berechneDringlichkeit(a);
 
 
             const bInfo =
-                berechneDringlichkeit(
-                    b
-                );
+                berechneDringlichkeit(b);
 
 
             if (
@@ -605,17 +701,9 @@ function sortiereAufgaben(
 
 
             return (
-
-                new Date(
-                    a.deadline
-                )
-
+                new Date(a.deadline)
                 -
-
-                new Date(
-                    b.deadline
-                )
-
+                new Date(b.deadline)
             );
 
         }
@@ -623,10 +711,6 @@ function sortiereAufgaben(
 }
 
 
-
-// ======================================================
-// AUFGABE DIREKT ÄNDERN
-// ======================================================
 
 function updateAufgabe(
     id,
@@ -642,7 +726,6 @@ function updateAufgabe(
 
 
     if (!aufgabe) {
-
         return;
     }
 
@@ -679,10 +762,6 @@ function updateAufgabe(
 
 
 
-// ======================================================
-// ERLEDIGT / WIEDER ÖFFNEN
-// ======================================================
-
 function erledigtUmschalten(id) {
 
     const aufgabe =
@@ -693,7 +772,6 @@ function erledigtUmschalten(id) {
 
 
     if (!aufgabe) {
-
         return;
     }
 
@@ -719,10 +797,6 @@ function erledigtUmschalten(id) {
 }
 
 
-
-// ======================================================
-// AUFGABE HINZUFÜGEN
-// ======================================================
 
 function aufgabeSpeichern() {
 
@@ -864,89 +938,72 @@ function aufgabeSpeichern() {
 
 
 
-// ======================================================
-// FORMULAR LEEREN
-// ======================================================
-
 function formularLeeren() {
 
     document
         .getElementById(
             "aufgabeName"
         )
-        .value =
-        "";
+        .value = "";
 
 
     document
         .getElementById(
             "aufgabeFach"
         )
-        .value =
-        "";
+        .value = "";
 
 
     document
         .getElementById(
             "typ"
         )
-        .value =
-        "Prüfung";
+        .value = "Prüfung";
 
 
     document
         .getElementById(
             "deadline"
         )
-        .value =
-        "";
+        .value = "";
 
 
     document
         .getElementById(
             "prioritaet"
         )
-        .value =
-        "hoch";
+        .value = "hoch";
 
 
     document
         .getElementById(
             "status"
         )
-        .value =
-        "offen";
+        .value = "offen";
 
 
     document
         .getElementById(
             "zeitaufwand"
         )
-        .value =
-        "";
+        .value = "";
 
 
     document
         .getElementById(
             "investierteZeit"
         )
-        .value =
-        "";
+        .value = "";
 
 
     document
         .getElementById(
             "notiz"
         )
-        .value =
-        "";
+        .value = "";
 }
 
 
-
-// ======================================================
-// AUFGABE LÖSCHEN
-// ======================================================
 
 function aufgabeLoeschen(id) {
 
@@ -974,10 +1031,6 @@ function aufgabeLoeschen(id) {
 
 
 
-// ======================================================
-// SICHERER TEXT
-// ======================================================
-
 function sichererText(text) {
 
     return String(
@@ -1002,10 +1055,6 @@ function sichererText(text) {
 }
 
 
-
-// ======================================================
-// NORMALE AUFGABENKARTE
-// ======================================================
 
 function erstelleAufgabenKarte(
     aufgabe,
@@ -1090,20 +1139,16 @@ function erstelleAufgabenKarte(
                         ${farbe.text};
                     "
                 >
-
                     ${sichererText(
                         aufgabe.fach
                     )}
-
                 </span>
 
 
                 <span class="typ-badge">
-
                     ${sichererText(
                         aufgabe.typ
                     )}
-
                 </span>
 
             </div>
@@ -1131,7 +1176,6 @@ function erstelleAufgabenKarte(
                         fach => `
 
                             <option
-
                                 value="${sichererText(
                                     fach.name
                                 )}"
@@ -1149,11 +1193,9 @@ function erstelleAufgabenKarte(
                                     ""
                                 }
                             >
-
                                 ${sichererText(
                                     fach.name
                                 )}
-
                             </option>
 
                         `
@@ -1193,7 +1235,6 @@ function erstelleAufgabenKarte(
                         typ => `
 
                             <option
-
                                 value="${typ}"
 
                                 ${
@@ -1209,9 +1250,7 @@ function erstelleAufgabenKarte(
                                     ""
                                 }
                             >
-
                                 ${typ}
-
                             </option>
 
                         `
@@ -1230,9 +1269,7 @@ function erstelleAufgabenKarte(
 
                 <input
                     class="inline-input"
-
                     type="date"
-
                     value="${aufgabe.deadline}"
 
                     onchange="
@@ -1343,11 +1380,8 @@ function erstelleAufgabenKarte(
 
                 <input
                     class="inline-input"
-
                     type="number"
-
                     min="0"
-
                     step="0.5"
 
                     value="${Number(
@@ -1374,11 +1408,8 @@ function erstelleAufgabenKarte(
 
                 <input
                     class="inline-input"
-
                     type="number"
-
                     min="0"
-
                     step="0.5"
 
                     value="${Number(
@@ -1402,10 +1433,8 @@ function erstelleAufgabenKarte(
                 Noch benötigte Zeit:
 
                 <strong>
-
                     ${restzeit.toFixed(1)}
                     Stunden
-
                 </strong>
 
             </div>
@@ -1413,7 +1442,6 @@ function erstelleAufgabenKarte(
 
             <textarea
                 class="notiz-inline"
-
                 placeholder="Notiz..."
 
                 onchange="
@@ -1434,10 +1462,8 @@ function erstelleAufgabenKarte(
                     ${info.klasse}
                 "
             >
-
                 ${info.emoji}
                 ${info.text}
-
             </div>
 
 
@@ -1452,9 +1478,7 @@ function erstelleAufgabenKarte(
                         )
                     "
                 >
-
                     ✓ Als erledigt markieren
-
                 </button>
 
 
@@ -1467,9 +1491,7 @@ function erstelleAufgabenKarte(
                         )
                     "
                 >
-
                     Löschen
-
                 </button>
 
             </div>
@@ -1480,17 +1502,10 @@ function erstelleAufgabenKarte(
 
         karte.innerHTML = `
 
-            <h3
-                style="
-                    margin-bottom:
-                    12px;
-                "
-            >
-
+            <h3 style="margin-bottom:12px;">
                 ${sichererText(
                     aufgabe.aufgabe
                 )}
-
             </h3>
 
 
@@ -1507,20 +1522,16 @@ function erstelleAufgabenKarte(
                         ${farbe.text};
                     "
                 >
-
                     ${sichererText(
                         aufgabe.fach
                     )}
-
                 </span>
 
 
                 <span class="typ-badge">
-
                     ${sichererText(
                         aufgabe.typ
                     )}
-
                 </span>
 
             </div>
@@ -1529,7 +1540,6 @@ function erstelleAufgabenKarte(
             <div class="restzeit">
 
                 📅
-
                 ${deutschesDatum(
                     aufgabe.deadline
                 )}
@@ -1554,10 +1564,8 @@ function erstelleAufgabenKarte(
                     ${info.klasse}
                 "
             >
-
                 ${info.emoji}
                 ${info.text}
-
             </div>
 
         `;
@@ -1568,10 +1576,6 @@ function erstelleAufgabenKarte(
 }
 
 
-
-// ======================================================
-// ERLEDIGTE AUFGABENKARTE
-// ======================================================
 
 function erstelleErledigtKarte(
     aufgabe
@@ -1600,23 +1604,14 @@ function erstelleErledigtKarte(
     karte.innerHTML = `
 
         <div class="erledigt-banner">
-
             ✅ Erledigt
-
         </div>
 
 
-        <h3
-            style="
-                margin-bottom:
-                12px;
-            "
-        >
-
+        <h3 style="margin-bottom:12px;">
             ${sichererText(
                 aufgabe.aufgabe
             )}
-
         </h3>
 
 
@@ -1633,20 +1628,16 @@ function erstelleErledigtKarte(
                     ${farbe.text};
                 "
             >
-
                 ${sichererText(
                     aufgabe.fach
                 )}
-
             </span>
 
 
             <span class="typ-badge">
-
                 ${sichererText(
                     aufgabe.typ
                 )}
-
             </span>
 
         </div>
@@ -1657,11 +1648,9 @@ function erstelleErledigtKarte(
             📅 Ursprüngliche Deadline:
 
             <strong>
-
                 ${deutschesDatum(
                     aufgabe.deadline
                 )}
-
             </strong>
 
         </div>
@@ -1674,13 +1663,10 @@ function erstelleErledigtKarte(
 
             `
             <div class="restzeit">
-
                 📝
-
                 ${sichererText(
                     aufgabe.notiz
                 )}
-
             </div>
             `
 
@@ -1701,9 +1687,7 @@ function erstelleErledigtKarte(
                     )
                 "
             >
-
                 ↩ Wieder öffnen
-
             </button>
 
 
@@ -1716,9 +1700,7 @@ function erstelleErledigtKarte(
                     )
                 "
             >
-
                 Löschen
-
             </button>
 
         </div>
@@ -1731,50 +1713,41 @@ function erstelleErledigtKarte(
 
 
 
-// ======================================================
-// NORMALE AUFGABEN ANZEIGEN
-// ======================================================
-
 function zeigeAufgaben() {
 
     const liste =
-        document
-            .getElementById(
-                "aufgabenListe"
-            );
+        document.getElementById(
+            "aufgabenListe"
+        );
 
 
     const suche =
-        document
-            .getElementById(
-                "suche"
-            )
-            .value
-            .toLowerCase();
+        document.getElementById(
+            "suche"
+        )
+        .value
+        .toLowerCase();
 
 
     const fach =
-        document
-            .getElementById(
-                "fachFilter"
-            )
-            .value;
+        document.getElementById(
+            "fachFilter"
+        )
+        .value;
 
 
     const status =
-        document
-            .getElementById(
-                "statusFilter"
-            )
-            .value;
+        document.getElementById(
+            "statusFilter"
+        )
+        .value;
 
 
     const typ =
-        document
-            .getElementById(
-                "typFilter"
-            )
-            .value;
+        document.getElementById(
+            "typFilter"
+        )
+        .value;
 
 
     let gefiltert =
@@ -1792,18 +1765,14 @@ function zeigeAufgaben() {
                 aufgabe =>
 
                     aufgabe.aufgabe
-                    .toLowerCase()
-                    .includes(
-                        suche
-                    )
+                        .toLowerCase()
+                        .includes(suche)
 
                     ||
 
                     aufgabe.fach
-                    .toLowerCase()
-                    .includes(
-                        suche
-                    )
+                        .toLowerCase()
+                        .includes(suche)
             );
     }
 
@@ -1813,8 +1782,7 @@ function zeigeAufgaben() {
         gefiltert =
             gefiltert.filter(
                 aufgabe =>
-                    aufgabe.fach ===
-                    fach
+                    aufgabe.fach === fach
             );
     }
 
@@ -1824,8 +1792,7 @@ function zeigeAufgaben() {
         gefiltert =
             gefiltert.filter(
                 aufgabe =>
-                    aufgabe.status ===
-                    status
+                    aufgabe.status === status
             );
     }
 
@@ -1835,8 +1802,7 @@ function zeigeAufgaben() {
         gefiltert =
             gefiltert.filter(
                 aufgabe =>
-                    aufgabe.typ ===
-                    typ
+                    aufgabe.typ === typ
             );
     }
 
@@ -1846,25 +1812,20 @@ function zeigeAufgaben() {
     );
 
 
-    liste.innerHTML =
-        "";
+    liste.innerHTML = "";
 
 
     if (
-        gefiltert.length ===
-        0
+        gefiltert.length === 0
     ) {
 
         liste.innerHTML = `
 
             <div class="leer">
-
                 Keine offenen Aufgaben gefunden. 🎉
-
             </div>
 
         `;
-
 
         return;
     }
@@ -1888,63 +1849,43 @@ function zeigeAufgaben() {
 
 
 
-// ======================================================
-// ERLEDIGTE AUFGABEN
-// ======================================================
-
 function zeigeErledigteAufgaben() {
 
     const container =
-        document
-            .getElementById(
-                "erledigteAufgaben"
-            );
+        document.getElementById(
+            "erledigteAufgaben"
+        );
 
 
     const erledigte =
         aufgaben
-        .filter(
-            aufgabe =>
-                aufgabe.status ===
-                "erledigt"
-        )
-        .sort(
-            (
-                a,
-                b
-            ) =>
-
-                new Date(
-                    b.deadline
-                )
-
-                -
-
-                new Date(
-                    a.deadline
-                )
-        );
+            .filter(
+                aufgabe =>
+                    aufgabe.status ===
+                    "erledigt"
+            )
+            .sort(
+                (a, b) =>
+                    new Date(b.deadline)
+                    -
+                    new Date(a.deadline)
+            );
 
 
-    container.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
     if (
-        erledigte.length ===
-        0
+        erledigte.length === 0
     ) {
 
         container.innerHTML = `
 
             <div class="leer">
-
                 Hier landen deine erledigten Aufgaben. ✅
-
             </div>
 
         `;
-
 
         return;
     }
@@ -1967,30 +1908,23 @@ function zeigeErledigteAufgaben() {
 
 
 
-// ======================================================
-// HEUTE
-// ======================================================
-
 function zeigeHeute() {
 
     const container =
-        document
-            .getElementById(
-                "heuteAufgaben"
-            );
+        document.getElementById(
+            "heuteAufgaben"
+        );
 
 
     const text =
-        document
-            .getElementById(
-                "heuteText"
-            );
+        document.getElementById(
+            "heuteText"
+        );
 
 
     const relevante =
         aufgaben.filter(
             aufgabe => {
-
 
                 if (
                     aufgabe.status ===
@@ -2007,9 +1941,7 @@ function zeigeHeute() {
                     );
 
 
-                return (
-                    tage <= 2
-                );
+                return tage <= 2;
 
             }
         );
@@ -2020,13 +1952,11 @@ function zeigeHeute() {
     );
 
 
-    container.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
     if (
-        relevante.length ===
-        0
+        relevante.length === 0
     ) {
 
         text.textContent =
@@ -2036,13 +1966,10 @@ function zeigeHeute() {
         container.innerHTML = `
 
             <div class="leer">
-
                 Du kannst dich entspannt auf deine Lernziele konzentrieren. 😌
-
             </div>
 
         `;
-
 
         return;
     }
@@ -2070,21 +1997,15 @@ function zeigeHeute() {
 
 
 
-// ======================================================
-// DASHBOARD AUFGABEN
-// ======================================================
-
 function zeigeDashboardAufgaben() {
 
     const container =
-        document
-            .getElementById(
-                "dashboardAufgaben"
-            );
+        document.getElementById(
+            "dashboardAufgaben"
+        );
 
 
-    container.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
     const wichtigste =
@@ -2101,20 +2022,16 @@ function zeigeDashboardAufgaben() {
 
 
     if (
-        wichtigste.length ===
-        0
+        wichtigste.length === 0
     ) {
 
         container.innerHTML = `
 
             <div class="leer">
-
                 Alle Aufgaben erledigt. Stark! 🎉
-
             </div>
 
         `;
-
 
         return;
     }
@@ -2143,26 +2060,19 @@ function zeigeDashboardAufgaben() {
 
 
 
-// ======================================================
-// ÜBERSICHT
-// ======================================================
-
 function aktualisiereUebersicht() {
 
-    document
-        .getElementById(
-            "gesamt"
-        )
-        .textContent =
+    document.getElementById(
+        "gesamt"
+    )
+    .textContent =
         aufgaben.length;
 
 
-    document
-        .getElementById(
-            "offen"
-        )
-        .textContent =
-
+    document.getElementById(
+        "offen"
+    )
+    .textContent =
         aufgaben.filter(
             aufgabe =>
                 aufgabe.status !==
@@ -2170,12 +2080,10 @@ function aktualisiereUebersicht() {
         ).length;
 
 
-    document
-        .getElementById(
-            "dringend"
-        )
-        .textContent =
-
+    document.getElementById(
+        "dringend"
+    )
+    .textContent =
         aufgaben.filter(
             aufgabe => {
 
@@ -2199,47 +2107,48 @@ function aktualisiereUebersicht() {
 
 
 // ======================================================
-// WOCHENSTATISTIK
+// BERECHNUNGSLOGIK: WOCHENSTATISTIK
 // ======================================================
+//
+// Addiert die Lernstunden aller Fächer.
+//
+// Anschließend:
+//
+// gesamte Lernzeit / gesamtes Wochenziel * 100
+//
+// Beispiel:
+//
+// 15 Stunden / 30 Stunden * 100
+// = 50 %
+//
 
 function aktualisiereWochenstatistik() {
 
     const gesamtGelernt =
         faecher.reduce(
-            (
-                summe,
-                fach
-            ) =>
-
+            (summe, fach) =>
                 summe
                 +
                 Number(
                     fach.gelernt || 0
                 ),
-
             0
         );
 
 
     const gesamtZiel =
         faecher.reduce(
-            (
-                summe,
-                fach
-            ) =>
-
+            (summe, fach) =>
                 summe
                 +
                 Number(
                     fach.ziel || 0
                 ),
-
             0
         );
 
 
-    let prozent =
-        0;
+    let prozent = 0;
 
 
     if (
@@ -2270,29 +2179,24 @@ function aktualisiereWochenstatistik() {
         );
 
 
-    document
-        .getElementById(
-            "wochenStunden"
-        )
-        .textContent =
-
+    document.getElementById(
+        "wochenStunden"
+    )
+    .textContent =
         `${gesamtGelernt.toFixed(2)} h`;
 
 
-    document
-        .getElementById(
-            "wochenProzent"
-        )
-        .textContent =
-
+    document.getElementById(
+        "wochenProzent"
+    )
+    .textContent =
         `${prozent} %`;
 
 
     const progress =
-        document
-            .getElementById(
-                "wochenProgress"
-            );
+        document.getElementById(
+            "wochenProgress"
+        );
 
 
     progress.style.width =
@@ -2305,28 +2209,22 @@ function aktualisiereWochenstatistik() {
 
 
 
-// ======================================================
-// FACH HINZUFÜGEN
-// ======================================================
-
 function fachHinzufuegen() {
 
     const name =
-        document
-            .getElementById(
-                "neuesFach"
-            )
-            .value
-            .trim();
+        document.getElementById(
+            "neuesFach"
+        )
+        .value
+        .trim();
 
 
     const ziel =
         Number(
-            document
-                .getElementById(
-                    "neuesZiel"
-                )
-                .value
+            document.getElementById(
+                "neuesZiel"
+            )
+            .value
         );
 
 
@@ -2340,7 +2238,6 @@ function fachHinzufuegen() {
             "Bitte Fachname und Wochenziel eingeben."
         );
 
-
         return;
     }
 
@@ -2348,25 +2245,20 @@ function fachHinzufuegen() {
     const existiert =
         faecher.some(
             fach =>
-
                 fach.name
-                .toLowerCase()
+                    .toLowerCase()
 
                 ===
 
-                name
-                .toLowerCase()
+                name.toLowerCase()
         );
 
 
-    if (
-        existiert
-    ) {
+    if (existiert) {
 
         alert(
             "Dieses Fach gibt es bereits."
         );
-
 
         return;
     }
@@ -2374,32 +2266,25 @@ function fachHinzufuegen() {
 
     faecher.push({
 
-        name:
-            name,
+        name: name,
 
-        ziel:
-            ziel,
+        ziel: ziel,
 
-        gelernt:
-            0
+        gelernt: 0
 
     });
 
 
-    document
-        .getElementById(
-            "neuesFach"
-        )
-        .value =
-        "";
+    document.getElementById(
+        "neuesFach"
+    )
+    .value = "";
 
 
-    document
-        .getElementById(
-            "neuesZiel"
-        )
-        .value =
-        "";
+    document.getElementById(
+        "neuesZiel"
+    )
+    .value = "";
 
 
     speichern();
@@ -2408,10 +2293,6 @@ function fachHinzufuegen() {
 }
 
 
-
-// ======================================================
-// FACH LÖSCHEN
-// ======================================================
 
 function fachLoeschen(index) {
 
@@ -2432,7 +2313,6 @@ function fachLoeschen(index) {
         alert(
             "Dieses Fach wird noch bei mindestens einer Aufgabe verwendet."
         );
-
 
         return;
     }
@@ -2460,10 +2340,6 @@ function fachLoeschen(index) {
 }
 
 
-
-// ======================================================
-// ZIEL ÄNDERN
-// ======================================================
 
 function zielAendern(index) {
 
@@ -2503,46 +2379,38 @@ function zielAendern(index) {
 
 
 // ======================================================
-// LERNZEIT MANUELL ÄNDERN
+// BERECHNUNGSLOGIK: LERNZEIT ÄNDERN
 // ======================================================
+//
+// Positive Werte:
+//
+// +0.5 = +30 Minuten
+// +1   = +1 Stunde
+//
+// Negative Werte:
+//
+// -0.5 = -30 Minuten
+// -1   = -1 Stunde
+//
+// Die Lernzeit darf nicht unter 0 fallen.
+//
 
 function lernzeitAendern(
     index,
     stunden
 ) {
 
-    /*
-        Hier können positive UND negative Werte
-        übergeben werden.
-
-        Beispiele:
-
-        +0.5 = plus 30 Minuten
-        +1   = plus 1 Stunde
-        -0.5 = minus 30 Minuten
-        -1   = minus 1 Stunde
-    */
-
     faecher[index].gelernt +=
         stunden;
 
-
-    /*
-        Lernzeit darf niemals unter 0 fallen.
-    */
 
     if (
         faecher[index].gelernt < 0
     ) {
 
-        faecher[index].gelernt =
-            0;
+        faecher[index].gelernt = 0;
     }
 
-
-    /*
-        Auf zwei Nachkommastellen runden.
-    */
 
     faecher[index].gelernt =
         Math.round(
@@ -2565,10 +2433,6 @@ function lernzeitAendern(
 
 
 
-// ======================================================
-// LERNZEIT MIT SLIDER ÄNDERN
-// ======================================================
-
 function sliderAendern(
     index,
     wert
@@ -2587,10 +2451,6 @@ function sliderAendern(
 
 
 
-// ======================================================
-// TIMER STARTEN
-// ======================================================
-
 function timerStarten(index) {
 
     if (
@@ -2601,7 +2461,6 @@ function timerStarten(index) {
         alert(
             "Es läuft bereits ein Lerntimer."
         );
-
 
         return;
     }
@@ -2629,10 +2488,6 @@ function timerStarten(index) {
 }
 
 
-
-// ======================================================
-// TIMER ANZEIGE AKTUALISIEREN
-// ======================================================
 
 function timerAktualisieren() {
 
@@ -2662,12 +2517,11 @@ function timerAktualisieren() {
 
 
     const anzeige =
-        document
-            .getElementById(
+        document.getElementById(
 
-                `timer-${aktiverTimer}`
+            `timer-${aktiverTimer}`
 
-            );
+        );
 
 
     if (anzeige) {
@@ -2682,8 +2536,24 @@ function timerAktualisieren() {
 
 
 // ======================================================
-// TIMER STOPPEN
+// BERECHNUNGSLOGIK: TIMERZEIT ADDIEREN
 // ======================================================
+//
+// Beim Stoppen:
+//
+// aktuelle Zeit - Startzeit
+// = vergangene Zeit
+//
+// Sekunden / 3600
+// = Stunden
+//
+// Beispiel:
+//
+// 1800 / 3600 = 0,5 Stunden
+//
+// Diese Zeit wird automatisch zur
+// bereits gelernten Zeit addiert.
+//
 
 function timerStoppen(index) {
 
@@ -2695,10 +2565,6 @@ function timerStoppen(index) {
         return;
     }
 
-
-    /*
-        Wie viele Sekunden sind seit Start vergangen?
-    */
 
     const vergangeneSekunden =
         (
@@ -2712,35 +2578,15 @@ function timerStoppen(index) {
         1000;
 
 
-    /*
-        Sekunden in Stunden umrechnen.
-
-        Beispiel:
-
-        1800 Sekunden
-        / 3600
-        =
-        0,5 Stunden
-    */
-
     const gelernteStunden =
         vergangeneSekunden
         /
         3600;
 
 
-    /*
-        Timer-Zeit automatisch zur
-        bereits gelernten Zeit addieren.
-    */
-
     faecher[index].gelernt +=
         gelernteStunden;
 
-
-    /*
-        Auf zwei Nachkommastellen runden.
-    */
 
     faecher[index].gelernt =
         Math.round(
@@ -2761,14 +2607,9 @@ function timerStoppen(index) {
     );
 
 
-    aktiverTimer =
-        null;
-
-    timerStart =
-        null;
-
-    timerInterval =
-        null;
+    aktiverTimer = null;
+    timerStart = null;
+    timerInterval = null;
 
 
     speichern();
@@ -2777,10 +2618,6 @@ function timerStoppen(index) {
 }
 
 
-
-// ======================================================
-// TIMER FORMATIEREN
-// ======================================================
 
 function sekundenFormat(
     sekunden
@@ -2853,43 +2690,33 @@ function sekundenFormat(
 
 
 
-// ======================================================
-// FÄCHER ANZEIGEN
-// ======================================================
-
 function aktualisiereFaecher() {
 
     const liste =
-        document
-            .getElementById(
-                "fachListe"
-            );
+        document.getElementById(
+            "fachListe"
+        );
 
 
     const aufgabeFach =
-        document
-            .getElementById(
-                "aufgabeFach"
-            );
+        document.getElementById(
+            "aufgabeFach"
+        );
 
 
     const fachFilter =
-        document
-            .getElementById(
-                "fachFilter"
-            );
+        document.getElementById(
+            "fachFilter"
+        );
 
 
-    liste.innerHTML =
-        "";
+    liste.innerHTML = "";
 
 
     aufgabeFach.innerHTML = `
 
         <option value="">
-
             Fach auswählen
-
         </option>
 
     `;
@@ -2898,19 +2725,14 @@ function aktualisiereFaecher() {
     fachFilter.innerHTML = `
 
         <option value="alle">
-
             Alle Fächer
-
         </option>
 
     `;
 
 
     faecher.forEach(
-        (
-            fach,
-            index
-        ) => {
+        (fach, index) => {
 
 
             const option =
@@ -2975,13 +2797,9 @@ function aktualisiereFaecher() {
 
             const sliderMax =
                 Math.max(
-
                     fach.ziel,
-
                     fach.gelernt,
-
                     1
-
                 );
 
 
@@ -3013,11 +2831,9 @@ function aktualisiereFaecher() {
             karte.innerHTML = `
 
                 <h3>
-
                     ${sichererText(
                         fach.name
                     )}
-
                 </h3>
 
 
@@ -3026,10 +2842,8 @@ function aktualisiereFaecher() {
                     Wochenziel:
 
                     <strong>
-
                         ${fach.ziel}
                         Stunden
-
                     </strong>
 
                 </div>
@@ -3060,16 +2874,12 @@ function aktualisiereFaecher() {
                 <div class="progress-info">
 
                     <span>
-
                         ${fach.gelernt.toFixed(2)}
                         h gelernt
-
                     </span>
 
                     <span>
-
                         ${prozent} %
-
                     </span>
 
                 </div>
@@ -3104,9 +2914,7 @@ function aktualisiereFaecher() {
                             )
                         "
                     >
-
                         + 30 Min.
-
                     </button>
 
 
@@ -3120,9 +2928,7 @@ function aktualisiereFaecher() {
                             )
                         "
                     >
-
                         + 1 Std.
-
                     </button>
 
 
@@ -3136,9 +2942,7 @@ function aktualisiereFaecher() {
                             )
                         "
                     >
-
                         − 30 Min.
-
                     </button>
 
 
@@ -3152,9 +2956,7 @@ function aktualisiereFaecher() {
                             )
                         "
                     >
-
                         − 1 Std.
-
                     </button>
 
 
@@ -3167,9 +2969,7 @@ function aktualisiereFaecher() {
                             )
                         "
                     >
-
                         Ziel ändern
-
                     </button>
 
                 </div>
@@ -3182,9 +2982,7 @@ function aktualisiereFaecher() {
 
                         id="timer-${index}"
                     >
-
                         00:00:00
-
                     </span>
 
 
@@ -3203,9 +3001,7 @@ function aktualisiereFaecher() {
                                 )
                             "
                         >
-
                             ⏹ Stoppen
-
                         </button>
                         `
 
@@ -3221,9 +3017,7 @@ function aktualisiereFaecher() {
                                 )
                             "
                         >
-
                             ▶ Lernen
-
                         </button>
                         `
                     }
@@ -3242,9 +3036,7 @@ function aktualisiereFaecher() {
                             )
                         "
                     >
-
                         Fach löschen
-
                     </button>
 
                 </div>
@@ -3261,8 +3053,7 @@ function aktualisiereFaecher() {
 
 
     if (
-        aktiverTimer !==
-        null
+        aktiverTimer !== null
     ) {
 
         timerAktualisieren();
@@ -3271,21 +3062,15 @@ function aktualisiereFaecher() {
 
 
 
-// ======================================================
-// DASHBOARD LERNZIELE
-// ======================================================
-
 function zeigeDashboardZiele() {
 
     const container =
-        document
-            .getElementById(
-                "dashboardZiele"
-            );
+        document.getElementById(
+            "dashboardZiele"
+        );
 
 
-    container.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
     faecher.forEach(
@@ -3337,11 +3122,9 @@ function zeigeDashboardZiele() {
             box.innerHTML = `
 
                 <h4>
-
                     ${sichererText(
                         fach.name
                     )}
-
                 </h4>
 
 
@@ -3387,10 +3170,6 @@ function zeigeDashboardZiele() {
 
 
 
-// ======================================================
-// ALLES AKTUALISIEREN
-// ======================================================
-
 function allesAktualisieren() {
 
     aktualisiereFaecher();
@@ -3411,40 +3190,5 @@ function allesAktualisieren() {
 }
 
 
-
-// ======================================================
-// DATEN ZURÜCKSETZEN
-// ======================================================
-
-function demoDatenZuruecksetzen() {
-
-    if (
-        !confirm(
-            "Alle Änderungen werden gelöscht und die Daten aus der JSON-Datei wieder geladen. Fortfahren?"
-        )
-    ) {
-
-        return;
-    }
-
-
-    localStorage.removeItem(
-        "studybuddy_faecher"
-    );
-
-
-    localStorage.removeItem(
-        "studybuddy_aufgaben"
-    );
-
-
-    location.reload();
-}
-
-
-
-// ======================================================
-// START
-// ======================================================
 
 appStarten();

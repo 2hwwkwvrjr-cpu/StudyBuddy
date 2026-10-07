@@ -1,4 +1,30 @@
 {
+  "_dokumentation": {
+    "beschreibung": "Diese JSON-Datei enthält die Ausgangsdaten der StudyBuddy-Anwendung. Die Algorithmen selbst befinden sich in studybuddy.js.",
+
+    "algorithmusDaten": {
+      "deadline": "Die Deadline wird verwendet, um zu berechnen, wie viele Tage bis zur Abgabe oder Prüfung verbleiben.",
+
+      "prioritaet": "Die Priorität hoch, mittel oder niedrig wird beim Dringlichkeitsalgorithmus berücksichtigt.",
+
+      "zeitaufwand": "Der geschätzte Zeitaufwand gibt an, wie viele Stunden insgesamt für eine Aufgabe benötigt werden.",
+
+      "investierteZeit": "Die bereits investierte Zeit wird vom Gesamtaufwand abgezogen.",
+
+      "restaufwand": "Der Restaufwand wird nicht direkt gespeichert, sondern im JavaScript berechnet: zeitaufwand minus investierteZeit.",
+
+      "stundenProTag": "Die notwendigen Stunden pro Tag werden im JavaScript berechnet: Restaufwand geteilt durch verbleibende Tage.",
+
+      "status": "Der Status bestimmt, ob eine Aufgabe offen, in Bearbeitung oder erledigt ist.",
+
+      "fach": "Das Fach ordnet eine Aufgabe dem entsprechenden Studienfach zu.",
+
+      "wochenzielStunden": "Das Wochenziel wird verwendet, um den Lernfortschritt eines Faches zu berechnen.",
+
+      "gelernteStunden": "Die gelernte Zeit wird mit dem Wochenziel verglichen und für die Wochenstatistik verwendet."
+    }
+  },
+
   "faecher": [
     {
       "name": "Datenmanagement",
@@ -55,6 +81,7 @@
       "investierteZeit": 2,
       "notiz": "Code testen und auf GitHub committen."
     },
+
     {
       "id": 2,
       "aufgabe": "Mathematik Prüfung vorbereiten",
@@ -67,6 +94,7 @@
       "investierteZeit": 2,
       "notiz": "Binärzahlen, Logik und Kombinatorik wiederholen."
     },
+
     {
       "id": 3,
       "aufgabe": "Datenmanagement Stoff wiederholen",
@@ -79,6 +107,7 @@
       "investierteZeit": 1,
       "notiz": "Unterlagen zusammenfassen."
     },
+
     {
       "id": 4,
       "aufgabe": "Rechnungswesen Übungsblatt",
@@ -91,6 +120,7 @@
       "investierteZeit": 0.5,
       "notiz": "Bilanz und Bestandskonten üben."
     },
+
     {
       "id": 5,
       "aufgabe": "Technical English Vokabeln",
