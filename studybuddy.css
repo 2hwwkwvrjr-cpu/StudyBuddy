@@ -23,8 +23,6 @@
     --rosa: #efa4ad;
     --rosa-light: #fff0f2;
 
-    --mint: #94dfbd;
-
     --text: #343b3d;
     --grau: #747d78;
 
@@ -46,10 +44,6 @@ body {
     color: var(--text);
 
     min-height: 100vh;
-
-    transition:
-        background 0.25s ease,
-        color 0.25s ease;
 }
 
 
@@ -59,6 +53,7 @@ body {
 
     min-height: 100vh;
 }
+
 
 
 /* SIDEBAR */
@@ -144,11 +139,7 @@ body {
 
     font-weight: 800;
 
-    color: #ffffff;
-
-    letter-spacing: -0.5px;
-
-    line-height: 1;
+    color: white;
 }
 
 
@@ -164,12 +155,11 @@ body {
 
     font-size: 12.5px;
 
-    line-height: 1.35;
-
     margin-top: 6px;
 
     font-weight: 600;
 }
+
 
 
 /* NAVIGATION */
@@ -198,15 +188,11 @@ body {
 
     cursor: pointer;
 
-    transition: all 0.2s ease;
-
     display: flex;
 
     align-items: center;
 
     gap: 12px;
-
-    position: relative;
 }
 
 
@@ -219,51 +205,14 @@ body {
             255,
             0.35
         );
-
-    transform:
-        translateX(2px);
 }
 
 
 .nav-button.active {
 
-    background: #ffffff;
+    background: white;
 
     color: var(--dunkelblau);
-
-    box-shadow:
-        0 8px 20px
-        rgba(
-            70,
-            105,
-            130,
-            0.14
-        );
-}
-
-
-.nav-button.active::before {
-
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-
-    top: 10px;
-    bottom: 10px;
-
-    width: 5px;
-
-    border-radius:
-        0 8px 8px 0;
-
-    background:
-        linear-gradient(
-            180deg,
-            #79bfe7,
-            #ad9ade
-        );
 }
 
 
@@ -274,18 +223,12 @@ body {
     text-align: center;
 
     font-size: 20px;
-
-    flex-shrink: 0;
 }
 
-
-/* DARK MODE BUTTON */
 
 .darkmode-bereich {
 
     margin-top: auto;
-
-    padding-top: 20px;
 }
 
 
@@ -309,18 +252,17 @@ body {
 
     color: var(--dunkelblau);
 
-    font-size: 15px;
-
-    font-weight: 700;
+    font-weight: bold;
 
     cursor: pointer;
 
     display: flex;
 
-    align-items: center;
-
     gap: 12px;
+
+    align-items: center;
 }
+
 
 
 /* MAIN */
@@ -350,6 +292,7 @@ body {
 }
 
 
+
 /* HERO */
 
 .hero {
@@ -366,15 +309,6 @@ body {
             #cfefff,
             #ddd4f7 62%,
             #fae897
-        );
-
-    box-shadow:
-        0 10px 30px
-        rgba(
-            40,
-            70,
-            100,
-            0.08
         );
 }
 
@@ -393,7 +327,96 @@ body {
 }
 
 
-/* ALLGEMEINE KARTEN */
+
+/* INFO */
+
+.titel-mit-info {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+
+.info-wrap {
+
+    position: relative;
+
+    display: inline-flex;
+}
+
+
+.info-icon {
+
+    width: 22px;
+    height: 22px;
+
+    border-radius: 50%;
+
+    background: var(--babyblau);
+
+    color: var(--dunkelblau);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    cursor: help;
+}
+
+
+.info-tooltip {
+
+    position: absolute;
+
+    bottom: 31px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    width: 270px;
+
+    padding: 13px;
+
+    border-radius: 12px;
+
+    background: #33475a;
+
+    color: white;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    z-index: 100;
+}
+
+
+.info-wrap:hover
+.info-tooltip {
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+
+/* KARTEN */
 
 .stat,
 .wochen-box,
@@ -402,9 +425,11 @@ body {
 .fach-card,
 .mini-ziel,
 .leer,
-.kalender-container {
+.kalender-container,
+.tagesplan-box {
 
-    background: var(--kartenfarbe);
+    background:
+        var(--kartenfarbe);
 }
 
 
@@ -430,15 +455,6 @@ body {
 
     border-radius: 20px;
 
-    box-shadow:
-        0 8px 22px
-        rgba(
-            0,
-            0,
-            0,
-            0.05
-        );
-
     border-top:
         5px solid
         var(--babyblau);
@@ -447,21 +463,22 @@ body {
 
 .stat:nth-child(2) {
 
-    border-color: var(--lila);
+    border-color:
+        var(--lila);
 }
 
 
 .stat:nth-child(3) {
 
-    border-color: var(--gelb);
+    border-color:
+        var(--gelb);
 }
 
 
 .stat p {
 
-    color: var(--grau);
-
-    font-size: 14px;
+    color:
+        var(--grau);
 }
 
 
@@ -493,33 +510,24 @@ body {
     padding: 24px;
 
     border-radius: 21px;
-
-    box-shadow:
-        0 8px 22px
-        rgba(
-            0,
-            0,
-            0,
-            0.05
-        );
 }
 
 
 .wochen-zahl {
 
-    font-size: 32px;
+    font-size: 28px;
 
     font-weight: bold;
 
-    margin-top: 8px;
+    margin-top: 14px;
 }
 
 
 .wochen-sub {
 
-    color: var(--grau);
+    margin-top: 7px;
 
-    margin-top: 6px;
+    color: var(--grau);
 
     font-size: 13px;
 }
@@ -541,9 +549,8 @@ body {
 
 .section-heading p {
 
-    color: var(--grau);
-
-    font-size: 14px;
+    color:
+        var(--grau);
 }
 
 
@@ -554,19 +561,86 @@ body {
     border-radius: 22px;
 
     margin-bottom: 25px;
-
-    box-shadow:
-        0 8px 22px
-        rgba(
-            0,
-            0,
-            0,
-            0.05
-        );
 }
 
 
-/* FORMULAR */
+
+/* TAGESPLAN */
+
+.tagesplan-box {
+
+    padding: 24px;
+
+    margin-bottom: 25px;
+
+    border-radius: 21px;
+
+    border-left:
+        6px solid
+        var(--babyblau);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.heute-beschreibung {
+
+    margin-top: 8px;
+
+    color:
+        var(--grau);
+}
+
+
+.tagesplan-stunden {
+
+    padding: 14px 18px;
+
+    border-radius: 16px;
+
+    background:
+        var(--babyblau-hell);
+
+    color:
+        var(--babyblau-dunkel);
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    text-align: center;
+}
+
+
+.tages-empfehlung {
+
+    padding: 12px 14px;
+
+    margin-bottom: 14px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eaf7ff,
+            #f3eeff
+        );
+
+    font-weight: bold;
+
+    color: #526b82;
+}
+
+
+
+/* FORMULARE */
 
 .formular {
 
@@ -596,13 +670,11 @@ textarea {
 
     border-radius: 12px;
 
-    background: var(--feldfarbe);
+    background:
+        var(--feldfarbe);
 
-    color: var(--text);
-
-    font-size: 14px;
-
-    outline: none;
+    color:
+        var(--text);
 }
 
 
@@ -621,6 +693,18 @@ textarea {
 }
 
 
+.filter {
+
+    display: grid;
+
+    grid-template-columns:
+        2fr 1fr 1fr 1fr;
+
+    gap: 12px;
+}
+
+
+
 /* BUTTONS */
 
 button {
@@ -635,75 +719,67 @@ button {
 
 .btn-primary {
 
-    background: var(--babyblau);
+    background:
+        var(--babyblau);
 
-    color: var(--dunkelblau);
+    color:
+        var(--dunkelblau);
 
-    padding: 12px 16px;
+    padding:
+        12px 16px;
 
-    border-radius: 11px;
+    border-radius:
+        11px;
 }
 
 
 .btn-lila {
 
-    background: var(--lila-light);
+    background:
+        var(--lila-light);
 
-    color: #705ba4;
+    color:
+        #705ba4;
 
-    padding: 9px 12px;
+    padding:
+        9px 12px;
 
-    border-radius: 10px;
-}
-
-
-.btn-gelb {
-
-    background: var(--gelb-light);
-
-    color: #836d18;
-
-    padding: 9px 12px;
-
-    border-radius: 10px;
+    border-radius:
+        10px;
 }
 
 
 .btn-rot {
 
-    background: var(--rosa-light);
+    background:
+        var(--rosa-light);
 
-    color: #b6444e;
+    color:
+        #b6444e;
 
-    padding: 9px 12px;
+    padding:
+        9px 12px;
 
-    border-radius: 10px;
+    border-radius:
+        10px;
 }
 
 
 .btn-erledigt {
 
-    background: var(--babyblau-hell);
+    background:
+        var(--babyblau-hell);
 
-    color: var(--babyblau-dunkel);
+    color:
+        var(--babyblau-dunkel);
 
-    padding: 9px 12px;
+    padding:
+        9px 12px;
 
-    border-radius: 10px;
+    border-radius:
+        10px;
 }
 
-
-/* FILTER */
-
-.filter {
-
-    display: grid;
-
-    grid-template-columns:
-        2fr 1fr 1fr 1fr;
-
-    gap: 12px;
-}
 
 
 /* AUFGABEN */
@@ -734,15 +810,6 @@ button {
     border:
         1px solid
         #e7ebe8;
-
-    box-shadow:
-        0 8px 21px
-        rgba(
-            0,
-            0,
-            0,
-            0.045
-        );
 }
 
 
@@ -775,21 +842,27 @@ button {
 .fach-badge,
 .typ-badge {
 
-    padding: 6px 11px;
+    padding:
+        6px 11px;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
-    font-size: 12px;
+    font-size:
+        12px;
 
-    font-weight: bold;
+    font-weight:
+        bold;
 }
 
 
 .typ-badge {
 
-    background: var(--gelb-light);
+    background:
+        var(--gelb-light);
 
-    color: #806d20;
+    color:
+        #806d20;
 }
 
 
@@ -800,9 +873,9 @@ button {
     grid-template-columns:
         145px 1fr;
 
-    align-items: center;
-
     gap: 9px;
+
+    align-items: center;
 
     margin-bottom: 9px;
 
@@ -810,18 +883,11 @@ button {
 }
 
 
-.edit-row label {
-
-    font-weight: bold;
-}
-
-
 .inline-input,
 .inline-select {
 
-    padding: 8px 10px;
-
-    background: var(--feldfarbe);
+    padding:
+        8px 10px;
 }
 
 
@@ -830,8 +896,6 @@ button {
     margin-top: 10px;
 
     min-height: 60px;
-
-    background: var(--feldfarbe);
 }
 
 
@@ -839,7 +903,8 @@ button {
 
     margin-top: 10px;
 
-    color: var(--grau);
+    color:
+        var(--grau);
 
     font-size: 13px;
 }
@@ -849,7 +914,8 @@ button {
 
     margin-top: 15px;
 
-    padding: 12px 13px;
+    padding:
+        12px 13px;
 
     border-radius: 12px;
 
@@ -859,41 +925,51 @@ button {
 
 .sehr-dringend {
 
-    background: #ffe5e8;
+    background:
+        #ffe5e8;
 
-    color: #b93f4b;
+    color:
+        #b93f4b;
 }
 
 
 .dringend {
 
-    background: #fff1d5;
+    background:
+        #fff1d5;
 
-    color: #9a6921;
+    color:
+        #9a6921;
 }
 
 
 .bald {
 
-    background: #f6f0ff;
+    background:
+        #f6f0ff;
 
-    color: #7058a5;
+    color:
+        #7058a5;
 }
 
 
 .genug-zeit {
 
-    background: var(--babyblau-hell);
+    background:
+        var(--babyblau-hell);
 
-    color: var(--babyblau-dunkel);
+    color:
+        var(--babyblau-dunkel);
 }
 
 
 .fertig {
 
-    background: #e3f7ea;
+    background:
+        #e3f7ea;
 
-    color: #40835f;
+    color:
+        #40835f;
 }
 
 
@@ -914,20 +990,25 @@ button {
 
     display: inline-block;
 
-    padding: 7px 11px;
+    padding:
+        7px 11px;
 
-    margin-bottom: 12px;
+    margin-bottom:
+        12px;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
-    background: #e4f8eb;
+    background:
+        #e4f8eb;
 
-    color: #43815f;
+    color:
+        #43815f;
 
-    font-weight: bold;
-
-    font-size: 12px;
+    font-weight:
+        bold;
 }
+
 
 
 /* FÄCHER */
@@ -940,7 +1021,7 @@ button {
         repeat(
             auto-fit,
             minmax(
-                290px,
+                310px,
                 1fr
             )
         );
@@ -958,55 +1039,24 @@ button {
     border:
         1px solid
         #eceeec;
-
-    box-shadow:
-        0 8px 22px
-        rgba(
-            0,
-            0,
-            0,
-            0.05
-        );
-}
-
-
-.fach-card h3 {
-
-    margin-bottom: 8px;
-}
-
-
-.lern-info {
-
-    color: var(--grau);
-
-    font-size: 14px;
-
-    margin-bottom: 14px;
 }
 
 
 .wochenziel-auto {
 
-    margin-top: 8px;
+    margin-top: 10px;
 
     padding: 10px 12px;
 
     border-radius: 11px;
 
-    background: var(--babyblau-hell);
+    background:
+        var(--babyblau-hell);
 
-    color: var(--babyblau-dunkel);
+    color:
+        var(--babyblau-dunkel);
 
     font-weight: bold;
-
-    font-size: 13px;
-}
-
-
-.slider {
-
-    accent-color: #7cc6ed;
 }
 
 
@@ -1016,9 +1066,10 @@ button {
 
     justify-content: space-between;
 
-    margin-top: 8px;
+    margin-top: 13px;
 
-    color: var(--grau);
+    color:
+        var(--grau);
 
     font-size: 13px;
 }
@@ -1030,11 +1081,14 @@ button {
 
     margin-top: 12px;
 
-    background: #edf2f5;
+    background:
+        #edf2f5;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
-    overflow: hidden;
+    overflow:
+        hidden;
 }
 
 
@@ -1042,11 +1096,29 @@ button {
 
     height: 100%;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 }
 
 
-.timer {
+.lernzeit-box {
+
+    margin-top: 18px;
+
+    padding: 17px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f0f9ff,
+            #f6f2ff
+        );
+}
+
+
+.lernzeit-kopf {
 
     display: flex;
 
@@ -1054,30 +1126,95 @@ button {
 
     align-items: center;
 
-    margin-top: 15px;
-
-    padding: 12px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #edf8ff,
-            #f5f1ff
-        );
-
-    border-radius: 12px;
+    gap: 10px;
 }
 
 
-.timer-anzeige {
+.lernzeit-wert {
 
-    color: #647bad;
+    font-size: 17px;
+
+    font-weight: bold;
+
+    color:
+        var(--babyblau-dunkel);
+}
+
+
+.lernzeit-hinweis {
+
+    margin-top: 8px;
+
+    color:
+        var(--grau);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+.timer-aufgabe {
+
+    margin-top: 15px;
+}
+
+
+.timer-aufgabe label {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 12px;
 
     font-weight: bold;
 }
 
 
-/* DASHBOARD ZIELE */
+.timer-modern {
+
+    margin-top: 12px;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+    background:
+        var(--kartenfarbe);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+.timer-uhr {
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    color:
+        #647bad;
+}
+
+
+.timer-status {
+
+    font-size: 11px;
+
+    color:
+        var(--grau);
+
+    margin-top: 4px;
+}
+
+
+
+/* DASHBOARD */
 
 .dashboard-ziele {
 
@@ -1103,23 +1240,13 @@ button {
     padding: 18px;
 
     border-radius: 18px;
-
-    box-shadow:
-        0 7px 18px
-        rgba(
-            0,
-            0,
-            0,
-            0.04
-        );
 }
 
 
 .mini-ziel p {
 
-    color: var(--grau);
-
-    font-size: 13px;
+    color:
+        var(--grau);
 
     margin-top: 6px;
 }
@@ -1133,25 +1260,10 @@ button {
 
     text-align: center;
 
-    color: var(--grau);
+    color:
+        var(--grau);
 }
 
-
-.heute-info {
-
-    padding: 20px;
-
-    border-radius: 18px;
-
-    margin-bottom: 25px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #eaf7ff,
-            #f4efff
-        );
-}
 
 
 /* KALENDER */
@@ -1161,15 +1273,6 @@ button {
     padding: 22px;
 
     border-radius: 22px;
-
-    box-shadow:
-        0 8px 22px
-        rgba(
-            0,
-            0,
-            0,
-            0.05
-        );
 }
 
 
@@ -1195,13 +1298,17 @@ button {
 
 .kalender-nav button {
 
-    padding: 10px 14px;
+    padding:
+        10px 14px;
 
-    border-radius: 10px;
+    border-radius:
+        10px;
 
-    background: var(--babyblau-hell);
+    background:
+        var(--babyblau-hell);
 
-    color: var(--babyblau-dunkel);
+    color:
+        var(--babyblau-dunkel);
 }
 
 
@@ -1228,7 +1335,8 @@ button {
 
     font-weight: bold;
 
-    color: var(--grau);
+    color:
+        var(--grau);
 
     padding: 8px;
 }
@@ -1246,13 +1354,8 @@ button {
         1px solid
         #e2e8ed;
 
-    background: var(--feldfarbe);
-}
-
-
-.kalender-tag.leer-tag {
-
-    opacity: 0.35;
+    background:
+        var(--feldfarbe);
 }
 
 
@@ -1266,8 +1369,6 @@ button {
 
 .kalender-tagnummer {
 
-    font-size: 13px;
-
     font-weight: bold;
 
     margin-bottom: 7px;
@@ -1276,7 +1377,7 @@ button {
 
 .kalender-event {
 
-    padding: 6px 7px;
+    padding: 7px;
 
     margin-bottom: 5px;
 
@@ -1284,13 +1385,19 @@ button {
 
     font-size: 10px;
 
-    line-height: 1.25;
-
     font-weight: bold;
 
-    overflow: hidden;
-
     cursor: pointer;
+
+    transition:
+        transform 0.15s ease;
+}
+
+
+.kalender-event:hover {
+
+    transform:
+        scale(1.04);
 }
 
 
@@ -1298,8 +1405,131 @@ button {
 
     opacity: 0.5;
 
-    text-decoration: line-through;
+    text-decoration:
+        line-through;
 }
+
+
+
+/* KALENDER POPUP */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        rgba(
+            10,
+            20,
+            35,
+            0.65
+        );
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 1000;
+
+    padding: 20px;
+}
+
+
+.modal-overlay.offen {
+
+    display: flex;
+}
+
+
+.modal-karte {
+
+    width: 100%;
+
+    max-width: 480px;
+
+    background:
+        var(--kartenfarbe);
+
+    color:
+        var(--text);
+
+    border-radius: 24px;
+
+    padding: 28px;
+
+    position: relative;
+
+    box-shadow:
+        0 20px 60px
+        rgba(
+            0,
+            0,
+            0,
+            0.3
+        );
+}
+
+
+.modal-schliessen {
+
+    position: absolute;
+
+    top: 12px;
+
+    right: 15px;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    background:
+        var(--babyblau-hell);
+
+    color:
+        var(--text);
+
+    font-size: 22px;
+}
+
+
+.modal-titel {
+
+    font-size: 25px;
+
+    margin-bottom: 15px;
+
+    padding-right: 35px;
+}
+
+
+.modal-zeile {
+
+    margin-top: 12px;
+
+    font-size: 14px;
+}
+
+
+.modal-notiz {
+
+    margin-top: 17px;
+
+    padding: 13px;
+
+    border-radius: 12px;
+
+    background:
+        var(--feldfarbe);
+
+    color:
+        var(--grau);
+}
+
 
 
 /* DARK MODE */
@@ -1327,7 +1557,8 @@ body.dark-mode {
 }
 
 
-body.dark-mode .sidebar {
+body.dark-mode
+.sidebar {
 
     background:
         linear-gradient(
@@ -1338,23 +1569,37 @@ body.dark-mode .sidebar {
 }
 
 
-body.dark-mode .logo-accent,
-body.dark-mode .logo-text,
-body.dark-mode .nav-button {
+body.dark-mode
+.nav-button {
 
-    color: #d8eafa;
+    color:
+        #d8eafa;
 }
 
 
-body.dark-mode .nav-button.active {
+body.dark-mode
+.nav-button.active {
 
-    background: #d9edfa;
+    background:
+        #d9edfa;
 
-    color: #304c65;
+    color:
+        #304c65;
 }
 
 
-body.dark-mode .darkmode-button {
+body.dark-mode
+.logo-accent,
+body.dark-mode
+.logo-text {
+
+    color:
+        #d8eafa;
+}
+
+
+body.dark-mode
+.darkmode-button {
 
     background:
         rgba(
@@ -1364,11 +1609,13 @@ body.dark-mode .darkmode-button {
             0.10
         );
 
-    color: #e4f2fc;
+    color:
+        #e4f2fc;
 }
 
 
-body.dark-mode .hero {
+body.dark-mode
+.hero {
 
     background:
         linear-gradient(
@@ -1380,37 +1627,50 @@ body.dark-mode .hero {
 }
 
 
-body.dark-mode .hero p {
+body.dark-mode
+.hero p {
 
-    color: #c7d1dc;
+    color:
+        #c7d1dc;
 }
 
 
-body.dark-mode input,
-body.dark-mode select,
-body.dark-mode textarea {
+body.dark-mode
+input,
+body.dark-mode
+select,
+body.dark-mode
+textarea {
 
-    color: #edf3f8;
+    color:
+        #edf3f8;
 
-    border-color: #3c4859;
+    border-color:
+        #3c4859;
 }
 
 
-body.dark-mode option {
+body.dark-mode
+option {
 
-    background: #293445;
+    background:
+        #293445;
 
-    color: #edf3f8;
+    color:
+        white;
 }
 
 
-body.dark-mode .progress {
+body.dark-mode
+.progress {
 
-    background: #394455;
+    background:
+        #394455;
 }
 
 
-body.dark-mode .timer {
+body.dark-mode
+.lernzeit-box {
 
     background:
         linear-gradient(
@@ -1421,24 +1681,20 @@ body.dark-mode .timer {
 }
 
 
-body.dark-mode .heute-info {
+body.dark-mode
+.tages-empfehlung {
 
     background:
         linear-gradient(
             135deg,
             #28394b,
-            #38344b
+            #35344a
         );
+
+    color:
+        #dbe7f0;
 }
 
-
-body.dark-mode .kalender-tag {
-
-    border-color: #3b4859;
-}
-
-
-/* RESPONSIVE */
 
 @media(max-width: 900px) {
 
@@ -1471,7 +1727,16 @@ body.dark-mode .kalender-tag {
     .filter,
     .wochenstatistik {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .tagesplan-box {
+
+        flex-direction: column;
+
+        align-items: stretch;
     }
 
 

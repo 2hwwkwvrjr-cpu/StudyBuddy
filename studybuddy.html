@@ -132,6 +132,8 @@
     <main class="main">
 
 
+        <!-- DASHBOARD -->
+
         <section
             id="dashboard"
             class="seite active"
@@ -157,9 +159,7 @@
 
                     <p>Alle Aufgaben</p>
 
-                    <strong id="gesamt">
-                        0
-                    </strong>
+                    <strong id="gesamt">0</strong>
 
                 </div>
 
@@ -168,9 +168,7 @@
 
                     <p>Offene Aufgaben</p>
 
-                    <strong id="offen">
-                        0
-                    </strong>
+                    <strong id="offen">0</strong>
 
                 </div>
 
@@ -179,25 +177,11 @@
 
                     <p>Dringend</p>
 
-                    <strong id="dringend">
-                        0
-                    </strong>
+                    <strong id="dringend">0</strong>
 
                 </div>
 
             </div>
-
-
-
-            <!--
-            =====================================================
-            AUSGABE DES AUTOMATISCHEN WOCHENZIEL-ALGORITHMUS
-            =====================================================
-
-            Das Wochenziel wird aus den offenen Aufgaben
-            und deren verbleibendem Aufwand berechnet.
-            =====================================================
-            -->
 
 
             <div class="section-heading">
@@ -217,15 +201,42 @@
 
                 <div class="wochen-box">
 
-                    <h3>
-                        ⏱ Diese Woche gelernt
-                    </h3>
+                    <div class="titel-mit-info">
+
+                        <h3>
+                            ⏱ Diese Woche gelernt
+                        </h3>
+
+
+                        <div class="info-wrap">
+
+                            <span class="info-icon">
+                                i
+                            </span>
+
+
+                            <div class="info-tooltip">
+
+                                Hier siehst du die gesamte
+                                Lernzeit, die du diese Woche
+                                erfasst hast.
+
+                                Auch gestoppte Lernzeit über
+                                den Timer wird automatisch
+                                berücksichtigt.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
 
                     <div
                         id="wochenStunden"
                         class="wochen-zahl"
                     >
-                        0 h
+                        0 Minuten
                     </div>
 
                 </div>
@@ -233,16 +244,41 @@
 
                 <div class="wochen-box">
 
-                    <h3>
-                        🎯 Empfohlenes Wochenziel
-                    </h3>
+                    <div class="titel-mit-info">
+
+                        <h3>
+                            🎯 Empfohlenes Wochenziel
+                        </h3>
+
+
+                        <div class="info-wrap">
+
+                            <span class="info-icon">
+                                i
+                            </span>
+
+
+                            <div class="info-tooltip">
+
+                                Das Wochenziel wird automatisch
+                                aus dem Restaufwand deiner
+                                Aufgaben und deren Deadlines
+                                berechnet.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
 
                     <div
                         id="wochenZiel"
                         class="wochen-zahl"
                     >
-                        0 h
+                        0 Minuten
                     </div>
+
 
                     <div
                         id="wochenProzent"
@@ -250,6 +286,7 @@
                     >
                         0 % erreicht
                     </div>
+
 
                     <div class="progress">
 
@@ -263,7 +300,6 @@
                 </div>
 
             </div>
-
 
 
             <div class="section-heading">
@@ -285,14 +321,6 @@
             ></div>
 
 
-
-            <!--
-            =====================================================
-            AUSGABE DES SORTIERALGORITHMUS
-            =====================================================
-            -->
-
-
             <div class="section-heading">
 
                 <h2>
@@ -312,6 +340,8 @@
 
 
 
+        <!-- HEUTE -->
+
         <section
             id="heute"
             class="seite"
@@ -321,21 +351,66 @@
             <div class="hero">
 
                 <h1>
-                    Deine nächsten To-dos ☀️
+                    Dein Lernplan für heute ☀️
                 </h1>
 
                 <p>
-                    Aufgaben, die heute oder sehr bald fällig sind.
+                    StudyBuddy berechnet, wie viel Zeit du heute für welche Aufgabe einplanen solltest.
                 </p>
 
             </div>
 
 
-            <div class="heute-info">
+            <div class="tagesplan-box">
 
-                <strong id="heuteText">
-                    Aufgaben werden geladen.
-                </strong>
+
+                <div>
+
+                    <div class="titel-mit-info">
+
+                        <h3>
+                            ⏱ Empfohlene Lernzeit heute
+                        </h3>
+
+
+                        <div class="info-wrap">
+
+                            <span class="info-icon">
+                                i
+                            </span>
+
+
+                            <div class="info-tooltip">
+
+                                Für die Empfehlung werden
+                                Deadline, Restaufwand,
+                                Priorität und Dringlichkeit
+                                der Aufgaben berücksichtigt.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="heuteText"
+                        class="heute-beschreibung"
+                    >
+                        Lernplan wird berechnet.
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="heuteGesamtStunden"
+                    class="tagesplan-stunden"
+                >
+                    0 Minuten
+                </div>
+
 
             </div>
 
@@ -349,6 +424,8 @@
         </section>
 
 
+
+        <!-- AUFGABEN -->
 
         <section
             id="aufgaben"
@@ -380,18 +457,8 @@
                 </div>
 
 
-                <!--
-                =================================================
-                DATEN FÜR DEN DRINGLICHKEITSALGORITHMUS
-                =================================================
-
-                Verwendet werden:
-                Deadline, Priorität, Aufwand und investierte Zeit.
-                =================================================
-                -->
-
-
                 <div class="formular">
+
 
                     <input
                         id="aufgabeName"
@@ -509,6 +576,7 @@
                         Aufgabe hinzufügen
                     </button>
 
+
                 </div>
 
             </div>
@@ -518,6 +586,7 @@
             <div class="bereich">
 
                 <div class="filter">
+
 
                     <input
                         id="suche"
@@ -589,6 +658,7 @@
 
                     </select>
 
+
                 </div>
 
             </div>
@@ -604,6 +674,8 @@
 
 
 
+        <!-- KALENDER -->
+
         <section
             id="kalender"
             class="seite"
@@ -617,28 +689,17 @@
                 </h1>
 
                 <p>
-                    Hier siehst du alle Deadlines auf einen Blick.
+                    Klicke auf eine Aufgabe, um ihre Details anzusehen.
                 </p>
 
             </div>
 
 
-            <!--
-            =====================================================
-            KALENDER NACH DEADLINES
-            =====================================================
-
-            Die Aufgaben werden anhand ihrer Deadline
-            dem passenden Kalendertag zugeordnet.
-
-            Die jeweilige Fachfarbe wird übernommen.
-            =====================================================
-            -->
-
-
             <div class="kalender-container">
 
+
                 <div class="kalender-header">
+
 
                     <h2 id="kalenderTitel">
                         Kalender
@@ -653,11 +714,13 @@
                             ←
                         </button>
 
+
                         <button
                             onclick="kalenderHeute()"
                         >
                             Heute
                         </button>
+
 
                         <button
                             onclick="kalenderMonatAendern(1)"
@@ -666,6 +729,7 @@
                         </button>
 
                     </div>
+
 
                 </div>
 
@@ -688,12 +752,15 @@
                     class="kalender-grid"
                 ></div>
 
+
             </div>
 
 
         </section>
 
 
+
+        <!-- ERLEDIGT -->
 
         <section
             id="erledigt"
@@ -723,6 +790,8 @@
         </section>
 
 
+
+        <!-- FÄCHER -->
 
         <section
             id="faecher"
@@ -775,17 +844,6 @@
             </div>
 
 
-            <!--
-            =====================================================
-            AUTOMATISCHES WOCHENZIEL
-            =====================================================
-
-            Der Restaufwand der offenen Aufgaben
-            wird bis zur Deadline aufgeteilt.
-            =====================================================
-            -->
-
-
             <div
                 id="fachListe"
                 class="fach-grid"
@@ -799,6 +857,40 @@
 
 
 </div>
+
+
+
+<!-- KALENDER POPUP -->
+
+<div
+    id="aufgabenModal"
+    class="modal-overlay"
+    onclick="modalHintergrundKlick(event)"
+>
+
+
+    <div
+        id="modalKarte"
+        class="modal-karte"
+    >
+
+
+        <button
+            class="modal-schliessen"
+            onclick="aufgabenModalSchliessen()"
+        >
+            ×
+        </button>
+
+
+        <div id="modalInhalt"></div>
+
+
+    </div>
+
+
+</div>
+
 
 
 <script src="studybuddy.js"></script>
