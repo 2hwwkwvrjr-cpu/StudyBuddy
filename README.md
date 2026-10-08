@@ -107,7 +107,6 @@ Die maximal empfohlene Lernzeit pro Tag beträgt derzeit 4 Stunden.
 - Timerzeit wird zur Wochenlernzeit hinzugefügt
 - bei Auswahl einer Aufgabe wird die Timerzeit zusätzlich als investierte Aufgabenzeit gespeichert
 
-
 ## Dateien
 
 - `studybuddy.html` = Aufbau und Benutzeroberfläche
