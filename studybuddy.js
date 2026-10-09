@@ -2205,6 +2205,14 @@ function zeigeAufgaben() {
             .value;
 
 
+    const deadline =
+        document
+            .getElementById(
+                "deadlineFilter"
+            )
+            .value;
+
+
     const typ =
         document
             .getElementById(
@@ -2221,8 +2229,10 @@ function zeigeAufgaben() {
         );
 
 
+    // Nach Suchbegriff filtern
     if (
-        suche !== ""
+        suche !==
+        ""
     ) {
 
         liste =
@@ -2246,6 +2256,7 @@ function zeigeAufgaben() {
     }
 
 
+    // Nach Fach filtern
     if (
         fach !==
         "alle"
@@ -2260,6 +2271,7 @@ function zeigeAufgaben() {
     }
 
 
+    // Nach Bearbeitungsstatus filtern
     if (
         status !==
         "alle"
@@ -2274,6 +2286,22 @@ function zeigeAufgaben() {
     }
 
 
+    // Nach Deadline filtern
+    if (
+        deadline !==
+        ""
+    ) {
+
+        liste =
+            liste.filter(
+                aufgabe =>
+                    aufgabe.deadline ===
+                    deadline
+            );
+    }
+
+
+    // Nach Typ filtern
     if (
         typ !==
         "alle"
@@ -2288,6 +2316,7 @@ function zeigeAufgaben() {
     }
 
 
+    // Gefilterte Aufgaben automatisch sortieren
     sortiereAufgaben(
         liste
     );
@@ -2326,8 +2355,6 @@ function zeigeAufgaben() {
             )
     );
 }
-
-
 
 function zeigeErledigteAufgaben() {
 

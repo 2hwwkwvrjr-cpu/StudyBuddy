@@ -7,6 +7,7 @@ StudyBuddy ist eine Lernplanungs-App für Studierende.
 - Aufgaben hinzufügen, bearbeiten und löschen
 - Dringlichkeit von Aufgaben automatisch berechnen
 - Aufgaben automatisch nach Wichtigkeit sortieren
+- Aufgaben nach Fach, Deadline und Bearbeitungsstatus filtern
 - automatisches Wochenziel berechnen
 - automatischen Tageslernplan erstellen
 - Lernzeit erfassen

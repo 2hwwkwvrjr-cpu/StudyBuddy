@@ -584,82 +584,86 @@
 
 
             <div class="bereich">
+<div class="filter">
 
-                <div class="filter">
+    <input
+        id="suche"
+        placeholder="🔎 Aufgabe suchen..."
+        oninput="zeigeAufgaben()"
+    >
 
+    <select
+        id="fachFilter"
+        onchange="zeigeAufgaben()"
+    >
 
-                    <input
-                        id="suche"
-                        placeholder="🔎 Aufgabe suchen..."
-                        oninput="zeigeAufgaben()"
-                    >
+        <option value="alle">
+            Alle Fächer
+        </option>
 
-
-                    <select
-                        id="fachFilter"
-                        onchange="zeigeAufgaben()"
-                    >
-
-                        <option value="alle">
-                            Alle Fächer
-                        </option>
-
-                    </select>
+    </select>
 
 
-                    <select
-                        id="statusFilter"
-                        onchange="zeigeAufgaben()"
-                    >
+    <select
+        id="statusFilter"
+        onchange="zeigeAufgaben()"
+    >
 
-                        <option value="alle">
-                            Alle Status
-                        </option>
+        <option value="alle">
+            Alle Status
+        </option>
 
-                        <option value="offen">
-                            Offen
-                        </option>
+        <option value="offen">
+            Offen
+        </option>
 
-                        <option value="in Bearbeitung">
-                            In Bearbeitung
-                        </option>
+        <option value="in Bearbeitung">
+            In Bearbeitung
+        </option>
 
-                    </select>
-
-
-                    <select
-                        id="typFilter"
-                        onchange="zeigeAufgaben()"
-                    >
-
-                        <option value="alle">
-                            Alle Typen
-                        </option>
-
-                        <option value="Prüfung">
-                            Prüfung
-                        </option>
-
-                        <option value="Abgabe">
-                            Abgabe
-                        </option>
-
-                        <option value="Hausübung">
-                            Hausübung
-                        </option>
-
-                        <option value="Lernaufgabe">
-                            Lernaufgabe
-                        </option>
-
-                        <option value="Projekt">
-                            Projekt
-                        </option>
-
-                    </select>
+    </select>
 
 
-                </div>
+    <input
+        id="deadlineFilter"
+        type="date"
+        title="Nach Deadline filtern"
+        onchange="zeigeAufgaben()"
+    >
+
+
+    <select
+        id="typFilter"
+        onchange="zeigeAufgaben()"
+    >
+
+        <option value="alle">
+            Alle Typen
+        </option>
+
+        <option value="Prüfung">
+            Prüfung
+        </option>
+
+        <option value="Abgabe">
+            Abgabe
+        </option>
+
+        <option value="Hausübung">
+            Hausübung
+        </option>
+
+        <option value="Lernaufgabe">
+            Lernaufgabe
+        </option>
+
+        <option value="Projekt">
+            Projekt
+        </option>
+
+    </select>
+
+</div>
 
             </div>
 
