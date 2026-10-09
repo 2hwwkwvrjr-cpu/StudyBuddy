@@ -762,6 +762,36 @@ function pruefeAutomatischErledigteAufgaben() {
 // ======================================================
 // DRINGLICHKEITSALGORITHMUS
 // ======================================================
+//
+// So wird gerechnet:
+//
+// 1. Restaufwand berechnen:
+//    Restaufwand = Zeitaufwand - investierte Zeit
+//
+// 2. Benötigte Lernzeit pro Tag berechnen:
+//    Stunden pro Tag = Restaufwand / verbleibende Tage
+//
+// 3. Danach wird die Aufgabe eingestuft:
+//
+//    Rang 4 = Sehr dringend
+//    - höchstens 1 Tag bis zur Deadline
+//    ODER mindestens 2,5 Stunden pro Tag notwendig
+//
+//    Rang 3 = Dringend
+//    - höchstens 3 Tage bis zur Deadline
+//    ODER mindestens 1,5 Stunden pro Tag notwendig
+//    ODER hohe Priorität und höchstens 5 Tage bis zur Deadline
+//
+//    Rang 2 = Bald einplanen
+//    - höchstens 7 Tage bis zur Deadline
+//    ODER mindestens 0,75 Stunden pro Tag notwendig
+//    ODER hohe Priorität
+//
+//    Rang 1 = Noch genug Zeit
+//    - wenn keine der vorherigen Bedingungen erfüllt ist
+//
+//    Rang 0 = Erledigt
+//
 
 function berechneDringlichkeit(
     aufgabe
@@ -903,7 +933,24 @@ function berechneDringlichkeit(
 // ======================================================
 // WOCHENZIELALGORITHMUS
 // ======================================================
-
+//
+// So wird gerechnet:
+//
+// 1. Restaufwand berechnen:
+//    Restaufwand = Zeitaufwand - investierte Zeit
+//
+// 2. Restaufwand auf die verbleibenden Tage verteilen:
+//    Lernzeit pro Tag = Restaufwand / verbleibende Tage
+//
+// 3. Für das aktuelle Wochenziel wird nur der Anteil
+//    bis Sonntag dieser Woche berücksichtigt.
+//
+// Beispiel:
+// Wenn eine Aufgabe noch 6 Stunden braucht,
+// aber erst in 6 Tagen fällig ist,
+// werden nicht automatisch alle 6 Stunden
+// ins aktuelle Wochenziel übernommen.
+//
 function wochenAnteilAufgabe(
     aufgabe
 ) {
@@ -1046,6 +1093,16 @@ function gesamtesWochenziel() {
 // ======================================================
 // SORTIERALGORITHMUS
 // ======================================================
+//
+// Die Aufgaben werden in dieser Reihenfolge sortiert:
+//
+// 1. höhere Dringlichkeit zuerst
+// 2. höhere benötigte Lernzeit pro Tag zuerst
+// 3. frühere Deadline zuerst
+//
+// Dadurch stehen die wichtigsten Aufgaben
+// weiter oben in der Liste.
+//
 
 function sortiereAufgaben(
     liste
@@ -1117,6 +1174,43 @@ function sortiereAufgaben(
 // ======================================================
 // TAGESLERNPLAN-ALGORITHMUS
 // ======================================================
+//
+// So wird gerechnet:
+//
+// 1. Restaufwand berechnen:
+//    Restaufwand = Zeitaufwand - investierte Zeit
+//
+// 2. Täglichen Lernbedarf berechnen:
+//    täglicher Bedarf = Restaufwand / verbleibende Tage
+//
+// 3. Prioritätsfaktor verwenden:
+//
+//    hoch = 1.5
+//    → erhöht die Gewichtung um 50 %
+//
+//    mittel = 1.0
+//    → neutraler Ausgangswert, keine Veränderung
+//
+//    niedrig = 0.7
+//    → reduziert die Gewichtung auf 70 %
+//
+//    Diese Werte wurden bewusst so gewählt,
+//    damit die Priorität die Empfehlung beeinflusst,
+//    aber Deadline und Restaufwand nicht komplett überlagert.
+//
+// 4. Planungswert berechnen:
+//
+//    Planungswert =
+//    täglicher Bedarf
+//    × Dringlichkeitsrang
+//    × Prioritätsfaktor
+//
+// Je höher der Planungswert,
+// desto mehr Lernzeit bekommt die Aufgabe für heute.
+//
+// Maximal werden insgesamt 4 Stunden
+// Lernzeit pro Tag empfohlen.
+//
 
 function prioritaetsFaktor(
     prioritaet

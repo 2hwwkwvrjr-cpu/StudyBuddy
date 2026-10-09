@@ -21,28 +21,44 @@ StudyBuddy ist eine Lernplanungs-App für Studierende.
 
 ### 1. Dringlichkeitsalgorithmus
 
-Der Algorithmus berechnet, wie dringend eine Aufgabe ist.
+Der Dringlichkeitsalgorithmus berechnet, wie dringend eine Aufgabe ist.
 
 Berücksichtigt werden:
 
 - Deadline
 - Priorität
-- geschätzter Aufwand
+- geschätzter Zeitaufwand
 - bereits investierte Zeit
 - Restaufwand
 - benötigte Lernzeit pro Tag
 
-Restaufwand:
+Der Restaufwand wird so berechnet:
 
-Zeitaufwand - investierte Zeit
+Restaufwand = Zeitaufwand - investierte Zeit
 
-Die Aufgabe wird danach eingestuft als:
+Anschließend wird berechnet, wie viel Zeit pro Tag ungefähr notwendig wäre.
 
-- Sehr dringend
-- Dringend
-- Bald einplanen
-- Noch genug Zeit
-- Erledigt
+Die Einstufung erfolgt nach folgenden Regeln:
+
+- Sehr dringend:
+  höchstens 1 Tag bis zur Deadline
+  ODER mindestens 2,5 benötigte Stunden pro Tag
+
+- Dringend:
+  höchstens 3 Tage bis zur Deadline
+  ODER mindestens 1,5 benötigte Stunden pro Tag
+  ODER hohe Priorität und höchstens 5 Tage bis zur Deadline
+
+- Bald einplanen:
+  höchstens 7 Tage bis zur Deadline
+  ODER mindestens 0,75 benötigte Stunden pro Tag
+  ODER hohe Priorität
+
+- Noch genug Zeit:
+  wenn keine der vorherigen Bedingungen erfüllt ist
+
+- Erledigt:
+  wenn die Aufgabe abgeschlossen wurde
 
 
 ### 2. Sortieralgorithmus
@@ -55,6 +71,8 @@ Reihenfolge:
 2. höchste benötigte Lernzeit pro Tag
 3. früheste Deadline
 
+Dadurch werden Aufgaben, die zeitlich kritischer sind, weiter oben angezeigt.
+
 
 ### 3. Wochenzielalgorithmus
 
@@ -64,14 +82,16 @@ Zuerst wird der Restaufwand berechnet:
 
 Restaufwand = Zeitaufwand - investierte Zeit
 
-Anschließend wird der Restaufwand auf die verbleibenden Tage bis zur Deadline verteilt.
+Danach wird der Restaufwand auf die verbleibenden Tage bis zur Deadline verteilt.
 
-Für das aktuelle Wochenziel wird nur die Lernzeit berücksichtigt, die bis Sonntag dieser Woche notwendig ist.
+Für das aktuelle Wochenziel wird nur der Anteil berücksichtigt, der bis Sonntag dieser Woche notwendig ist.
+
+Dadurch wird bei einer Aufgabe, die erst in mehreren Wochen fällig ist, nicht der komplette Aufwand sofort in das aktuelle Wochenziel aufgenommen.
 
 
 ### 4. Tageslernplan-Algorithmus
 
-StudyBuddy berechnet, wie viel Zeit heute für jede Aufgabe eingeplant werden sollte.
+StudyBuddy berechnet, wie viel Zeit heute für jede offene Aufgabe eingeplant werden sollte.
 
 Dabei werden berücksichtigt:
 
@@ -87,25 +107,84 @@ Für die Priorität werden Faktoren verwendet:
 - mittel = 1,0
 - niedrig = 0,7
 
-Der Planungswert wird vereinfacht so berechnet:
+Der tägliche Bedarf wird aus dem Restaufwand und den verbleibenden Tagen bis zur Deadline berechnet.
+
+Danach wird ein Planungswert berechnet:
 
 Planungswert =
 täglicher Bedarf × Dringlichkeitsrang × Prioritätsfaktor
 
-Aufgaben mit einem höheren Planungswert bekommen einen größeren Anteil der empfohlenen Lernzeit für heute.
+Aufgaben mit einem höheren Planungswert erhalten einen größeren Anteil der empfohlenen Lernzeit für heute.
 
 Die maximal empfohlene Lernzeit pro Tag beträgt derzeit 4 Stunden.
 
 
-## Weitere Berechnungen
+## Weitere Berechnungen und Funktionen
 
-- Tage bis zur Deadline
-- Restaufwand einer Aufgabe
-- automatische Erledigung, wenn investierte Zeit den Aufwand erreicht
+- Tage bis zur Deadline berechnen
+- Restaufwand einer Aufgabe berechnen
+- automatische Erledigung, wenn die investierte Zeit den geschätzten Aufwand erreicht
 - Umrechnung von Dezimalstunden in Stunden und Minuten
-- Fortschritt des Wochenziels in Prozent
-- Timerzeit wird zur Wochenlernzeit hinzugefügt
+- Fortschritt des Wochenziels in Prozent berechnen
+- automatische Erkennung eines Wochenwechsels
+- Zurücksetzen der erfassten Wochenlernzeit bei einer neuen Woche
+- Timerzeit zur Wochenlernzeit hinzufügen
 - bei Auswahl einer Aufgabe wird die Timerzeit zusätzlich als investierte Aufgabenzeit gespeichert
+- Aufgaben im Kalender mit der jeweiligen Fachfarbe anzeigen
+- beim Anklicken einer Kalenderaufgabe werden nur die Details dieser Aufgabe angezeigt
+
+
+## Datenspeicherung
+
+Die Datei `studybuddy_tasks.json` enthält die Ausgangsdaten der Anwendung.
+
+Beim ersten Start versucht StudyBuddy, die Fächer und Aufgaben aus dieser JSON-Datei zu laden.
+
+Danach werden Änderungen, die der Benutzer auf der Website vornimmt, im LocalStorage des Browsers gespeichert.
+
+Das bedeutet:
+
+- neue Aufgaben werden im LocalStorage gespeichert
+- Änderungen an Aufgaben werden im LocalStorage gespeichert
+- Lernzeiten werden im LocalStorage gespeichert
+- die Dark-Mode-Einstellung wird im LocalStorage gespeichert
+
+Die JSON-Datei wird durch Änderungen auf der Website nicht automatisch verändert.
+
+Wenn bereits Daten im LocalStorage vorhanden sind, werden diese verwendet und nicht erneut die Ausgangsdaten aus der JSON-Datei geladen.
+
+Zusätzlich speichert StudyBuddy eine Kennung für die aktuelle Woche.
+
+Wenn eine neue Woche beginnt, wird die erfasste Wochenlernzeit der Fächer wieder auf 0 gesetzt.
+
+
+## Aufbau der Daten
+
+### Fächer
+
+Ein Fach besitzt:
+
+- name
+- gelernteStunden
+
+Die empfohlenen Wochenziele werden nicht fix gespeichert, sondern automatisch aus den offenen Aufgaben berechnet.
+
+
+### Aufgaben
+
+Eine Aufgabe besitzt:
+
+- id
+- aufgabe
+- fach
+- typ
+- deadline
+- prioritaet
+- status
+- zeitaufwand
+- investierteZeit
+- notiz
+
 
 ## Dateien
 

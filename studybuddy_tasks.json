@@ -1,69 +1,63 @@
 {
   "_dokumentation": {
-    "beschreibung": "Diese JSON-Datei enthält die Ausgangsdaten der StudyBuddy-Anwendung. Die Algorithmen selbst befinden sich in studybuddy.js.",
+    "beschreibung": "Diese JSON-Datei enthält die Ausgangsdaten der StudyBuddy-Anwendung. Die Berechnungen und Algorithmen befinden sich in studybuddy.js.",
+
+    "speicherung": "Die JSON-Datei dient nur als Ausgangsdatenquelle. Änderungen auf der Website werden im LocalStorage des Browsers gespeichert und verändern diese JSON-Datei nicht automatisch.",
 
     "algorithmusDaten": {
       "deadline": "Die Deadline wird verwendet, um zu berechnen, wie viele Tage bis zur Abgabe oder Prüfung verbleiben.",
 
-      "prioritaet": "Die Priorität hoch, mittel oder niedrig wird beim Dringlichkeitsalgorithmus berücksichtigt.",
+      "prioritaet": "Die Priorität kann hoch, mittel oder niedrig sein und wird bei der Berechnung der Dringlichkeit und des Tageslernplans berücksichtigt.",
 
       "zeitaufwand": "Der geschätzte Zeitaufwand gibt an, wie viele Stunden insgesamt für eine Aufgabe benötigt werden.",
 
-      "investierteZeit": "Die bereits investierte Zeit wird vom Gesamtaufwand abgezogen.",
+      "investierteZeit": "Die bereits investierte Zeit wird vom geschätzten Gesamtaufwand abgezogen.",
 
-      "restaufwand": "Der Restaufwand wird nicht direkt gespeichert, sondern im JavaScript berechnet: zeitaufwand minus investierteZeit.",
+      "restaufwand": "Der Restaufwand wird nicht direkt gespeichert. Er wird im JavaScript berechnet: zeitaufwand minus investierteZeit.",
 
-      "stundenProTag": "Die notwendigen Stunden pro Tag werden im JavaScript berechnet: Restaufwand geteilt durch verbleibende Tage.",
+      "stundenProTag": "Die benötigte Lernzeit pro Tag wird im JavaScript aus dem Restaufwand und den verbleibenden Tagen bis zur Deadline berechnet.",
 
       "status": "Der Status bestimmt, ob eine Aufgabe offen, in Bearbeitung oder erledigt ist.",
 
       "fach": "Das Fach ordnet eine Aufgabe dem entsprechenden Studienfach zu.",
 
-      "wochenzielStunden": "Das Wochenziel wird verwendet, um den Lernfortschritt eines Faches zu berechnen.",
+      "gelernteStunden": "Die gelernte Zeit eines Faches wird für die Wochenstatistik und den Fortschritt verwendet.",
 
-      "gelernteStunden": "Die gelernte Zeit wird mit dem Wochenziel verglichen und für die Wochenstatistik verwendet."
+      "wochenziel": "Das Wochenziel wird nicht fix in der JSON-Datei gespeichert. Es wird automatisch aus dem Restaufwand der offenen Aufgaben und deren Deadlines berechnet."
     }
   },
 
   "faecher": [
     {
       "name": "Datenmanagement",
-      "wochenzielStunden": 4,
       "gelernteStunden": 0
     },
     {
       "name": "Einführung in die Wirtschaftsinformatik",
-      "wochenzielStunden": 4,
       "gelernteStunden": 0
     },
     {
       "name": "Kompetenz und Kooperation",
-      "wochenzielStunden": 2,
       "gelernteStunden": 0
     },
     {
       "name": "Mathematik für Computer Science 1",
-      "wochenzielStunden": 6,
       "gelernteStunden": 0
     },
     {
       "name": "Rechnungswesen",
-      "wochenzielStunden": 5,
       "gelernteStunden": 0
     },
     {
       "name": "Strukturierte Programmierung",
-      "wochenzielStunden": 6,
       "gelernteStunden": 0
     },
     {
       "name": "Technical English",
-      "wochenzielStunden": 3,
       "gelernteStunden": 0
     },
     {
       "name": "Unternehmensführung",
-      "wochenzielStunden": 3,
       "gelernteStunden": 0
     }
   ],
